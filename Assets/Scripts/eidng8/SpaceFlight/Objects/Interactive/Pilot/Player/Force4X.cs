@@ -26,57 +26,57 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot.Player
         protected virtual void HandleKeyboard()
         {
             if (Time.unscaledTime - this._lastKeyboardTime
-                < this.Config.sensitivity) {
+                < this.config.sensitivity) {
                 return;
             }
 
             this._lastKeyboardTime = Time.unscaledTime;
 
-            if (Input.GetKey(this.Config.keys.accelerate)) {
+            if (Input.GetKey(this.config.keys.accelerate)) {
                 this.Accelerate();
             }
 
-            if (Input.GetKey(this.Config.keys.decelerate)) {
+            if (Input.GetKey(this.config.keys.decelerate)) {
                 this.Decelerate();
             }
 
-            if (Input.GetKey(this.Config.keys.pitchUp)) {
+            if (Input.GetKey(this.config.keys.pitchUp)) {
                 this.PitchUp();
             }
 
-            if (Input.GetKey(this.Config.keys.pitchDown)) {
+            if (Input.GetKey(this.config.keys.pitchDown)) {
                 this.PitchDown();
             }
 
-            if (Input.GetKey(this.Config.keys.yawC)) {
+            if (Input.GetKey(this.config.keys.yawC)) {
                 this.YawC();
             }
 
-            if (Input.GetKey(this.Config.keys.yawCc)) {
+            if (Input.GetKey(this.config.keys.yawCc)) {
                 this.YawCc();
             }
 
-            if (Input.GetKey(this.Config.keys.rollC)) {
+            if (Input.GetKey(this.config.keys.rollC)) {
                 this.RollC();
             }
 
-            if (Input.GetKey(this.Config.keys.rollCc)) {
+            if (Input.GetKey(this.config.keys.rollCc)) {
                 this.RollCc();
             }
 
-            if (Input.GetKey(this.Config.keys.panLeft)) {
+            if (Input.GetKey(this.config.keys.panLeft)) {
                 this.PanLeft();
             }
 
-            if (Input.GetKey(this.Config.keys.panRight)) {
+            if (Input.GetKey(this.config.keys.panRight)) {
                 this.PanRight();
             }
 
-            if (Input.GetKey(this.Config.keys.panUp)) {
+            if (Input.GetKey(this.config.keys.panUp)) {
                 this.PanUp();
             }
 
-            if (Input.GetKey(this.Config.keys.panDown)) {
+            if (Input.GetKey(this.config.keys.panDown)) {
                 this.PanDown();
             }
         }
@@ -133,28 +133,28 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot.Player
 
         protected virtual void Decelerate()
         {
-            float throttle = this.Motor.Throttle;
-            throttle -= this.Config.incrementStep;
+            float throttle = this.motor.Throttle;
+            throttle -= this.config.incrementStep;
 
             // if it's just going from forward to backward, stop it once.
-            if (throttle < 0 && throttle > -this.Config.incrementStep) {
-                this.Motor.FullStop();
+            if (throttle < 0 && throttle > -this.config.incrementStep) {
+                this.motor.FullStop();
             }
 
-            this.Motor.Throttle = throttle;
+            this.motor.Throttle = throttle;
         }
 
         protected virtual void Accelerate()
         {
-            float throttle = this.Motor.Throttle;
-            throttle += this.Config.incrementStep;
+            float throttle = this.motor.Throttle;
+            throttle += this.config.incrementStep;
 
             // if it's just going from backward to forward, stop it once.
-            if (throttle > 0 && throttle < this.Config.incrementStep) {
-                this.Motor.FullStop();
+            if (throttle > 0 && throttle < this.config.incrementStep) {
+                this.motor.FullStop();
             }
 
-            this.Motor.Throttle = throttle;
+            this.motor.Throttle = throttle;
         }
 
         /// <inheritdoc />

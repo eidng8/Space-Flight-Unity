@@ -75,7 +75,7 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
 
             // Save current waypoint before setting a new one.
             GameObject wp = this._waypoint;
-            this.Pilot.Target = dummy.transform;
+            this.pilot.Target = dummy.transform;
             this._waypoint = dummy;
 
             // Destroy previous waypoint if there's one.

@@ -29,8 +29,8 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
     {
         /// <inheritdoc />
         public virtual float Throttle {
-            get => this.Motor.Throttle;
-            set => this.Motor.Throttle = value;
+            get => this.motor.Throttle;
+            set => this.motor.Throttle = value;
         }
 
         /// <inheritdoc />
@@ -52,14 +52,14 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
         /// </summary>
         protected virtual void ApplySpeed()
         {
-            float velocity = this.Motor.GetVelocity(Time.fixedDeltaTime);
+            float velocity = this.motor.GetVelocity(Time.fixedDeltaTime);
             this.Body.velocity = velocity * this.transform.forward;
         }
 
         /// <summary>Actually makes the turn.</summary>
         protected virtual void ApplyTurn()
         {
-            this.transform.rotation = this.Motor.GetRoll(Time.fixedDeltaTime);
+            this.transform.rotation = this.motor.GetRoll(Time.fixedDeltaTime);
         }
 
         protected override void FixedUpdate()

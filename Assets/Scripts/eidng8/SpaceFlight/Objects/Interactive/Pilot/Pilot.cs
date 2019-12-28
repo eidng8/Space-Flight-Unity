@@ -22,11 +22,11 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot
         private bool _listeningEvents;
         private Transform _target;
 
-        protected IFlightController TargetControl;
+        protected IFlightController targetControl;
 
-        protected TConfig Config;
+        protected TConfig config;
 
-        protected TMotor Motor;
+        protected TMotor motor;
 
         /// <inheritdoc />
         public bool HasTarget { get; private set; }
@@ -39,7 +39,7 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot
                 bool hasTarget = null != value;
                 this.HasTarget = hasTarget;
                 if (hasTarget) {
-                    this.TargetControl =
+                    this.targetControl =
                         this._target.GetComponent<IFlightController>();
                 }
             }
@@ -54,16 +54,16 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot
         }
 
         /// <inheritdoc />
-        public void Configure(IPilotConfig config)
+        public void Configure(IPilotConfig cfg)
         {
-            this.Config = (TConfig)config;
+            this.config = (TConfig)cfg;
         }
 
         /// <inheritdoc />
         public abstract void FixedUpdate();
 
-        public void TakeControlOfMotor(IMotorBase motor) =>
-            this.Motor = (TMotor)motor;
+        public void TakeControlOfMotor(IMotorBase mtr) =>
+            this.motor = (TMotor)mtr;
 
         /// <summary>
         /// The objected selected event handler. Sets <c>Target</c> to the

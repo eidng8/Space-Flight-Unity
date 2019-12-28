@@ -25,14 +25,14 @@ namespace eidng8.SpaceFlight.Objects.Dynamic.Motors
         /// <inheritdoc />
         /// <remarks>Newton's 2nd law: <c>F=ma</c>.</remarks>
         public override float Acceleration =>
-            this.GenerateThrust() / this.Config.mass;
+            this.GenerateThrust() / this.config.mass;
 
         /// <inheritdoc />
         /// <remarks>This is the force.</remarks>
         public override float GenerateThrust() =>
             (this.Throttle > 0
-                ? this.Config.maxForward
-                : this.Config.maxBackward)
+                ? this.config.maxForward
+                : this.config.maxBackward)
             * this.Throttle;
 
         /// <inheritdoc />

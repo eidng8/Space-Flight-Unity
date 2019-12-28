@@ -27,7 +27,7 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot.Ai
         /// <inheritdoc />
         public override void Awake()
         {
-            if (this.Config.playerShip) { base.Awake(); }
+            if (this.config.playerShip) { base.Awake(); }
         }
 
         /// <inheritdoc />
@@ -40,18 +40,18 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot.Ai
             // If we start accelerating while facing away from the target,
             // we'll make a bit of roundabout. So we don't do this.
             if (!this.Control.IsFacing(this.Target.position)) {
-                this.Motor.FullStop();
+                this.motor.FullStop();
                 return;
             }
 
             // We've arrived at a distance that needs to slow down.
             if (this.ShouldBrake()) {
-                this.Motor.FullReverse();
+                this.motor.FullReverse();
                 return;
             }
 
             // Always use full throttle.
-            this.Motor.FullForward();
+            this.motor.FullForward();
         }
 
         /// <summary>
@@ -65,9 +65,9 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot.Ai
             }
 
             float v;
-            if (this.TargetControl != null) {
+            if (this.targetControl != null) {
                 v = Vector3.Project(
-                               this.TargetControl.Velocity,
+                               this.targetControl.Velocity,
                                this.Control.Velocity
                            )
                            .sqrMagnitude;
@@ -77,7 +77,7 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot.Ai
             }
 
             v = this.Control.Speed;
-            float a = this.Motor.GetConfig().maxDeceleration;
+            float a = this.motor.GetConfig().maxDeceleration;
 
             // We calculate how much time is needed for the speed to reach `v`
             // with acceleration `a`. From deceleration point of view, this
@@ -86,7 +86,7 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot.Ai
 
             // Remember to take safe distance into account.
             float d = this.Control.DistanceTo(this.Target.position)
-                      - this.Config.safeDistance;
+                      - this.config.safeDistance;
 
             // Why:
             // => vt=D
@@ -123,7 +123,7 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot.Ai
 
             Vector3 dir =
                 this.Target.position - this.Control.transform.position;
-            this.Motor.TurnTo(dir);
+            this.motor.TurnTo(dir);
         }
     }
 }

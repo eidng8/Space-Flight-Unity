@@ -35,33 +35,33 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
         public TPilotConfig pilotConfig;
 
         /// <summary>Reference to a IMotor concrete class.</summary>
-        protected TMotor Motor;
+        protected TMotor motor;
 
-        protected TPilot Pilot;
+        protected TPilot pilot;
 
         protected virtual void Awake()
         {
-            this.Motor = new TMotor();
+            this.motor = new TMotor();
             this.ConfigureMotor();
-            this.Pilot = new TPilot();
+            this.pilot = new TPilot();
             this.ConfigurePilot();
         }
 
         protected virtual void ConfigureMotor()
         {
-            this.Motor.Configure(this.motorConfig);
+            this.motor.Configure(this.motorConfig);
         }
 
         protected virtual void ConfigurePilot()
         {
-            this.Pilot.Configure(this.pilotConfig);
-            this.Pilot.TakeControlOfMotor(this.Motor);
-            this.Pilot.Awake();
+            this.pilot.Configure(this.pilotConfig);
+            this.pilot.TakeControlOfMotor(this.motor);
+            this.pilot.Awake();
         }
 
         protected virtual void FixedUpdate()
         {
-            this.Pilot.FixedUpdate();
+            this.pilot.FixedUpdate();
         }
 
         /// <inheritdoc />
@@ -152,7 +152,7 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
         public virtual float EstimatedArrival(float distance)
         {
             float v = this.Speed;
-            float a = this.Motor.Acceleration;
+            float a = this.motor.Acceleration;
 
             //                         __________
             // We first calculate the √ 4ad + v²  part.

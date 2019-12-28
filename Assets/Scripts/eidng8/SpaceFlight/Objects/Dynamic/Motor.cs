@@ -12,14 +12,14 @@ namespace eidng8.SpaceFlight.Objects.Dynamic
     /// <inheritdoc />
     public abstract class Motor<TC> : IMotor where TC : IMotorConfig
     {
-        protected TC Config;
+        protected TC config;
 
         /// <inheritdoc />
         public abstract float Acceleration { get; }
 
         /// <inheritdoc />
-        public virtual void Configure(IMotorConfig config) =>
-            this.Config = (TC)config;
+        public virtual void Configure(IMotorConfig cfg) =>
+            this.config = (TC)cfg;
 
         /// <inheritdoc />
         public abstract void FullReverse();
@@ -36,6 +36,6 @@ namespace eidng8.SpaceFlight.Objects.Dynamic
         /// <inheritdoc />
         public abstract float GenerateTorque(float deltaTime);
 
-        public TC GetConfig() => this.Config;
+        public TC GetConfig() => this.config;
     }
 }

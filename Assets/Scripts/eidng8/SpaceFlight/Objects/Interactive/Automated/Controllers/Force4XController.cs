@@ -29,8 +29,8 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
     {
         /// <inheritdoc />
         public float Throttle {
-            get => this.Motor.Throttle;
-            set => this.Motor.Throttle = value;
+            get => this.motor.Throttle;
+            set => this.motor.Throttle = value;
         }
 
 
@@ -38,7 +38,7 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
         {
             base.FixedUpdate();
             this.Body.AddForce(
-                this.Motor.GenerateThrust() * this.transform.forward
+                this.motor.GenerateThrust() * this.transform.forward
             );
         }
     }

@@ -20,13 +20,13 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
         protected override void Awake()
         {
             base.Awake();
-            this.Pilot.Control = this;
+            this.pilot.Control = this;
         }
 
         /// <inheritdoc />
         public void SetTarget(Transform target)
         {
-            this.Pilot.Target = target;
+            this.pilot.Target = target;
         }
     }
 }
