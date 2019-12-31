@@ -4,7 +4,7 @@
 
 start
 
-: ShipFactory.Builder.Make ( )|
+: ShipFactory.Fab.Make ( )|
 
 partition Ship {
     : Create one of the concrete classes of IThruster]

@@ -10,11 +10,11 @@
 using eidng8.SpaceFlight.Configurable;
 
 
-namespace eidng8.SpaceFlight.Factories
+namespace eidng8.SpaceFlight.Factories.Ship
 {
     public sealed class ShipFactory
     {
-        public static readonly ShipFactory Builder = new ShipFactory();
+        public static readonly ShipFactory Fab = new ShipFactory();
 
         private ShipFactory() { }
 
