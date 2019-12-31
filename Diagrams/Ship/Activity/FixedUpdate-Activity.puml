@@ -1,0 +1,18 @@
+@startuml
+!include ../../colors.puml
+
+
+start
+
+: Unity.FixedUpdate( )|
+
+partition Ship {
+    : Ship.FixedUpdate( )|
+    fork
+        : INavigator.FixedUpdate( )|
+    end fork
+}
+
+
+end
+@enduml

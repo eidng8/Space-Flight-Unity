@@ -8,6 +8,7 @@
 // ---------------------------------------------------------------------------
 
 using eidng8.SpaceFlight.Events;
+using eidng8.SpaceFlight.Managers;
 using eidng8.SpaceFlight.Objects.Dynamic;
 using eidng8.SpaceFlight.Objects.Interactive.Automated;
 using UnityEngine;
@@ -77,7 +78,7 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot
         /// <summary>Register listeners to game events.</summary>
         protected virtual void RegisterEvents()
         {
-            EventManager.Mgr.OnUserEvent(
+            EventManager.Em.OnUserEvent(
                 UserEvents.Select,
                 this.OnSelectTarget
             );

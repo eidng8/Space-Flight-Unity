@@ -1,0 +1,34 @@
+@startuml
+!include ../../colors.puml
+
+set namespaceSeparator .
+
+class RigidBody
+class MonoBehaviour
+
+abstract class SpaceObject {
+    + Body : RigidBody
+}
+
+SpaceObject "1" o-- RigidBody
+SpaceObject -left-|> MonoBehaviour
+
+interface IShip {
+    {readonly} Speed : float
+    {readonly} Velocity : Vector3
+}
+
+abstract class Ship {
+    ..Unity..
+    # FixedUpdate() : void
+}
+
+Ship --|> IShip
+Ship --|> SpaceObject
+
+IThruster --* "1" Ship
+
+INavigator --o "1" Ship
+
+
+@enduml

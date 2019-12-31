@@ -1,0 +1,19 @@
+@startuml
+!include ../../colors.puml
+
+
+start
+
+: ShipFactory.Builder.Make ( )|
+
+partition Ship {
+    : Create one of the concrete classes of IThruster]
+    : Configure the thruster]
+    : Mount the thruster to Ship by calling MountTo( )]
+    : Create one of the concrete classes of IPilot]
+    : Configure the pilot]
+    : Man the pilot by calling Man( )]
+}
+
+end
+@enduml

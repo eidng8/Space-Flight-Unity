@@ -1,0 +1,38 @@
+skinparam backgroundColor #3c3f41
+skinparam shadowing false
+
+skinparam Activity {
+    BackgroundColor #505050
+    BorderColor #303030
+    FontColor #aaa
+}
+
+skinparam Arrow{
+    Color #999
+    FontColor #999
+}
+
+skinparam Class {
+    AttributeFontColor #999
+    BackgroundColor #505050
+    BorderColor #303030
+    FontColor #aaa
+}
+
+skinparam Note {
+    BackgroundColor #505050
+    BorderColor #303030
+    FontColor #aaa
+}
+
+skinparam Package{
+    BackgroundColor #404040
+    BorderColor #303030
+    FontColor #aaa
+}
+
+skinparam Partition {
+    BackgroundColor #404040
+    BorderColor #303030
+    FontColor #aaa
+}
