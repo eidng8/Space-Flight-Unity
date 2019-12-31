@@ -1,19 +1,43 @@
 @startuml
-!include ../../colors.puml
+!include ../../styles.puml
 
 
 start
 
-: ShipFactory.Fab.Make ( )|
+-> ShipConfig;
+: ShipFactory.Make()|
+-> ship;
 
 partition Ship {
-    : Create one of the concrete classes of IThruster]
-    : Configure the thruster]
-    : Mount the thruster to Ship by calling MountTo( )]
-    : Create one of the concrete classes of IPilot]
-    : Configure the pilot]
-    : Man the pilot by calling Man( )]
+    fork
+        -> HullConfig;
+        : HullFactory.Make()|
+        -> hull:IHull;
+        : ship.Fit()|
+    fork again
+        -> ThrusterConfig;
+        : ThrusterFactory.Make()|
+        -> thruster;
+        fork
+            -> ship.RigidBody;
+            : thruster.MountTo()|
+        fork again
+            -> thruster;
+            : NavigatorFactory.Make()|
+            -> thruster:IThruster;
+            : Navigator.Man()|
+        end fork
+    fork again
+        -> components;
+        repeat
+        -> ComponentConfig;
+        : ComponentFactory.Make()|
+        -> component:IComponent;
+        : ship.Mount()|
+        repeat while (more component?) is (yes)
+    end fork
 }
 
+-> ship;
 end
 @enduml

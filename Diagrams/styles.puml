@@ -1,13 +1,20 @@
 skinparam backgroundColor #3c3f41
+skinparam defaultFontName Consolas
+skinparam defaultFontSize 12
 skinparam shadowing false
 
 skinparam Activity {
     BackgroundColor #505050
     BorderColor #303030
     FontColor #aaa
+    Diamond {
+        BackgroundColor #505050
+        FontColor #aaa
+        BorderColor #303030
+    }
 }
 
-skinparam Arrow{
+skinparam Arrow {
     Color #999
     FontColor #999
 }
