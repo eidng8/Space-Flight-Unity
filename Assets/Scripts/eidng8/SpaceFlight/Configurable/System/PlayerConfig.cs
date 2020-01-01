@@ -8,21 +8,19 @@
 // ---------------------------------------------------------------------------
 
 using System;
+using eidng8.SpaceFlight.Configurable.Ship;
 using UnityEngine;
 
 
-namespace eidng8.SpaceFlight.Configurable
+namespace eidng8.SpaceFlight.Configurable.System
 {
     [Serializable,
      CreateAssetMenu(
          fileName = "Player Config",
          menuName = "Configurable/Player"
      )]
-    public class PlayerConfig : ScriptableObject
+    public class PlayerConfig : Configurable
     {
-        [Tooltip("Player name")]
-        public string id = "Player";
-
         [Tooltip("Current ship")]
         public ShipConfig ship;
     }

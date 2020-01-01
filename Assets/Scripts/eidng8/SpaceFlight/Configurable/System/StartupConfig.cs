@@ -11,7 +11,7 @@ using System;
 using UnityEngine;
 
 
-namespace eidng8.SpaceFlight.Configurable
+namespace eidng8.SpaceFlight.Configurable.System
 {
     [Serializable,
      CreateAssetMenu(

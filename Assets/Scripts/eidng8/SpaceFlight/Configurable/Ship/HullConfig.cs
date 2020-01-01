@@ -8,15 +8,27 @@
 // ---------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace eidng8.SpaceFlight.Configurable
+namespace eidng8.SpaceFlight.Configurable.Ship
 {
     [Serializable,
      CreateAssetMenu(
          fileName = "Hull Config",
          menuName = "Configurable/Ship/Hull"
      )]
-    public class HullConfig : ScriptableObject { }
+    public class HullConfig : ShipComponentConfig
+    {
+        public float armor;
+
+        /// <inheritdoc />
+        public override Dictionary<string, float> Dict()
+        {
+            Dictionary<string, float> dict = base.Dict();
+            dict["armor"] = this.armor;
+            return dict;
+        }
+    }
 }

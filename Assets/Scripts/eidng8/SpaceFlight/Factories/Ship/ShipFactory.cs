@@ -7,7 +7,7 @@
 // </summary>
 // ---------------------------------------------------------------------------
 
-using eidng8.SpaceFlight.Configurable;
+using eidng8.SpaceFlight.Configurable.Ship;
 
 
 namespace eidng8.SpaceFlight.Factories.Ship

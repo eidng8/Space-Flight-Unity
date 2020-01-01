@@ -1,0 +1,30 @@
+﻿@startuml
+
+start
+
+-> IConfigurable;
+
+partition "Factory" {
+    : Make()|
+    -> ship configuration
+    (cfg : IConfigurable);
+}
+
+partition Ship {
+    : new Ship()|
+    -> cfg.components;
+    repeat
+        -> ship attributes;
+        repeat
+            if (is it size?) then (no)
+                if (component has the attribute?) then (yes)
+                    : ship attribute += component attribute]
+                endif
+            endif
+        repeat while (more ship attribute?) is (yes)
+    repeat while (more component?) is (yes)
+}
+
+end
+
+@enduml

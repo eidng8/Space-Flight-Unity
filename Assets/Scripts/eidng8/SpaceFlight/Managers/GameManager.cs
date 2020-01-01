@@ -9,6 +9,8 @@
 
 using System.IO;
 using eidng8.SpaceFlight.Configurable;
+using eidng8.SpaceFlight.Configurable.Ship;
+using eidng8.SpaceFlight.Configurable.System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
