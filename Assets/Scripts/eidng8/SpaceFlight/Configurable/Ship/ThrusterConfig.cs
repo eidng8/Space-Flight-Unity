@@ -21,10 +21,39 @@ namespace eidng8.SpaceFlight.Configurable.Ship
      )]
     public class ThrusterConfig : ComponentConfig, IConfigurable
     {
+        /// <summary>
+        /// Maximum forward movement momentum.
+        /// </summary>
+        [Header("Thruster Attributes"),
+         Tooltip("Maximum forward movement momentum.")]
         public float maxForward;
+
+        /// <summary>
+        /// Maximum backward movement momentum.
+        /// </summary>
+        [Tooltip("Maximum backward movement momentum.")]
         public float maxReverse;
+
+        /// <summary>
+        /// Maximum side-way movement momentum.
+        /// </summary>
+        [Tooltip("Maximum side-way movement momentum.")]
         public float maxPan;
+
+        /// <summary>
+        /// Maximum angular momentum.
+        /// </summary>
+        [Tooltip("Maximum angular momentum.")]
         public float maxTorque;
+
+        /// <summary>
+        /// Energy consumption per use, applicable if the thruster is not
+        /// constantly active. Such as afterburner.
+        /// </summary>
+        [Tooltip(
+            "Energy consumption per use, applicable if the thruster is not "
+            + "constantly active. Such as afterburner."
+        )]
         public float energy;
 
         /// <inheritdoc />

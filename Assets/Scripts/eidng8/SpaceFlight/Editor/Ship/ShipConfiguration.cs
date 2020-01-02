@@ -29,24 +29,29 @@ namespace eidng8.SpaceFlight.Editor.Ship
             EditorGUILayout.LabelField("Summary", EditorStyles.boldLabel);
 
             ShipConfig cfg = (ShipConfig)this.serializedObject.targetObject;
-            cfg.Aggregate()
-               .ToList()
-               .ForEach(
-                   attr => {
-                       EditorGUILayout.BeginHorizontal();
-                       string label =
-                           ObjectNames.NicifyVariableName(attr.Key);
-                       EditorGUILayout.LabelField(
-                           $"{label}:",
-                           this.LabelStyle
-                       );
-                       EditorGUILayout.LabelField($"{attr.Value}");
-                       EditorGUILayout.EndHorizontal();
-                   }
-               );
+            Dictionary<string, float> dict = cfg.Aggregate();
+            dict.ToList()
+                .ForEach(
+                    attr => {
+                        EditorGUILayout.BeginHorizontal();
+                        string label =
+                            ObjectNames.NicifyVariableName(attr.Key);
+                        EditorGUILayout.LabelField(
+                            $"{label}:",
+                            this.LabelStyle
+                        );
+                        EditorGUILayout.LabelField($"{attr.Value}");
+                        EditorGUILayout.EndHorizontal();
+                    }
+                );
 
             foreach (string error in cfg.Validate()) {
                 EditorGUILayout.LabelField(error, this.Warning);
+            }
+
+            if (dict.TryGetValue("capacitor", out float cap) && cap > 0) {
+                float eps = Mathf.Min(dict["power"], cap);
+                // float sec = 
             }
         }
     }

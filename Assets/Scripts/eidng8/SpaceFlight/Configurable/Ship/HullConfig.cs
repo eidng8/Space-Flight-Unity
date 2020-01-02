@@ -24,6 +24,8 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         /// <summary>
         /// The ship explode when armor drops to 0.
         /// </summary>
+        [Header("Hull Attributes"),
+         Tooltip("The ship explode when armor drops to 0.")]
         public float armor;
 
         /// <inheritdoc />

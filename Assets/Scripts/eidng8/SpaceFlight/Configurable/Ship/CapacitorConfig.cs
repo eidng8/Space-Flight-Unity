@@ -21,12 +21,17 @@ namespace eidng8.SpaceFlight.Configurable.Ship
      )]
     public class CapacitorConfig : ComponentConfig
     {
-        public float capacitor;
+        /// <summary>
+        /// Maximum energy it can store.
+        /// </summary>
+        [Header("Capacitor Attributes"),
+         Tooltip("Maximum energy it can store.")]
+        public float capacity;
 
         /// <inheritdoc />
         public override Dictionary<string, float> Dict() {
             Dictionary<string, float> dict = base.Dict();
-            dict["capacitor"] = this.capacitor;
+            dict["capacitor"] = this.capacity;
             return dict;
         }
 
@@ -34,14 +39,14 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         public override string[] Validate() {
             List<string> errors = new List<string>();
 
-            if (this.capacitor <= float.Epsilon) {
+            if (this.capacity <= float.Epsilon) {
                 errors.Add("Capacitor must be greater than zero!");
-                this.capacitor = -this.capacitor;
+                this.capacity = -this.capacity;
             }
 
-            if (this.power <= float.Epsilon) {
-                errors.Add("Power must be greater than zero!");
-                this.capacitor = -this.power;
+            if (this.power > 0) {
+                errors.Add("Power must be negative!");
+                this.power = -this.power;
             }
 
             return errors.ToArray();

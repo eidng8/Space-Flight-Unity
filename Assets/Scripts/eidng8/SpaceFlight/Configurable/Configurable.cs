@@ -40,10 +40,23 @@ namespace eidng8.SpaceFlight.Configurable
             foreach (Dictionary<string, float> item in items) {
                 item.ToList()
                     .ForEach(
-                        attr => dict[attr.Key] =
-                            dict.TryGetValue(attr.Key, out float v)
-                                ? v + attr.Value
-                                : attr.Value
+                        attr => {
+                            // energy is per use basis, we just need the
+                            // total energy capacity here.
+                            if ("energy" == attr.Key) {
+                                if (attr.Value > 0) {
+                                    dict[attr.Key] =
+                                        dict.TryGetValue(attr.Key, out float v)
+                                            ? v + attr.Value
+                                            : attr.Value;
+                                }
+                            } else {
+                                dict[attr.Key] =
+                                    dict.TryGetValue(attr.Key, out float v)
+                                        ? v + attr.Value
+                                        : attr.Value;
+                            }
+                        }
                     );
             }
 

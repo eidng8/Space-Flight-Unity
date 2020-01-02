@@ -24,6 +24,8 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         /// <summary>
         /// Extra hit points on top of armor.
         /// </summary>
+        [Header("Shield Generator Attributes"),
+         Tooltip("Extra hit points on top of armor.")]
         public float shield;
 
         /// <inheritdoc />
