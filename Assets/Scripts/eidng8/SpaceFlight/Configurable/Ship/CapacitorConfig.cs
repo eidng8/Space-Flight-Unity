@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-// <copyright file="HullConfig.cs" company="eidng8">
+// <copyright file="CapacitorConfig.cs" company="eidng8">
 //      GPLv3
 // </copyright>
 // <summary>
@@ -16,20 +16,17 @@ namespace eidng8.SpaceFlight.Configurable.Ship
 {
     [Serializable,
      CreateAssetMenu(
-         fileName = "Hull Config",
-         menuName = "Configurable/Ship/Hull"
+         fileName = "Capacitor Config",
+         menuName = "Configurable/Ship/Capacitor"
      )]
-    public class HullConfig : ComponentConfig
+    public class CapacitorConfig : ComponentConfig
     {
-        /// <summary>
-        /// The ship explode when armor drops to 0.
-        /// </summary>
-        public float armor;
+        public float capacitor;
 
         /// <inheritdoc />
         public override Dictionary<string, float> Dict() {
             Dictionary<string, float> dict = base.Dict();
-            dict["armor"] = this.armor;
+            dict["capacitor"] = this.capacitor;
             return dict;
         }
 
@@ -37,14 +34,14 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         public override string[] Validate() {
             List<string> errors = new List<string>();
 
-            if (this.armor <= float.Epsilon) {
-                errors.Add("Armor must be greater than zero.");
-                this.armor = -this.armor;
+            if (this.capacitor <= float.Epsilon) {
+                errors.Add("Capacitor must be greater than zero!");
+                this.capacitor = -this.capacitor;
             }
 
-            if (this.size <= float.Epsilon) {
-                errors.Add("Size must be greater than zero.");
-                this.size = -this.size;
+            if (this.power <= float.Epsilon) {
+                errors.Add("Power must be greater than zero!");
+                this.capacitor = -this.power;
             }
 
             return errors.ToArray();

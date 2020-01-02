@@ -8,6 +8,7 @@
 // ---------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -24,5 +25,23 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         /// Extra hit points on top of armor.
         /// </summary>
         public float shield;
+
+        /// <inheritdoc />
+        public override Dictionary<string, float> Dict() {
+            Dictionary<string, float> dict = base.Dict();
+            dict["shield"] = this.shield;
+            return dict;
+        }
+
+        /// <inheritdoc />
+        public override string[] Validate() {
+            List<string> errors = new List<string>();
+            if (this.shield <= float.Epsilon) {
+                errors.Add("Shield must be greater than zero!");
+                this.shield = -this.shield;
+            }
+
+            return errors.ToArray();
+        }
     }
 }

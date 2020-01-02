@@ -10,7 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9c859273fc9413893946edc217a3f73, type: 3}
-  m_Name: Small Ship 1
+  m_Name: Small Ship
   m_EditorClassIdentifier: 
-  hull: {fileID: 11400000, guid: f3475ee414080124f8dacd643c16e8ec, type: 2}
-  motor: {fileID: 11400000, guid: 36362f9c4118cd44f96fe493be4cb036, type: 2}
+  description: 
+  id: ss1
+  mass: 0
+  components:
+  - {fileID: 11400000, guid: f3475ee414080124f8dacd643c16e8ec, type: 2}
+  - {fileID: 11400000, guid: 2b540c085a013c64f830fd034a2ea2c2, type: 2}
+  - {fileID: 11400000, guid: 1bbe107a1687be5478c47aea9238d85e, type: 2}
+  - {fileID: 11400000, guid: 36362f9c4118cd44f96fe493be4cb036, type: 2}

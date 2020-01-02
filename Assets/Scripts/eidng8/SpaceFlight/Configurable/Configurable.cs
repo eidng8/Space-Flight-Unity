@@ -16,16 +16,22 @@ namespace eidng8.SpaceFlight.Configurable
 {
     public abstract class Configurable : ScriptableObject, IConfigurable
     {
-        public string id;
-
+        [Header("Basic Attributes"), TextArea]
         public string description;
 
-        /// <inheritdoc />
-        public virtual Dictionary<string, float> Dict() =>
-            new Dictionary<string, float>();
+        public string id;
+
+        public float mass;
 
         /// <inheritdoc />
         public virtual Dictionary<string, float> Aggregate() => this.Dict();
+
+        /// <inheritdoc />
+        public virtual Dictionary<string, float> Dict() =>
+            new Dictionary<string, float> {{"mass", this.mass}};
+
+        /// <inheritdoc />
+        public virtual string[] Validate() => new string[0];
 
         protected virtual Dictionary<string, float> Aggregate(
             IEnumerable<Dictionary<string, float>> items
@@ -42,6 +48,12 @@ namespace eidng8.SpaceFlight.Configurable
             }
 
             return dict;
+        }
+
+        protected virtual void OnValidate() {
+            foreach (string error in this.Validate()) {
+                Debug.LogWarning($"{this.name}: {error}");
+            }
         }
     }
 }

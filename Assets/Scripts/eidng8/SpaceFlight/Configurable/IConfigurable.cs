@@ -22,5 +22,11 @@ namespace eidng8.SpaceFlight.Configurable
         Dictionary<string, float> Dict();
 
         Dictionary<string, float> Aggregate();
+
+        /// <summary>
+        /// Validate the configuration and returns all errors found.
+        /// </summary>
+        /// <returns></returns>
+        string[] Validate();
     }
 }
