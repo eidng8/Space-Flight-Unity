@@ -1,0 +1,59 @@
+﻿@startuml
+!include ../../IConfigurable.puml
+
+abstract class ComponentConfig {
+    + size : float
+    + power : float
+}
+ComponentConfig --|> Configurable
+
+note as ComponentNotes
+ComponentConfig attributes are arbitrary:
+
+Non-float attributes, such as `id` & `description`,
+are excluded from `Dict()` output.
+
+Some attributes such as `size` may have
+negative attributes. Positive values of such
+attributes denote generation, while negative values
+denote consumption.
+
+Supported attributes, including defined in
+`ComponentConfig`, may contain:
+size: available space for component installation,
+      or (negative) used by specific component;
+power: power generation or (negative) consumption;
+energy: energy consumption per use, negative only;
+armor: drop to zero and you're dead;
+shield: the layer added on top of armor;
+capacitor: maximum amount of stored energy;
+end note
+
+
+class ThrusterConfig {
+    + maxForward
+    + maxReverse
+    + maxPan
+    + maxTorque
+}
+ThrusterConfig --|> ComponentConfig
+
+
+class HullConfig {
+    + armor : float
+}
+HullConfig --|> ComponentConfig
+
+
+class ShieldConfig {
+    + shield : float
+}
+ShieldConfig --|> ComponentConfig
+
+
+class CapacitorConfig {
+    + capacitor : float
+}
+CapacitorConfig --|> ComponentConfig
+
+@enduml

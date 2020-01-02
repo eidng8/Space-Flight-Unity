@@ -23,10 +23,10 @@ namespace eidng8.SpaceFlight.Configurable.Ship
      )]
     public class ShipConfig : Configurable
     {
-        public ShipComponentConfig[] components;
+        public ComponentConfig[] components;
 
         /// <inheritdoc />
-        public override Dictionary<string, float> Dict() =>
-            this.Aggregate(this.components.Select(c => c.Dict()));
+        public override Dictionary<string, float> Aggregate() =>
+            base.Aggregate(this.components.Select(c => c.Dict()));
     }
 }

@@ -1,0 +1,24 @@
+﻿﻿@startuml
+
+class MonoBehaviour
+
+abstract class SpaceObject {
+    # Body : RigidBody
+    + Configure(IConfigurable) : void
+}
+SpaceObject --|> MonoBehaviour
+
+
+abstract class IMovableObject {
+    {readonly} speed : float
+    {readonly} velocity : Vector3
+    {readonly} acceleration : float
+    {readonly} maxForward : float
+    {readonly} maxReverse : float
+    {readonly} maxPan : float
+    {readonly} maxTorque : float
+    
+    Move(Vector3, Vector3) : void
+}
+
+@enduml

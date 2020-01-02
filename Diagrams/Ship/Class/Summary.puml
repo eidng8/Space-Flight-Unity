@@ -1,0 +1,5 @@
+@startuml
+!include Navigator.puml
+!include Ship.puml
+!include Components.puml
+@enduml

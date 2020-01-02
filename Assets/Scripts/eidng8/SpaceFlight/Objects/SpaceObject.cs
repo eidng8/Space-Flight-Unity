@@ -7,6 +7,7 @@
 // </summary>
 // ---------------------------------------------------------------------------
 
+using eidng8.SpaceFlight.Configurable;
 using UnityEngine;
 
 
@@ -44,5 +45,11 @@ namespace eidng8.SpaceFlight.Objects
                 return this._body;
             }
         }
+
+        /// <summary>
+        /// Configures the instance.
+        /// </summary>
+        /// <param name="config"></param>
+        public abstract void Configure(IConfigurable config);
     }
 }

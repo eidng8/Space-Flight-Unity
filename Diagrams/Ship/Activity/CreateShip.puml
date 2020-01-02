@@ -1,4 +1,5 @@
 ﻿@startuml
+title Ship Creation Process
 
 start
 
@@ -13,16 +14,15 @@ partition "Factory" {
 partition Ship {
     : new Ship()|
     -> cfg.components;
+    : cfg.Aggregate(cfg.components)|
+    -> ship attributes;
     repeat
-        -> ship attributes;
-        repeat
-            if (is it size?) then (no)
-                if (component has the attribute?) then (yes)
-                    : ship attribute += component attribute]
-                endif
+        if (is it size?) then (no)
+            if (component has the attribute?) then (yes)
+                : ship attribute += component attribute]
             endif
-        repeat while (more ship attribute?) is (yes)
-    repeat while (more component?) is (yes)
+        endif
+    repeat while (more ship attribute?) is (yes)
 }
 
 end

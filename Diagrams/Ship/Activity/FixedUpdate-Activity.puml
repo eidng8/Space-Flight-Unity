@@ -1,15 +1,14 @@
 @startuml
-!include ../../styles.puml
-
+title Unity `FixedUpdate` Process
 
 start
 
-: Unity.FixedUpdate( )|
+: Unity.FixedUpdate()|
 
 partition Ship {
-    : Ship.FixedUpdate( )|
+    : Ship.FixedUpdate()|
     fork
-        : INavigator.FixedUpdate( )|
+        : INavigator.FixedUpdate()|
     end fork
 }
 

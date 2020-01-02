@@ -1,32 +1,25 @@
 @startuml
-!include ../../styles.puml
+!include ../../SpaceObject.puml
 
 set namespaceSeparator .
 
-class RigidBody
-class MonoBehaviour
 
-abstract class SpaceObject {
-    + Body : RigidBody
-}
-
-SpaceObject "1" o-- RigidBody
-SpaceObject -left-|> MonoBehaviour
-
-interface IShip {
-    {readonly} Speed : float
-    {readonly} Velocity : Vector3
-}
-
-abstract class Ship {
+class Ship {
+    + {readonly} armor : float
+    + {readonly} shield : float
+    + {readonly} power : float
+    + {readonly} energy : float
+    + {readonly} capacitor : float
+    
+    + Use(int) : void
     ..Unity..
     # FixedUpdate() : void
 }
 
-Ship --|> IShip
 Ship --|> SpaceObject
+Ship --|> IMovableObject
 
-IThruster --* "1" Ship
+Ship "1..*" *-- ComponentConfig
 
 INavigator --o "1" Ship
 

@@ -1,0 +1,14 @@
+﻿﻿@startuml
+
+interface IConfigurable {
+    Dict() : Dictionary<string, float>
+    Aggregate(IEnumerable<Dictionary<string, float>>) : Dictionary<string, float>
+}
+
+abstract class Configurable {
+    + id : string
+    + description : string
+}
+Configurable --|> IConfigurable
+
+@enduml

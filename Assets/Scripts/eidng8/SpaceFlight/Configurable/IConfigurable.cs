@@ -20,33 +20,7 @@ namespace eidng8.SpaceFlight.Configurable
         /// </summary>
         /// <returns></returns>
         Dictionary<string, float> Dict();
-    }
 
-
-    public static class ConfigurableExtension
-    {
-        /// <summary>
-        /// Aggregates all attributes from <c>items</c>.
-        /// </summary>
-        /// <param name="cfg"></param>
-        /// <param name="items"></param>
-        /// <returns>A dictionary containing all aggregated attributes</returns>
-        public static Dictionary<string, float> Aggregate(
-            this IConfigurable cfg,
-            IEnumerable<Dictionary<string, float>> items
-        ) {
-            Dictionary<string, float> dict = cfg.Dict();
-            foreach (Dictionary<string, float> item in items) {
-                item.ToList()
-                    .ForEach(
-                        attr => dict[attr.Key] =
-                            dict.TryGetValue(attr.Key, out float v)
-                                ? v + attr.Value
-                                : attr.Value
-                    );
-            }
-
-            return dict;
-        }
+        Dictionary<string, float> Aggregate();
     }
 }

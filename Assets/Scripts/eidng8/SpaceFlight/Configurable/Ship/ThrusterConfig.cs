@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-// <copyright file="MotorConfig.cs" company="eidng8">
+// <copyright file="ThrusterConfig.cs" company="eidng8">
 //      GPLv3
 // </copyright>
 // <summary>
@@ -16,10 +16,10 @@ namespace eidng8.SpaceFlight.Configurable.Ship
 {
     [Serializable,
      CreateAssetMenu(
-         fileName = "Motor Config",
-         menuName = "Configurable/Ship/Motor"
+         fileName = "Thruster Config",
+         menuName = "Configurable/Ship/Thruster"
      )]
-    public class MotorConfig : ShipComponentConfig, IConfigurable
+    public class ThrusterConfig : ComponentConfig, IConfigurable
     {
         public float maxForward;
         public float maxReverse;

@@ -1,5 +1,4 @@
 ﻿@startuml
-!include ../../styles.puml
 
 set namespaceSeparator .
 
@@ -7,17 +6,14 @@ set namespaceSeparator .
 interface INavigator {
     {readonly} HasTarget : bool
     Target : Transform
-    Configure(INavigatorConfig) : void
-    Man(IThruster) : void
-    ..Unity..
-    FixedUpdate() : void
+    + Man(IMovableObject, RigidBody) : void
+    + FixedUpdate() : void
 }
 
 abstract class Navigator {
 }
 
 Navigator --|> INavigator
-Navigator --> IThruster
 
 
 @enduml

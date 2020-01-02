@@ -19,8 +19,11 @@ namespace eidng8.SpaceFlight.Configurable.Ship
          fileName = "Hull Config",
          menuName = "Configurable/Ship/Hull"
      )]
-    public class HullConfig : ShipComponentConfig
+    public class HullConfig : ComponentConfig
     {
+        /// <summary>
+        /// The ship explode when armor drops to 0.
+        /// </summary>
         public float armor;
 
         /// <inheritdoc />

@@ -8,6 +8,7 @@
 // ---------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using eidng8.SpaceFlight.Configurable.Ship;
 using UnityEngine;
 
@@ -23,5 +24,8 @@ namespace eidng8.SpaceFlight.Configurable.System
     {
         [Tooltip("Current ship")]
         public ShipConfig ship;
+
+        /// <inheritdoc />
+        public override Dictionary<string, float> Aggregate() => throw new NotImplementedException();
     }
 }
