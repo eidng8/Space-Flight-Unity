@@ -18,10 +18,13 @@ namespace eidng8.SpaceFlight.Objects.Movable
     public class Ship : SpaceObject, IMovableObject
     {
         // ReSharper disable once MemberCanBePrivate.Global
+        protected float mArmor;
+
+        // ReSharper disable once MemberCanBePrivate.Global
         protected float mAcceleration;
 
         // ReSharper disable once MemberCanBePrivate.Global
-        protected float mArmor;
+        protected float mMaxArmor;
 
         // ReSharper disable once MemberCanBePrivate.Global
         protected float mCapacitor;
@@ -48,19 +51,44 @@ namespace eidng8.SpaceFlight.Objects.Movable
         protected float mPower;
 
         // ReSharper disable once MemberCanBePrivate.Global
-        protected float mShield;
+        protected float mMaxShield;
 
         // ReSharper disable once MemberCanBePrivate.Global
         protected float mSpeed;
 
+        // ReSharper disable once MemberCanBePrivate.Global
+        protected float mRechargeRate;
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        protected float mShield;
+
         /// <inheritdoc />
         public float Acceleration => this.mAcceleration;
 
+        /// <summary>
+        /// Current armor value.
+        /// </summary>
         public float Armor => this.mArmor;
 
+        /// <summary>
+        /// Maximum armor value.
+        /// </summary>
+        public float MaxArmor => this.mMaxArmor;
+
+        /// <summary>
+        /// Maximum energy value.
+        /// </summary>
         public float Capacitor => this.mCapacitor;
 
+        /// <summary>
+        /// Current energy value.
+        /// </summary>
         public float Energy => this.mEnergy;
+
+        /// <summary>
+        /// Ship's mass.
+        /// </summary>
+        public float Mass => this.Body.mass;
 
         /// <inheritdoc />
         public float MaxForward => this.mMaxForward;
@@ -74,8 +102,24 @@ namespace eidng8.SpaceFlight.Objects.Movable
         /// <inheritdoc />
         public float MaxTorque => this.mMaxTorque;
 
+        /// <summary>
+        /// Excessive power value.
+        /// </summary>
         public float Power => this.mPower;
 
+        /// <summary>
+        /// Energy recharge value per second.
+        /// </summary>
+        public float RechargeRate => this.mRechargeRate;
+
+        /// <summary>
+        /// Maximum shield value.
+        /// </summary>
+        public float MaxShield => this.mMaxShield;
+
+        /// <summary>
+        /// Current shield value.
+        /// </summary>
         public float Shield => this.mShield;
 
         /// <inheritdoc />
@@ -113,13 +157,17 @@ namespace eidng8.SpaceFlight.Objects.Movable
             }
 
             this.mArmor = 0;
+            this.mMaxArmor = 0;
             if (dict.TryGetValue("armor", out v)) {
                 this.mArmor = v;
+                this.mMaxArmor = v;
             }
 
             this.mShield = 0;
+            this.mMaxShield = 0;
             if (dict.TryGetValue("shield", out v)) {
                 this.mShield = v;
+                this.mMaxShield = v;
             }
 
             this.mPower = 0;
@@ -128,13 +176,14 @@ namespace eidng8.SpaceFlight.Objects.Movable
             }
 
             this.mEnergy = 0;
-            if (dict.TryGetValue("energy", out v)) {
-                this.mEnergy = v;
-            }
-
             this.mCapacitor = 0;
             if (dict.TryGetValue("capacitor", out v)) {
                 this.mCapacitor = v;
+            }
+
+            this.mRechargeRate = 0;
+            if (dict.TryGetValue("recharge", out v)) {
+                this.mRechargeRate = v;
             }
         }
 
@@ -148,7 +197,7 @@ namespace eidng8.SpaceFlight.Objects.Movable
             this.mLastSpeed = this.mSpeed;
             this.Body.AddForce(force);
             this.Body.AddTorque(torque);
-            this.mSpeed = this.Body.velocity.magnitude;
+            this.mSpeed = this.Velocity.magnitude;
             this.mAcceleration =
                 (this.mSpeed - this.mLastSpeed) / Time.fixedDeltaTime;
         }
