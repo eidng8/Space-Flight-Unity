@@ -19,11 +19,7 @@ namespace eidng8.SpaceFlight.Configurable
     public class Configurable : ScriptableObject, IConfigurable
     {
         [Header("Basic Attributes"),
-         TextArea,
-         Tooltip("Brief description of the component.")]
-        public string description;
-
-        [Tooltip("Mass of the component. Used by physics engine.")]
+         Tooltip("Mass of the component. Used by physics engine.")]
         public float mass;
 
         /// <inheritdoc />
@@ -31,6 +27,9 @@ namespace eidng8.SpaceFlight.Configurable
 
         /// <inheritdoc />
         public virtual string InfoBoxContent => "";
+
+        /// <inheritdoc />
+        public virtual string Description => "";
 
         /// <inheritdoc />
         public virtual Dictionary<string, float> Dict() =>

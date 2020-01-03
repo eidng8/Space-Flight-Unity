@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: Small Capacitor
   m_EditorClassIdentifier: 
   description: 
-  id: sc1
   mass: 0.2
   power: -1
-  size: 1
+  size: -1
   capacity: 10
   recharge: 0.5
