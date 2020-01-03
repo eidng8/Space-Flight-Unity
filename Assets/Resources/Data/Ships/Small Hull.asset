@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85690370d2f4a6fb63c084d77bd97cd, type: 3}
   m_Name: Small Hull
   m_EditorClassIdentifier: 
-  description: 
-  id: sh1
   mass: 5
   power: 0
   size: -3
