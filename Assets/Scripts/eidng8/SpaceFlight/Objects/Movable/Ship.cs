@@ -7,7 +7,6 @@
 // </summary>
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using eidng8.SpaceFlight.Configurable;
 using UnityEngine;
@@ -202,8 +201,6 @@ namespace eidng8.SpaceFlight.Objects.Movable
                 (this.mSpeed - this.mLastSpeed) / Time.fixedDeltaTime;
         }
 
-        private void FixedUpdate() {
-            throw new NotImplementedException();
-        }
+        private void FixedUpdate() { }
     }
 }

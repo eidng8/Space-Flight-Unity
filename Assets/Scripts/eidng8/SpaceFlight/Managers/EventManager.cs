@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using eidng8.SpaceFlight.Events;
 using UnityEngine;
 using UnityEngine.Events;
-using Object = UnityEngine.Object;
 
 
 namespace eidng8.SpaceFlight.Managers

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-namespace Samples.eidng8.SpaceFlight.ForceController
+namespace Startup
 {
     public class ShowInfo : MonoBehaviour
     {

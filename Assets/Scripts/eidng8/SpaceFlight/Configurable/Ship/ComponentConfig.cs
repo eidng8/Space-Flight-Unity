@@ -15,7 +15,7 @@ using UnityEngine;
 
 namespace eidng8.SpaceFlight.Configurable.Ship
 {
-    public abstract class ComponentConfig : Configurable
+    public abstract class ComponentConfig : ObjectConfigurable
     {
         /// <summary>
         /// Positive value denotes how much power the component generates;

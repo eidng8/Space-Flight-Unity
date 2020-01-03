@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using eidng8.SpaceFlight.Configurable.Ship;
 using UnityEngine;
 
@@ -29,6 +30,15 @@ namespace eidng8.SpaceFlight.Configurable.System
         public override string InfoBoxContent => "";
 
         /// <inheritdoc />
-        public override Dictionary<string, float> Aggregate() => throw new NotImplementedException();
+        public override Dictionary<string, float> Dict() => this.ship.Dict();
+
+        /// <inheritdoc />
+        public override string[] Validate() =>
+            new List<string> {this.ValidateShipConfig()}
+                .Where(e => e.Length > 0)
+                .ToArray();
+
+        protected virtual string ValidateShipConfig() =>
+            null == this.ship ? "Must select a ship!" : "";
     }
 }

@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using eidng8.SpaceFlight.Laws;
-using eidng8.SpaceFlight.Objects.Dynamic;
 using UnityEngine;
 
 
@@ -25,15 +24,25 @@ namespace eidng8.SpaceFlight.Configurable.Ship
          fileName = "Ship Config",
          menuName = "Configurable/Ship/Ship"
      )]
-    public class ShipConfig : Configurable
+    public class ShipConfig : ObjectConfigurable
     {
-        [Header("Ship Attributes")]
+        /// <summary>
+        /// Space available for component installation.
+        /// </summary>
+        [Header("Ship Attributes"),
+         Tooltip("Space available for component installation.")]
         public float size;
 
+        /// <summary>
+        /// Prefab used to render the ship.
+        /// </summary>
+        [Tooltip("Prefab used to render the ship.")]
         public Objects.Movable.Ship prefab;
 
-        public MeshFilter mesh;
-
+        /// <summary>
+        /// List of all installed components.
+        /// </summary>
+        [Tooltip("List of all installed components.")]
         public ComponentConfig[] components;
 
         /// <inheritdoc />
@@ -54,6 +63,7 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         public override string[] Validate() {
             List<string> errors = new List<string>() {
                 this.ValidatePositiveMass(),
+                this.ValidatePrefab(),
                 Maths.ValidatePositiveValue(
                     this.size,
                     "Size",
@@ -82,6 +92,9 @@ namespace eidng8.SpaceFlight.Configurable.Ship
 
             return this.ValidateComponents(errors);
         }
+
+        private string ValidatePrefab() =>
+            null == this.prefab ? "Prefab is not set." : "";
 
         private string[] ValidateComponents(List<string> errors) {
             bool sizeOccupant = false;

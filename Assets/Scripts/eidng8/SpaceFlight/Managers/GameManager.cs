@@ -8,74 +8,100 @@
 // ---------------------------------------------------------------------------
 
 using System.IO;
-using eidng8.SpaceFlight.Configurable;
 using eidng8.SpaceFlight.Configurable.Ship;
 using eidng8.SpaceFlight.Configurable.System;
+using eidng8.SpaceFlight.Factories.Ship;
+using eidng8.SpaceFlight.Objects.Movable;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
 namespace eidng8.SpaceFlight.Managers
 {
-    public sealed class GameManager
+    public static class GameManager
     {
-        public static readonly GameManager Gm = new GameManager();
-
-        private GameManager() { }
-
         [RuntimeInitializeOnLoadMethod(
             RuntimeInitializeLoadType.BeforeSplashScreen
         )]
-        public static void GlobalInit()
-        {
-            SceneManager.sceneLoaded += GameManager.Gm.SceneLoaded;
+        public static void GlobalInit() {
+            SceneManager.sceneLoaded += GameManager.SceneLoaded;
+            GameManager.SetupGameState();
         }
 
-        public void SceneLoaded(Scene scene, LoadSceneMode mode)
-        {
-            this.SetupScene();
+        private static StartupConfig StartupConfig =>
+            Resources.Load<StartupConfig>(
+                GameManager.DataFile("Startup Config")
+            );
+
+        /// <summary>
+        /// Fetches game state from persistent storage or network server.
+        /// Then perform setup accordingly.
+        /// </summary>
+        private static void SetupGameState() { }
+
+        /// <summary>
+        /// Handler to the <see cref="SceneManager.sceneLoaded"/> event.
+        /// </summary>
+        public static void SceneLoaded(Scene scene, LoadSceneMode mode) {
+            GameManager.SetupScene();
         }
 
-        // ReSharper disable once MemberCanBeMadeStatic.Global
-        // ReSharper disable once MemberCanBePrivate.Global
-        public string DataFile(string file) => Path.Combine("Data", file);
+        /// <summary>
+        /// Resource path to the given file.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public static string DataFile(string file) =>
+            Path.Combine("Data", file);
 
-        // ReSharper disable once MemberCanBeMadeStatic.Global
-        // ReSharper disable once MemberCanBePrivate.Global
-        public string PrefabFile(string file) => Path.Combine("Prefabs", file);
+        /// <summary>
+        /// Resource path to the give prefab file.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public static string PrefabFile(string file) =>
+            Path.Combine("Prefabs", file);
 
-        // ReSharper disable once MemberCanBeMadeStatic.Global
-        // ReSharper disable once MemberCanBePrivate.Global
-        public string SavedFile(string file) =>
+        /// <summary>
+        /// Path to the file in the persistent storage.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public static string SavedFile(string file) =>
             Path.Combine(Application.persistentDataPath, "Player");
 
-        private void SetupScene()
-        {
-            string file = this.DataFile("Startup Config");
-            StartupConfig config = Resources.Load<StartupConfig>(file);
+        /// <summary>
+        /// Sets up the scene before sending player in.
+        /// </summary>
+        private static void SetupScene() {
+            PlayerConfig player = GameManager.LoadPlayer();
+            GameManager.CreatePlayer(player);
+        }
 
-            PlayerConfig player = this.LoadPlayer();
-            if (null == player) {
-                player = config.player;
-                Debug.Log("using default player config.");
+        private static PlayerConfig LoadPlayer() {
+            string file = GameManager.SavedFile("Player");
+            PlayerConfig player = Resources.Load<PlayerConfig>(file);
+            if (null != player) {
+                return player;
             }
 
-            this.CreatePlayer(player);
+            Debug.Log("using default player config.");
+            return GameManager.StartupConfig.player;
         }
 
-        private PlayerConfig LoadPlayer() =>
-            Resources.Load<PlayerConfig>(this.SavedFile("Player"));
-
-        private void CreatePlayer(PlayerConfig config)
-        {
-            this.CreateShip(config.ship);
+        private static void CreatePlayer(PlayerConfig config) {
+            GameManager.CreateShip(config.ship);
         }
 
-        private void CreateShip(ShipConfig config, bool isPlayer = false)
-        {
+        private static void CreateShip(
+            ShipConfig config,
+            bool isPlayer = false
+        ) {
             Debug.Log($"create ship, isPlayer={isPlayer}");
-            Debug.Log(config);
-            // var hull = Resources.Load(config.hull);
+            Ship ship = ShipFactory.Make(config);
+            if (isPlayer) {
+                ship.tag = "Player";
+            }
         }
     }
 }
