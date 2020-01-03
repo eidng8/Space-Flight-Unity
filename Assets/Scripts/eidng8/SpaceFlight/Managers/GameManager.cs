@@ -38,8 +38,11 @@ namespace eidng8.SpaceFlight.Managers
 
         // ReSharper disable once MemberCanBeMadeStatic.Global
         // ReSharper disable once MemberCanBePrivate.Global
-        public string DataFile(string file) =>
-            Path.Combine("Data", "Startup Config");
+        public string DataFile(string file) => Path.Combine("Data", file);
+
+        // ReSharper disable once MemberCanBeMadeStatic.Global
+        // ReSharper disable once MemberCanBePrivate.Global
+        public string PrefabFile(string file) => Path.Combine("Prefabs", file);
 
         // ReSharper disable once MemberCanBeMadeStatic.Global
         // ReSharper disable once MemberCanBePrivate.Global

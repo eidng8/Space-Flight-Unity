@@ -30,6 +30,10 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         [Header("Ship Attributes")]
         public float size;
 
+        public Objects.Movable.Ship prefab;
+
+        public MeshFilter mesh;
+
         public ComponentConfig[] components;
 
         /// <inheritdoc />
