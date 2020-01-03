@@ -16,5 +16,5 @@ MonoBehaviour:
   id: sh1
   mass: 5
   power: 0
-  size: 10
+  size: -3
   armor: 10

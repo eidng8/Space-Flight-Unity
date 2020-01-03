@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-// <copyright file="HullConfiguration.cs" company="eidng8">
+// <copyright file="PowerGeneratorInspector.cs" company="eidng8">
 //      GPLv3
 // </copyright>
 // <summary>
@@ -13,6 +13,6 @@ using UnityEditor;
 
 namespace eidng8.SpaceFlight.Editor.Ship
 {
-    [CustomEditor(typeof(HullConfig))]
-    public class HullConfiguration : EditorBase { }
+    [CustomEditor(typeof(PowerGenerator))]
+    public class PowerGeneratorInspector : ConfigurationInspector { }
 }

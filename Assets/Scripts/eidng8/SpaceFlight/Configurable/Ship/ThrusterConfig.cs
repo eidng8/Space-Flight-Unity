@@ -9,17 +9,22 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using eidng8.SpaceFlight.Laws;
 using UnityEngine;
 
 
 namespace eidng8.SpaceFlight.Configurable.Ship
 {
+    /// <summary>
+    /// Thrusters are what drive ships around.
+    /// </summary>
     [Serializable,
      CreateAssetMenu(
          fileName = "Thruster Config",
          menuName = "Configurable/Ship/Thruster"
      )]
-    public class ThrusterConfig : ComponentConfig, IConfigurable
+    public class ThrusterConfig : ComponentConfig
     {
         /// <summary>
         /// Maximum forward movement momentum.
@@ -46,15 +51,9 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         [Tooltip("Maximum angular momentum.")]
         public float maxTorque;
 
-        /// <summary>
-        /// Energy consumption per use, applicable if the thruster is not
-        /// constantly active. Such as afterburner.
-        /// </summary>
-        [Tooltip(
-            "Energy consumption per use, applicable if the thruster is not "
-            + "constantly active. Such as afterburner."
-        )]
-        public float energy;
+        /// <inheritdoc />
+        public override string InfoBoxContent =>
+            "Thrusters are what drive ships around.";
 
         /// <inheritdoc />
         public override Dictionary<string, float> Dict() {
@@ -63,51 +62,83 @@ namespace eidng8.SpaceFlight.Configurable.Ship
             dict["maxReverse"] = this.maxReverse;
             dict["maxPan"] = this.maxPan;
             dict["maxTorque"] = this.maxTorque;
-            dict["energy"] = this.energy;
             return dict;
         }
 
         /// <inheritdoc />
-        public override string[] Validate() {
-            List<string> errors = new List<string>();
+        public override string[] Validate() =>
+            new List<string>(base.Validate()) {
+                    this.ValidatePositiveMaxForward(),
+                    this.ValidatePositiveMaxReverse(),
+                    this.ValidatePositiveMaxPan(),
+                    this.ValidatePositiveMaxTorque(),
+                }
+                .Where(e => e.Length > 0)
+                .ToArray();
 
-            if (this.maxForward < 0) {
-                errors.Add(
-                    $"Max Forward must be no less than zero."
-                    + $" Current value is {this.maxForward}"
-                );
-            }
 
-            if (this.maxReverse < 0) {
-                errors.Add(
-                    "Max Reverse must be no less than zero."
-                    + $" Current value is {this.maxReverse}"
-                );
-            }
+        /// <summary>
+        /// Validate that <see cref="maxForward"/> is positive. Sets it to
+        /// positive if not, besides returning an error message.
+        /// </summary>
+        /// <returns>
+        /// An error message if the validation doesn't pass, otherwise an empty
+        /// string.
+        /// </returns>
+        protected virtual string ValidatePositiveMaxForward() =>
+            Maths.ValidatePositiveValue(
+                this.maxForward,
+                "Max Forward",
+                null,
+                () => this.maxForward = -this.maxForward
+            );
 
-            if (this.maxPan < 0) {
-                errors.Add(
-                    "Max Pan must be no less than zero."
-                    + $" Current value is {this.maxPan}"
-                );
-            }
+        /// <summary>
+        /// Validate that <see cref="maxReverse"/> is positive. Sets it to
+        /// positive if not, besides returning an error message.
+        /// </summary>
+        /// <returns>
+        /// An error message if the validation doesn't pass, otherwise an empty
+        /// string.
+        /// </returns>
+        protected virtual string ValidatePositiveMaxReverse() =>
+            Maths.ValidatePositiveValue(
+                this.maxReverse,
+                "Max Reverse",
+                null,
+                () => this.maxReverse = -this.maxReverse
+            );
 
-            if (this.maxTorque < 0) {
-                errors.Add(
-                    "Max Torque must be no less than zero."
-                    + $" Current value is {this.maxTorque}"
-                );
-            }
+        /// <summary>
+        /// Validate that <see cref="maxPan"/> is positive. Sets it to
+        /// positive if not, besides returning an error message.
+        /// </summary>
+        /// <returns>
+        /// An error message if the validation doesn't pass, otherwise an empty
+        /// string.
+        /// </returns>
+        protected virtual string ValidatePositiveMaxPan() =>
+            Maths.ValidatePositiveValue(
+                this.maxPan,
+                "Max Pan",
+                null,
+                () => this.maxPan = -this.maxPan
+            );
 
-            if (Mathf.Abs(this.power) <= float.Epsilon
-                && Mathf.Abs(this.energy) <= float.Epsilon) {
-                errors.Add(
-                    "Must consume either power or energy."
-                    + $" Current values are {this.power} and {this.energy}"
-                );
-            }
-
-            return errors.ToArray();
-        }
+        /// <summary>
+        /// Validate that <see cref="maxTorque"/> is positive. Sets it to
+        /// positive if not, besides returning an error message.
+        /// </summary>
+        /// <returns>
+        /// An error message if the validation doesn't pass, otherwise an empty
+        /// string.
+        /// </returns>
+        protected virtual string ValidatePositiveMaxTorque() =>
+            Maths.ValidatePositiveValue(
+                this.maxTorque,
+                "Max Torque",
+                null,
+                () => this.maxTorque = -this.maxTorque
+            );
     }
 }

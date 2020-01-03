@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: Small Shield Generator
   m_EditorClassIdentifier: 
   description: 
-  id: ssg1
   mass: 0.2
-  size: -1
   power: -2
+  size: -1
   shield: 10

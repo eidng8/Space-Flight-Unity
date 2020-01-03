@@ -10,12 +10,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using eidng8.SpaceFlight.Laws;
 using eidng8.SpaceFlight.Objects.Dynamic;
 using UnityEngine;
 
 
 namespace eidng8.SpaceFlight.Configurable.Ship
 {
+    /// <summary>
+    /// Ships are the thing you drive around.
+    /// </summary>
     [Serializable,
      CreateAssetMenu(
          fileName = "Ship Config",
@@ -24,24 +28,46 @@ namespace eidng8.SpaceFlight.Configurable.Ship
     public class ShipConfig : Configurable
     {
         [Header("Ship Attributes")]
+        public float size;
+
         public ComponentConfig[] components;
+
+        /// <inheritdoc />
+        public override string InfoBoxContent =>
+            "Ships are the thing you drive around.";
+
+        /// <inheritdoc />
+        public override Dictionary<string, float> Dict() {
+            Dictionary<string, float> dict = base.Dict();
+            dict["size"] = this.size;
+            return dict;
+        }
 
         /// <inheritdoc />
         public override Dictionary<string, float> Aggregate() =>
             base.Aggregate(this.components.Select(c => c.Dict()));
 
         public override string[] Validate() {
-            List<string> errors = new List<string>();
+            List<string> errors = new List<string>() {
+                this.ValidatePositiveMass(),
+                Maths.ValidatePositiveValue(
+                    this.size,
+                    "Size",
+                    null,
+                    () => this.size = -this.size
+                )
+            };
+
             float v;
             Dictionary<string, float> dict = this.Aggregate();
             if (!dict.TryGetValue("power", out v)) {
-                errors.Add("Too much power consumption!");
+                errors.Add("No power generator!");
             } else if (v < 0) {
                 errors.Add("Too much power consumption!");
             }
 
             if (!dict.TryGetValue("size", out v)) {
-                errors.Add("Not vacant space!");
+                errors.Add("No hull!");
             } else if (v < 0) {
                 errors.Add("Not enough space to install all components!");
             }
@@ -56,11 +82,10 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         private string[] ValidateComponents(List<string> errors) {
             bool sizeOccupant = false;
             bool powerConsumer = false;
-            bool energyConsumer = false;
 
-            IEnumerable<Dictionary<string, float>> cmps =
+            IEnumerable<Dictionary<string, float>> comps =
                 this.components.Select(c => c.Dict());
-            foreach (Dictionary<string, float> component in cmps) {
+            foreach (Dictionary<string, float> component in comps) {
                 float v;
                 if (!sizeOccupant && component.TryGetValue("size", out v)) {
                     sizeOccupant = v < 0;
@@ -68,10 +93,6 @@ namespace eidng8.SpaceFlight.Configurable.Ship
 
                 if (!powerConsumer && component.TryGetValue("power", out v)) {
                     powerConsumer = v < 0;
-                }
-
-                if (!energyConsumer && component.TryGetValue("energy", out v)) {
-                    energyConsumer = v < 0;
                 }
             }
 
@@ -83,11 +104,7 @@ namespace eidng8.SpaceFlight.Configurable.Ship
                 errors.Add("No power consumption!");
             }
 
-            if (!energyConsumer) {
-                errors.Add("No energy consumption!");
-            }
-
-            return errors.ToArray();
+            return errors.Where(e => e.Length > 0).ToArray();
         }
     }
 }

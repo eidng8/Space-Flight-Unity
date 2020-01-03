@@ -26,6 +26,9 @@ namespace eidng8.SpaceFlight.Configurable.System
         public ShipConfig ship;
 
         /// <inheritdoc />
+        public override string InfoBoxContent => "";
+
+        /// <inheritdoc />
         public override Dictionary<string, float> Aggregate() => throw new NotImplementedException();
     }
 }

@@ -15,6 +15,8 @@ namespace eidng8.SpaceFlight.Configurable
 {
     public interface IConfigurable
     {
+        string InfoBoxContent { get; }
+
         /// <summary>
         /// Convert the instance's attribute data to dictionary.
         /// </summary>

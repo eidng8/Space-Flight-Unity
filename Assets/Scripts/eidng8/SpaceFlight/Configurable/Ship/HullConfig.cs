@@ -9,11 +9,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using eidng8.SpaceFlight.Laws;
 using UnityEngine;
 
 
 namespace eidng8.SpaceFlight.Configurable.Ship
 {
+    /// <summary>
+    /// Hulls provide armor that keeps the ship survive.
+    /// </summary>
     [Serializable,
      CreateAssetMenu(
          fileName = "Hull Config",
@@ -29,6 +34,10 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         public float armor;
 
         /// <inheritdoc />
+        public override string InfoBoxContent =>
+            "Hulls provide armor that keeps the ship survive.";
+
+        /// <inheritdoc />
         public override Dictionary<string, float> Dict() {
             Dictionary<string, float> dict = base.Dict();
             dict["armor"] = this.armor;
@@ -36,20 +45,29 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         }
 
         /// <inheritdoc />
-        public override string[] Validate() {
-            List<string> errors = new List<string>();
+        public override string[] Validate() =>
+            new List<string>() {
+                    this.ValidatePositiveMass(),
+                    this.ValidateNegativeSize(),
+                    this.ValidatePositiveArmor(),
+                }
+                .Where(e => e.Length > 0)
+                .ToArray();
 
-            if (this.armor <= float.Epsilon) {
-                errors.Add("Armor must be greater than zero.");
-                this.armor = -this.armor;
-            }
-
-            if (this.size <= float.Epsilon) {
-                errors.Add("Size must be greater than zero.");
-                this.size = -this.size;
-            }
-
-            return errors.ToArray();
-        }
+        /// <summary>
+        /// Validate that <see cref="armor"/> is positive. Sets it to
+        /// positive if not, besides returning an error message.
+        /// </summary>
+        /// <returns>
+        /// An error message if the validation doesn't pass, otherwise an empty
+        /// string.
+        /// </returns>
+        protected virtual string ValidatePositiveArmor() =>
+            Maths.ValidatePositiveValue(
+                this.armor,
+                "Armor",
+                null,
+                () => this.armor = -this.armor
+            );
     }
 }

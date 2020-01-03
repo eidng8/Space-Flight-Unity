@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-// <copyright file="EditorBase.cs" company="eidng8">
+// <copyright file="BaseInspector.cs" company="eidng8">
 //      GPLv3
 // </copyright>
 // <summary>
@@ -8,12 +8,14 @@
 // ---------------------------------------------------------------------------
 
 using UnityEngine;
-using UnityEngine.UIElements;
 
 
 namespace eidng8.SpaceFlight.Editor
 {
-    public abstract class EditorBase : UnityEditor.Editor
+    /// <summary>
+    /// Base class of customer editor.
+    /// </summary>
+    public abstract class BaseInspector : UnityEditor.Editor
     {
         private GUIStyle _labelStyle;
         private GUIStyle _warning;
@@ -25,7 +27,9 @@ namespace eidng8.SpaceFlight.Editor
 
         protected GUIStyle Warning =>
             this._warning
-            ?? (this._warning = new GUIStyle(GUI.skin.label)
-                {normal = {textColor = Color.red}});
+            ?? (this._warning = new GUIStyle(GUI.skin.label) {
+                alignment = TextAnchor.MiddleCenter,
+                normal = {textColor = Color.red},
+            });
     }
 }
