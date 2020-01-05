@@ -13,18 +13,50 @@ using eidng8.SpaceFlight.Configurable.System;
 using eidng8.SpaceFlight.Factories.Ship;
 using eidng8.SpaceFlight.Objects.Movable;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Luminosity.IO;
 
 
 namespace eidng8.SpaceFlight.Managers
 {
     public static class GameManager
     {
+        private static bool _hasInputManager;
+
+        private static InputManager _inputManager;
+
+        private static InputManager Im {
+            get {
+                if (GameManager._hasInputManager) {
+                    return GameManager._inputManager;
+                }
+
+                GameObject go = new GameObject("Input Manager");
+                InputManager im = go.AddComponent<InputManager>();
+                TextAsset ta =
+                    Resources.Load<TextAsset>("input_manager_default_scheme");
+                if (ta == null) {
+                    Debug.LogWarning(
+                        "Failed to load input profile. The resource"
+                        + " file might have been deleted or renamed."
+                    );
+                    return null;
+                }
+
+                im.SetSaveData(
+                    new InputLoaderXML(new StringReader(ta.text)).Load()
+                );
+                GameManager._inputManager = im;
+                GameManager._hasInputManager = true;
+                Object.DontDestroyOnLoad(go);
+                return GameManager._inputManager;
+            }
+        }
+
         [RuntimeInitializeOnLoadMethod(
             RuntimeInitializeLoadType.BeforeSplashScreen
         )]
         public static void GlobalInit() {
-            SceneManager.sceneLoaded += GameManager.SceneLoaded;
+            Debug.Log("GlobalInit");
             GameManager.SetupGameState();
         }
 
@@ -35,16 +67,10 @@ namespace eidng8.SpaceFlight.Managers
 
         /// <summary>
         /// Fetches game state from persistent storage or network server.
-        /// Then perform setup accordingly.
+        /// Then perform setup accordingly. This is run once while the game
+        /// is launched.
         /// </summary>
         private static void SetupGameState() { }
-
-        /// <summary>
-        /// Handler to the <see cref="SceneManager.sceneLoaded"/> event.
-        /// </summary>
-        public static void SceneLoaded(Scene scene, LoadSceneMode mode) {
-            GameManager.SetupScene();
-        }
 
         /// <summary>
         /// Resource path to the given file.
@@ -73,7 +99,11 @@ namespace eidng8.SpaceFlight.Managers
         /// <summary>
         /// Sets up the scene before sending player in.
         /// </summary>
+        [RuntimeInitializeOnLoadMethod(
+            RuntimeInitializeLoadType.BeforeSceneLoad
+        )]
         private static void SetupScene() {
+            Debug.Log("SetupScene");
             PlayerConfig player = GameManager.LoadPlayer();
             GameManager.CreatePlayer(player);
         }
@@ -90,7 +120,7 @@ namespace eidng8.SpaceFlight.Managers
         }
 
         private static void CreatePlayer(PlayerConfig config) {
-            GameManager.CreateShip(config.ship);
+            GameManager.CreateShip(config.ship, true);
         }
 
         private static void CreateShip(

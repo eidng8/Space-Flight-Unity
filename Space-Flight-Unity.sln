@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests.csproj", "{90DE4FD3-A9CF-6732-9C92-3F8F7DF600C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputManager", "InputManager.csproj", "{605E8810-A1CE-B1D3-8FCB-523A1A91C286}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{90DE4FD3-A9CF-6732-9C92-3F8F7DF600C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90DE4FD3-A9CF-6732-9C92-3F8F7DF600C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90DE4FD3-A9CF-6732-9C92-3F8F7DF600C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{605E8810-A1CE-B1D3-8FCB-523A1A91C286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{605E8810-A1CE-B1D3-8FCB-523A1A91C286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{605E8810-A1CE-B1D3-8FCB-523A1A91C286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{605E8810-A1CE-B1D3-8FCB-523A1A91C286}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
