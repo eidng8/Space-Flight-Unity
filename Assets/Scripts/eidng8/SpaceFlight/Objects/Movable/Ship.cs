@@ -9,6 +9,7 @@
 
 using System.Collections.Generic;
 using eidng8.SpaceFlight.Configurable;
+using eidng8.SpaceFlight.Mechanics.Nav;
 using UnityEngine;
 
 
@@ -17,13 +18,10 @@ namespace eidng8.SpaceFlight.Objects.Movable
     public class Ship : SpaceObject, IMovableObject
     {
         // ReSharper disable once MemberCanBePrivate.Global
-        protected float mArmor;
-
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mAcceleration;
 
         // ReSharper disable once MemberCanBePrivate.Global
-        protected float mMaxArmor;
+        protected float mArmor;
 
         // ReSharper disable once MemberCanBePrivate.Global
         protected float mCapacitor;
@@ -35,6 +33,9 @@ namespace eidng8.SpaceFlight.Objects.Movable
         protected float mLastSpeed;
 
         // ReSharper disable once MemberCanBePrivate.Global
+        protected float mMaxArmor;
+
+        // ReSharper disable once MemberCanBePrivate.Global
         protected float mMaxForward;
 
         // ReSharper disable once MemberCanBePrivate.Global
@@ -44,16 +45,13 @@ namespace eidng8.SpaceFlight.Objects.Movable
         protected float mMaxReverse;
 
         // ReSharper disable once MemberCanBePrivate.Global
+        protected float mMaxShield;
+
+        // ReSharper disable once MemberCanBePrivate.Global
         protected float mMaxTorque;
 
         // ReSharper disable once MemberCanBePrivate.Global
         protected float mPower;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mMaxShield;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mSpeed;
 
         // ReSharper disable once MemberCanBePrivate.Global
         protected float mRechargeRate;
@@ -61,33 +59,26 @@ namespace eidng8.SpaceFlight.Objects.Movable
         // ReSharper disable once MemberCanBePrivate.Global
         protected float mShield;
 
+        // ReSharper disable once MemberCanBePrivate.Global
+        protected float mSpeed;
+
         /// <inheritdoc />
         public float Acceleration => this.mAcceleration;
 
-        /// <summary>
-        /// Current armor value.
-        /// </summary>
+        /// <summary>Current armor value.</summary>
         public float Armor => this.mArmor;
 
-        /// <summary>
-        /// Maximum armor value.
-        /// </summary>
-        public float MaxArmor => this.mMaxArmor;
-
-        /// <summary>
-        /// Maximum energy value.
-        /// </summary>
+        /// <summary>Maximum energy value.</summary>
         public float Capacitor => this.mCapacitor;
 
-        /// <summary>
-        /// Current energy value.
-        /// </summary>
+        /// <summary>Current energy value.</summary>
         public float Energy => this.mEnergy;
 
-        /// <summary>
-        /// Ship's mass.
-        /// </summary>
+        /// <summary>Ship's mass.</summary>
         public float Mass => this.Body.mass;
+
+        /// <summary>Maximum armor value.</summary>
+        public float MaxArmor => this.mMaxArmor;
 
         /// <inheritdoc />
         public float MaxForward => this.mMaxForward;
@@ -98,27 +89,19 @@ namespace eidng8.SpaceFlight.Objects.Movable
         /// <inheritdoc />
         public float MaxReverse => this.mMaxReverse;
 
+        /// <summary>Maximum shield value.</summary>
+        public float MaxShield => this.mMaxShield;
+
         /// <inheritdoc />
         public float MaxTorque => this.mMaxTorque;
 
-        /// <summary>
-        /// Excessive power value.
-        /// </summary>
+        /// <summary>Excessive power value.</summary>
         public float Power => this.mPower;
 
-        /// <summary>
-        /// Energy recharge value per second.
-        /// </summary>
+        /// <summary>Energy recharge value per second.</summary>
         public float RechargeRate => this.mRechargeRate;
 
-        /// <summary>
-        /// Maximum shield value.
-        /// </summary>
-        public float MaxShield => this.mMaxShield;
-
-        /// <summary>
-        /// Current shield value.
-        /// </summary>
+        /// <summary>Current shield value.</summary>
         public float Shield => this.mShield;
 
         /// <inheritdoc />
@@ -186,13 +169,17 @@ namespace eidng8.SpaceFlight.Objects.Movable
             }
         }
 
+        public virtual void Man(INavigator navigator) {
+            navigator.Man(this, this.Body);
+        }
+
         /// <inheritdoc />
         /// <remarks>
         /// Please note that <see cref="Speed" /> and
         /// <see cref="Acceleration" /> will change after this method is
         /// called.
         /// </remarks>
-        public void Move(Vector3 force, Vector3 torque) {
+        public virtual void Move(Vector3 force, Vector3 torque) {
             this.mLastSpeed = this.mSpeed;
             this.Body.AddForce(force);
             this.Body.AddTorque(torque);
@@ -201,6 +188,6 @@ namespace eidng8.SpaceFlight.Objects.Movable
                 (this.mSpeed - this.mLastSpeed) / Time.fixedDeltaTime;
         }
 
-        private void FixedUpdate() { }
+        public virtual void Use(int component) { }
     }
 }

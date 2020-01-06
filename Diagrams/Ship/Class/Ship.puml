@@ -1,17 +1,29 @@
 @startuml
 !include ../../SpaceObject.puml
+!include Components.puml
 
 set namespaceSeparator .
 
 
 class Ship {
-    + {readonly} armor : float
-    + {readonly} shield : float
-    + {readonly} power : float
-    + {readonly} energy : float
-    + {readonly} capacitor : float
+    + {readonly} Armor : float
+    + {readonly} MaxArmor : float
+    + {readonly} Capacitor : float
+    + {readonly} Energy : float
+    + {readonly} Mass : float
+    + {readonly} MaxForward : float
+    + {readonly} MaxPan : float
+    + {readonly} MaxReverse : float
+    + {readonly} MaxTorque : float
+    + {readonly} Power : float
+    + {readonly} RechargeRate : float
+    + {readonly} MaxShield : float
+    + {readonly} Shield : float
+    + {readonly} Speed : float
+    + {readonly} Velocity : Vector3
     
     + Use(int) : void
+    + Man(INavigator) : void
     ..Unity..
     # FixedUpdate() : void
 }

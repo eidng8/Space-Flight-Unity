@@ -5,7 +5,7 @@ abstract class ComponentConfig {
     + size : float
     + power : float
 }
-ComponentConfig --|> Configurable
+ComponentConfig -up-|> Configurable
 
 note as ComponentNotes
 ComponentConfig attributes are arbitrary:
@@ -18,8 +18,18 @@ negative attributes. Positive values of such
 attributes denote generation, while negative values
 denote consumption.
 
-Supported attributes, including defined in
-`ComponentConfig`, may contain:
+Although attributes are arbitrary, they are all tied
+to game mechanics. Meaning no matter how versatile
+the program is made, they are somehow hard-coded.
+Due to this limitation, there is only a few supported
+attributes. Adding new attributes will involve
+changing codes.
+
+Also, not all available components are listed in this
+diagram. Please refer to source code for detail.
+
+Following attributes and their derivatives can be
+used.
 size: available space for component installation,
       or (negative) used by specific component;
 power: power generation or (negative) consumption;
@@ -36,24 +46,24 @@ class ThrusterConfig {
     + maxPan
     + maxTorque
 }
-ThrusterConfig --|> ComponentConfig
+ThrusterConfig -up-|> ComponentConfig
 
 
 class HullConfig {
     + armor : float
 }
-HullConfig --|> ComponentConfig
+HullConfig -up-|> ComponentConfig
 
 
 class ShieldConfig {
     + shield : float
 }
-ShieldConfig --|> ComponentConfig
+ShieldConfig -up-|> ComponentConfig
 
 
 class CapacitorConfig {
     + capacitor : float
 }
-CapacitorConfig --|> ComponentConfig
+CapacitorConfig -up-|> ComponentConfig
 
 @enduml

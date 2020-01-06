@@ -9,6 +9,6 @@ abstract class Configurable {
     + id : string
     + description : string
 }
-Configurable --|> IConfigurable
+Configurable -up-|> IConfigurable
 
 @enduml
