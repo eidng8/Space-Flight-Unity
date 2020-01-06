@@ -54,86 +54,6 @@ namespace eidng8.SpaceFlight.Managers
         }
 
 
-        /// <summary>Listen on the specified event from channel</summary>
-        /// <param name="channelName"></param>
-        /// <param name="eventName"></param>
-        /// <param name="listener"></param>
-        public void ListenOn(
-            EventChannels channelName,
-            Enum eventName,
-            Action<ExtendedEventArgs> listener
-        ) {
-            Dictionary<Enum, Action<ExtendedEventArgs>> ch =
-                this.GetChannel(channelName);
-
-            Action<ExtendedEventArgs> evt;
-            if (ch.TryGetValue(eventName, out evt)) {
-                // Add more event to the existing one
-                evt += listener;
-                // Update the Dictionary
-                ch[eventName] = evt;
-            } else {
-                // Add event to the Dictionary for the first time
-                evt += listener;
-                ch.Add(eventName, evt);
-            }
-        }
-
-
-        /// <summary>Removes the given event listener</summary>
-        /// <param name="channelName"></param>
-        /// <param name="eventName"></param>
-        /// <param name="listener"></param>
-        public void StopListening(
-            EventChannels channelName,
-            Enum eventName,
-            Action<ExtendedEventArgs> listener
-        ) {
-            // Don't call the `M()` property,
-            // since we don't want to create an instance,
-            // if it's not already instantiated.
-            if (null == EventManager._instance) {
-                return;
-            }
-
-            Dictionary<Enum, Action<ExtendedEventArgs>> ch =
-                this.GetChannel(channelName, false);
-            if (null == ch) {
-                return;
-            }
-
-            Action<ExtendedEventArgs> evt;
-            if (ch.TryGetValue(eventName, out evt)) {
-                // Remove event from the existing one
-                evt -= listener;
-                // Update the Dictionary
-                ch[eventName] = evt;
-            }
-        }
-
-
-        /// <summary>Triggers the specified event on the channel.</summary>
-        /// <param name="channelName"></param>
-        /// <param name="eventName"></param>
-        /// <param name="args"></param>
-        public void TriggerEvent(
-            EventChannels channelName,
-            Enum eventName,
-            ExtendedEventArgs args
-        ) {
-            Dictionary<Enum, Action<ExtendedEventArgs>> ch =
-                this.GetChannel(channelName, false);
-            if (null == ch) {
-                return;
-            }
-
-            Action<ExtendedEventArgs> evt;
-            if (ch.TryGetValue(eventName, out evt)) {
-                evt.Invoke(args);
-            }
-        }
-
-
         private bool CameraRaycast(out RaycastHit hit) {
             Vector3 pos = Input.mousePosition;
             Ray ray = this._camera.ScreenPointToRay(pos);
@@ -141,41 +61,13 @@ namespace eidng8.SpaceFlight.Managers
         }
 
 
-        /// <summary>Returns the specified event channel</summary>
-        /// <param name="channel"></param>
-        /// <param name="autoCreate">
-        /// If set to <c>true</c>, a new entry will be created and added to the
-        /// dictionary if the specified <see cref="channel" /> doesn't exist.
-        /// </param>
-        /// <returns></returns>
-        private Dictionary<Enum, Action<ExtendedEventArgs>> GetChannel(
-            EventChannels channel,
-            bool autoCreate = true
-        ) {
-            Dictionary<Enum, Action<ExtendedEventArgs>> ch;
-            Dictionary<EventChannels,
-                Dictionary<Enum, Action<ExtendedEventArgs>>> dict =
-                EventManager.M._events;
-
-            bool exists = dict.TryGetValue(channel, out ch);
-            if (exists || !autoCreate) {
-                return ch;
-            }
-
-            ch = new Dictionary<Enum, Action<ExtendedEventArgs>>();
-            dict.Add(channel, ch);
-
-            return ch;
-        }
-
-
         private void Init() {
             Debug.Log("EventManager.Init");
-            this._events = new Dictionary<
-                EventChannels, Dictionary<Enum, Action<ExtendedEventArgs>>
-            >(128);
-
-            this.OnSystemEvent(SystemEvent.SceneChanged, this.OnSceneChanged);
+            this._sysEvents =
+                new Dictionary<SystemEvents, Action<SystemEventArgs>>(128);
+            this._userEvents =
+                new Dictionary<UserEvents, Action<UserEventArgs>>(128);
+            this.OnSystemEvent(SystemEvents.SceneChanged, this.OnSceneChanged);
         }
 
         /// <summary>
@@ -188,6 +80,7 @@ namespace eidng8.SpaceFlight.Managers
         private void OnSceneChanged(SystemEventArgs _) {
             Debug.Log("EventManager.OnSceneChanged");
             this._camera = Camera.main;
+            Debug.Log($"Acquired camera: {this._camera.name}");
         }
     }
 }

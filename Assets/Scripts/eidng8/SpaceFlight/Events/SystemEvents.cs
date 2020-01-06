@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-// <copyright file="SystemEvent.cs" company="eidng8">
+// <copyright file="SystemEvents.cs" company="eidng8">
 //      GPLv3
 // </copyright>
 // <summary>
@@ -9,7 +9,7 @@
 
 namespace eidng8.SpaceFlight.Events
 {
-    public enum SystemEvent
+    public enum SystemEvents
     {
         /// <summary>
         /// The current scene has changed. This is triggered after the scene

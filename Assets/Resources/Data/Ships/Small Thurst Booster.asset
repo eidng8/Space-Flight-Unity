@@ -12,11 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce17f8a6e046474c90f2d303ee040f4d, type: 3}
   m_Name: Small Thurst Booster
   m_EditorClassIdentifier: 
-  description: 
-  id: stb1
   mass: 0.1
   power: 0
-  size: 0.2
+  size: -0.2
   maxForward: 5
   maxReverse: 1
   maxPan: 1

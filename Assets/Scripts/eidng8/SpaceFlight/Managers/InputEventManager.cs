@@ -7,6 +7,7 @@
 // </summary>
 // ---------------------------------------------------------------------------
 
+using System.IO;
 using Luminosity.IO;
 using UnityEngine;
 using UO = UnityEngine.Object;
@@ -40,8 +41,9 @@ namespace eidng8.SpaceFlight.Managers
 
         private void Init() {
             Debug.Log("InputEventManager.Init");
-            string file = GameManager.DataFilePath("KeyBinding/input_4x.xml");
-            InputManager.Load(file);
+            string file = GameManager.DataFilePath("Key Bindings/input_4x");
+            var res = Resources.Load<TextAsset>(file);
+            InputManager.Load(new InputLoaderXML(new StringReader(res.text)));
         }
     }
 }

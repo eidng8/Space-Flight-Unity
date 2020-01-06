@@ -82,7 +82,7 @@ namespace eidng8.SpaceFlight.Managers
         private static void LateSetupScene() {
             Debug.Log("LateSetupScene");
             EventManager.M.TriggerSystemEvent(
-                SystemEvent.SceneChanged,
+                SystemEvents.SceneChanged,
                 new SystemEventArgs()
             );
         }
