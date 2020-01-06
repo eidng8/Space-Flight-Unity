@@ -28,7 +28,7 @@ using Luminosity.IO.Events;
 
 namespace LuminosityEditor.IO
 {
-	[CustomEditor(typeof(InputEventManager))]
+	[CustomEditor(typeof(InputEventManager), true)]
 	public class InputEventManagerInspector : Editor
 	{
 		private enum CollectionAction

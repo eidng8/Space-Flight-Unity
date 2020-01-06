@@ -44,7 +44,7 @@ namespace Luminosity.IO.Events
 
 		public bool ReceiveInput { get; set; }
 		
-		private void Awake()
+		protected virtual void Awake()
 		{
 			ReceiveInput = true;
 			Initialize();
