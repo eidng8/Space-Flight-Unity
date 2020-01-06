@@ -11,6 +11,7 @@ namespace eidng8.SpaceFlight.Events
 {
     public enum EventChannels
     {
+        System,
         User
     }
 }

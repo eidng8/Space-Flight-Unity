@@ -20,14 +20,13 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot
         where TConfig : IPilotConfig
         where TMotor : IMotorBase
     {
-        private bool _listeningEvents;
-        private Transform _target;
-
-        protected IFlightController targetControl;
-
         protected TConfig config;
 
         protected TMotor motor;
+
+        protected IFlightController targetControl;
+        private bool _listeningEvents;
+        private Transform _target;
 
         /// <inheritdoc />
         public bool HasTarget { get; private set; }
@@ -46,8 +45,7 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot
             }
         }
 
-        public virtual void Awake()
-        {
+        public virtual void Awake() {
             if (!this._listeningEvents) {
                 this.RegisterEvents();
                 this._listeningEvents = true;
@@ -55,8 +53,7 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot
         }
 
         /// <inheritdoc />
-        public void Configure(IPilotConfig cfg)
-        {
+        public void Configure(IPilotConfig cfg) {
             this.config = (TConfig)cfg;
         }
 
@@ -70,15 +67,16 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot
         /// The objected selected event handler. Sets <c>Target</c> to the
         /// selected object.
         /// </summary>
-        protected virtual void OnSelectTarget(ExtendedEventArgs arg0)
-        {
-            this.Target = arg0.source.transform;
+        protected virtual void OnSelectTarget(UserEventArgs args) {
+            if (args?.hasTarget == true) {
+                // ReSharper disable once PossibleNullReferenceException
+                this.Target = args.target.transform;
+            }
         }
 
         /// <summary>Register listeners to game events.</summary>
-        protected virtual void RegisterEvents()
-        {
-            EventManager.Em.OnUserEvent(
+        protected virtual void RegisterEvents() {
+            EventManager.M.OnUserEvent(
                 UserEvents.Select,
                 this.OnSelectTarget
             );

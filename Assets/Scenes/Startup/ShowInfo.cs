@@ -11,61 +11,61 @@ namespace Startup
     {
         public Text info;
 
-        private float _lastSelectTime;
-
         public MonoBehaviour obj;
+        private bool _act;
 
         private bool _arb;
-        private Rigidbody _rb;
-        private bool _act;
         private IThrottledFlightController _ctl;
+
+        private float _lastSelectTime;
+        private Rigidbody _rb;
 
         private Rigidbody Body {
             get {
                 if (_arb) {
-                    return this._rb;
+                    return _rb;
                 }
 
-                this._rb = this.obj.GetComponent<Rigidbody>();
-                this._arb = true;
+                _rb = obj.GetComponent<Rigidbody>();
+                _arb = true;
 
-                return this._rb;
+                return _rb;
             }
         }
 
         private IThrottledFlightController Ctl {
             get {
                 if (_act) {
-                    return this._ctl;
+                    return _ctl;
                 }
 
-                this._ctl = this.obj.GetComponent<IThrottledFlightController>();
-                this._act = true;
+                _ctl = obj.GetComponent<IThrottledFlightController>();
+                _act = true;
 
-                return this._ctl;
+                return _ctl;
             }
+        }
+
+        private void OnSelectObject(UserEventArgs arg0)
+        {
+            _lastSelectTime = Time.time;
         }
 
         private void Start()
         {
-            EventManager.Em.OnUserEvent(UserEvents.Select, OnSelectObject);
-        }
-
-        private void OnSelectObject(ExtendedEventArgs arg0)
-        {
-            this._lastSelectTime = Time.time;
+            EventManager.M.OnUserEvent(UserEvents.Select, OnSelectObject);
         }
 
         // Update is called once per frame
         private void Update()
         {
-            if (!this.info.enabled) { return; }
+            if (!info.enabled) { return; }
 
-            Vector3 vel = this.Body.velocity;
-            this.info.text = $"Time: {Time.time - this._lastSelectTime}\n"
-                             + $"Throttle: {this.Ctl.Throttle}\n"
-                             + $"Speed Vector: {vel}\n"
-                             + $"Speed Magnitude: {vel.magnitude}";
+            Vector3 vel = Body.velocity;
+            info.text = $"Time: {Time.time - _lastSelectTime}\n"
+                        + $"Throttle: {Ctl.Throttle}\n"
+                        + $"Speed Vector: {vel}\n"
+                        + $"Speed Magnitude: {vel.magnitude}";
         }
     }
 }
