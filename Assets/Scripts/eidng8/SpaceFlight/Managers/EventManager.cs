@@ -31,14 +31,9 @@ namespace eidng8.SpaceFlight.Managers
         /// <summary>The main camera of current scene.</summary>
         private Camera _camera;
 
-        /// <summary>Holds all registered event listeners.</summary>
-        private Dictionary<
-            EventChannels,
-            Dictionary<Enum, Action<ExtendedEventArgs>>
-        > _events;
-
         /// <summary>The singleton instance of <c>EventManager</c></summary>
         public static EventManager M => EventManager._instance;
+
 
         public void Awake() {
             if (!EventManager._instance) {
