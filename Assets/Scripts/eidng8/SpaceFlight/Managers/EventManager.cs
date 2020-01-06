@@ -80,7 +80,6 @@ namespace eidng8.SpaceFlight.Managers
         private void OnSceneChanged(SystemEventArgs _) {
             Debug.Log("EventManager.OnSceneChanged");
             this._camera = Camera.main;
-            Debug.Log($"Acquired camera: {this._camera.name}");
         }
     }
 }
