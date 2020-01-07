@@ -115,6 +115,12 @@ namespace eidng8.SpaceFlight.Laws
                 return t;
             }
 
+            // Below is actually unreachable.
+            // * If `a` is positive, then `n - v` will always be positive.
+            //   So the above `if` test will be fulfilled.
+            // * If `a` is negative, then both `n - v` and `a2` will be
+            //   negative, which will also fulfill the above `if` test.
+
             // Then we check the negative sign.
             t = (-n - v) / a2;
             if (t > 0) {
@@ -135,7 +141,7 @@ namespace eidng8.SpaceFlight.Laws
         /// <param name="pb">Current position of object b</param>
         /// <param name="va">Current velocity of object a</param>
         /// <param name="vb">Current velocity of object b</param>
-        /// <param name="a">Current acceleration of object a</param>
+        /// <param name="a">Maximum deceleration of object a</param>
         /// <param name="buffer">Distance to keep away from object b</param>
         /// <returns>Returns <c>True</c> if <c>a</c> should slow down.</returns>
         public static bool ShouldBrake(
@@ -151,8 +157,9 @@ namespace eidng8.SpaceFlight.Laws
             // slow down.
             // Calculating square root is expensive. We don't need to be precise
             // here. Just take the square is sufficient.
-            float v = Vector3.Project(vb, va).sqrMagnitude;
-            if (v.AboutEqual(va.sqrMagnitude)) {
+            Vector3 vp = Vector3.Project(vb, va);
+            float v = va.magnitude - vp.magnitude;
+            if (v < 0) {
                 return false;
             }
 
@@ -171,12 +178,12 @@ namespace eidng8.SpaceFlight.Laws
             // => t = V ÷ a
             //
             // If `a` is negative, meaning decelerating. If terminal speed `V`
-            // (small V) is zero, then:
+            // (big V) is zero, then:
             // => V = 0
             // => v + at = 0
             // => at = v
-            // => t = v ÷ a
-            float t = v / a;
+            // => t = |v ÷ a|
+            float t = Mathf.Abs(v / a);
 
             // Remember to take buffer distance into account.
             float d = Vector3.Distance(pa, pb) - buffer;

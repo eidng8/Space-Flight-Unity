@@ -33,11 +33,11 @@ namespace eidng8.SpaceFlight.Laws
         public static bool IsFacing(
             this Vector3 a,
             Vector3 b,
-            float tolerance
+            float tolerance = 45
         ) {
             float ang = Mathf.Abs(Vector3.Angle(a, b));
             tolerance = Mathf.Abs(tolerance);
-            tolerance = Mathf.Clamp(tolerance, 0, 360);
+            tolerance = Mathf.Clamp(tolerance, 0, 180);
             return ang <= tolerance;
         }
 
