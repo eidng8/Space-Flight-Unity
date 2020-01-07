@@ -9,7 +9,6 @@
 
 using System.Collections.Generic;
 using eidng8.SpaceFlight.Configurable;
-using eidng8.SpaceFlight.Mechanics.Nav;
 using UnityEngine;
 
 
@@ -169,8 +168,19 @@ namespace eidng8.SpaceFlight.Objects.Movable
             }
         }
 
-        public virtual void Man(INavigator navigator) {
-            navigator.Man(this, this.Body);
+        /// <inheritdoc />
+        /// <remarks>
+        /// Please note that <see cref="Speed" /> and
+        /// <see cref="Acceleration" /> will change after this method is
+        /// called.
+        /// </remarks>
+        public virtual void Propel(float force) {
+            this.mLastSpeed = this.mSpeed;
+            force = Mathf.Clamp(force, this.MaxReverse, this.mMaxForward);
+            this.Body.AddForce(this.transform.forward * force);
+            this.mSpeed = this.Velocity.magnitude;
+            this.mAcceleration =
+                (this.mSpeed - this.mLastSpeed) / Time.fixedDeltaTime;
         }
 
         /// <inheritdoc />
@@ -179,13 +189,13 @@ namespace eidng8.SpaceFlight.Objects.Movable
         /// <see cref="Acceleration" /> will change after this method is
         /// called.
         /// </remarks>
-        public virtual void Move(Vector3 force, Vector3 torque) {
-            this.mLastSpeed = this.mSpeed;
-            this.Body.AddForce(force);
+        public virtual void PropelThrottle(float throttle) {
+            var force = throttle < 0 ? this.MaxReverse : this.MaxForward;
+            this.Propel(force * throttle);
+        }
+
+        public virtual void Rotate(Vector3 torque) {
             this.Body.AddTorque(torque);
-            this.mSpeed = this.Velocity.magnitude;
-            this.mAcceleration =
-                (this.mSpeed - this.mLastSpeed) / Time.fixedDeltaTime;
         }
 
         public virtual void Use(int component) { }

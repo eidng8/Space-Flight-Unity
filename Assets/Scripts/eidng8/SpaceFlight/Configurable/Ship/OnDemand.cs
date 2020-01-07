@@ -20,47 +20,27 @@ namespace eidng8.SpaceFlight.Configurable.Ship
     /// </summary>
     public abstract class OnDemand : ComponentConfig, IOnDemand
     {
-        /// <summary>
-        /// Time duration between two consecutive uses.
-        /// </summary>
+        /// <summary>Time duration between two consecutive uses.</summary>
         [Tooltip("Time duration between two consecutive uses.")]
         public float cooldown;
 
-        /// <summary>
-        /// Energy consumption per use.
-        /// </summary>
+        /// <summary>Energy consumption per use.</summary>
         [Tooltip("Energy consumption per use.")]
         public float energy;
 
         /// <inheritdoc />
         public override string[] Validate() =>
-            new List<string>() {
+            new List<string> {
                     this.ValidatePositiveMass(),
                     this.ValidateNegativeSize(),
                     this.ValidateNegativeEnergy(),
-                    this.ValidatePositiveCooldown(),
+                    this.ValidatePositiveCooldown()
                 }
                 .Where(e => e.Length > 0)
                 .ToArray();
 
         /// <summary>
-        /// Validate that <see cref="cooldown"/> is positive. Sets it to
-        /// positive if not, besides returning an error message.
-        /// </summary>
-        /// <returns>
-        /// An error message if the validation doesn't pass, otherwise an empty
-        /// string.
-        /// </returns>
-        protected virtual string ValidatePositiveCooldown() =>
-            Maths.ValidatePositiveValue(
-                this.cooldown,
-                "Cooldown",
-                null,
-                () => this.cooldown = -this.cooldown
-            );
-
-        /// <summary>
-        /// Validate that <see cref="energy"/> is positive. Sets it to
+        /// Validate that <see cref="energy" /> is positive. Sets it to
         /// positive if not, besides returning an error message.
         /// </summary>
         /// <returns>
@@ -68,11 +48,25 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         /// string.
         /// </returns>
         protected virtual string ValidateNegativeEnergy() =>
-            Maths.ValidateNegativeValue(
-                this.energy,
+            this.energy.ValidateNegativeValue(
                 "Energy",
                 null,
                 () => this.energy = -this.energy
+            );
+
+        /// <summary>
+        /// Validate that <see cref="cooldown" /> is positive. Sets it to
+        /// positive if not, besides returning an error message.
+        /// </summary>
+        /// <returns>
+        /// An error message if the validation doesn't pass, otherwise an empty
+        /// string.
+        /// </returns>
+        protected virtual string ValidatePositiveCooldown() =>
+            this.cooldown.ValidatePositiveValue(
+                "Cooldown",
+                null,
+                () => this.cooldown = -this.cooldown
             );
     }
 }

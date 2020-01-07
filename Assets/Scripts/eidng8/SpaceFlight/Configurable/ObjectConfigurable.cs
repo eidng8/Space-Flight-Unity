@@ -17,9 +17,7 @@ namespace eidng8.SpaceFlight.Configurable
 {
     public abstract class ObjectConfigurable : Configurable
     {
-        /// <summary>
-        /// Mass of the component. Used by physics engine.
-        /// </summary>
+        /// <summary>Mass of the component. Used by physics engine.</summary>
         [Header("Basic Attributes"),
          Tooltip("Mass of the component. Used by physics engine.")]
         public float mass;
@@ -43,9 +41,7 @@ namespace eidng8.SpaceFlight.Configurable
                 ? new string[0]
                 : new[] {"Mass must be greater than zero!"};
 
-        /// <summary>
-        /// Aggregate given component configurations.
-        /// </summary>
+        /// <summary>Aggregate given component configurations.</summary>
         /// <param name="components"></param>
         /// <returns></returns>
         protected virtual Dictionary<string, float> Aggregate(
@@ -72,16 +68,15 @@ namespace eidng8.SpaceFlight.Configurable
         }
 
         /// <summary>
-        /// Validate that <see cref="mass"/> is positive. Sets it to
-        /// positive if not, besides returning an error message.
+        /// Validate that <see cref="mass" /> is positive. Sets it to positive
+        /// if not, besides returning an error message.
         /// </summary>
         /// <returns>
         /// An error message if the validation doesn't pass, otherwise an empty
         /// string.
         /// </returns>
         protected virtual string ValidatePositiveMass() =>
-            Maths.ValidatePositiveValue(
-                this.mass,
+            this.mass.ValidatePositiveValue(
                 "Mass",
                 null,
                 () => this.mass = -this.mass

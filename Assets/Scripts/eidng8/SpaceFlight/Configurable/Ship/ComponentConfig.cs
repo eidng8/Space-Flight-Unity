@@ -39,14 +39,6 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         public float size;
 
         /// <inheritdoc />
-        public override string[] Validate() =>
-            new List<string>(base.Validate()) {
-                    this.ValidateNegativeSize()
-                }
-                .Where(e => e.Length > 0)
-                .ToArray();
-
-        /// <inheritdoc />
         public override Dictionary<string, float> Dict() {
             Dictionary<string, float> dict = base.Dict();
             dict["size"] = this.size;
@@ -54,65 +46,69 @@ namespace eidng8.SpaceFlight.Configurable.Ship
             return dict;
         }
 
-        /// <summary>
-        /// Validate that <see cref="power"/> is positive. Sets it to
-        /// positive if not, besides returning an error message.
-        /// </summary>
-        /// <returns>
-        /// An error message if the validation doesn't pass, otherwise an empty
-        /// string.
-        /// </returns>
-        protected virtual string ValidatePositivePower() =>
-            Maths.ValidatePositiveValue(
-                this.power,
-                "Power",
-                null,
-                () => this.power = -this.power
-            );
+        /// <inheritdoc />
+        public override string[] Validate() =>
+            new List<string>(base.Validate()) {
+                    this.ValidateNegativeSize()
+                }
+                .Where(e => e.Length > 0)
+                .ToArray();
 
         /// <summary>
-        /// Validate that <see cref="power"/> is negative. Sets it to
-        /// negative if not, besides returning an error message.
+        /// Validate that <see cref="power" /> is negative. Sets it to negative
+        /// if not, besides returning an error message.
         /// </summary>
         /// <returns>
         /// An error message if the validation doesn't pass, otherwise an empty
         /// string.
         /// </returns>
         protected virtual string ValidateNegativePower() =>
-            Maths.ValidateNegativeValue(
-                this.power,
+            this.power.ValidateNegativeValue(
                 "Power",
                 null,
                 () => this.power = -this.power
             );
 
         /// <summary>
-        /// Validate that <see cref="size"/> is positive. Sets it to
-        /// positive if not, besides returning an error message.
-        /// </summary>
-        /// <returns>
-        /// An error message if the validation doesn't pass, otherwise an empty
-        /// string.
-        /// </returns>
-        protected virtual string ValidatePositiveSize() =>
-            Maths.ValidatePositiveValue(
-                this.size,
-                "Size",
-                null,
-                () => this.size = -this.size
-            );
-
-        /// <summary>
-        /// Validate that <see cref="size"/> is negative. Sets it to
-        /// negative if not, besides returning an error message.
+        /// Validate that <see cref="size" /> is negative. Sets it to negative
+        /// if not, besides returning an error message.
         /// </summary>
         /// <returns>
         /// An error message if the validation doesn't pass, otherwise an empty
         /// string.
         /// </returns>
         protected virtual string ValidateNegativeSize() =>
-            Maths.ValidateNegativeValue(
-                this.size,
+            this.size.ValidateNegativeValue(
+                "Size",
+                null,
+                () => this.size = -this.size
+            );
+
+        /// <summary>
+        /// Validate that <see cref="power" /> is positive. Sets it to positive
+        /// if not, besides returning an error message.
+        /// </summary>
+        /// <returns>
+        /// An error message if the validation doesn't pass, otherwise an empty
+        /// string.
+        /// </returns>
+        protected virtual string ValidatePositivePower() =>
+            this.power.ValidatePositiveValue(
+                "Power",
+                null,
+                () => this.power = -this.power
+            );
+
+        /// <summary>
+        /// Validate that <see cref="size" /> is positive. Sets it to positive
+        /// if not, besides returning an error message.
+        /// </summary>
+        /// <returns>
+        /// An error message if the validation doesn't pass, otherwise an empty
+        /// string.
+        /// </returns>
+        protected virtual string ValidatePositiveSize() =>
+            this.size.ValidatePositiveValue(
                 "Size",
                 null,
                 () => this.size = -this.size

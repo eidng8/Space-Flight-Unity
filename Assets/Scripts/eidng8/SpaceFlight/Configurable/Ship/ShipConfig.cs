@@ -16,9 +16,7 @@ using UnityEngine;
 
 namespace eidng8.SpaceFlight.Configurable.Ship
 {
-    /// <summary>
-    /// Ships are the thing you drive around.
-    /// </summary>
+    /// <summary>Ships are the thing you drive around.</summary>
     [Serializable,
      CreateAssetMenu(
          fileName = "Ship Config",
@@ -26,28 +24,26 @@ namespace eidng8.SpaceFlight.Configurable.Ship
      )]
     public class ShipConfig : ObjectConfigurable
     {
-        /// <summary>
-        /// Space available for component installation.
-        /// </summary>
+        /// <summary>List of all installed components.</summary>
+        [Tooltip("List of all installed components.")]
+        public ComponentConfig[] components;
+
+        /// <summary>Prefab used to render the ship.</summary>
+        [Tooltip("Prefab used to render the ship.")]
+        public Objects.Movable.Ship prefab;
+
+        /// <summary>Space available for component installation.</summary>
         [Header("Ship Attributes"),
          Tooltip("Space available for component installation.")]
         public float size;
 
-        /// <summary>
-        /// Prefab used to render the ship.
-        /// </summary>
-        [Tooltip("Prefab used to render the ship.")]
-        public Objects.Movable.Ship prefab;
-
-        /// <summary>
-        /// List of all installed components.
-        /// </summary>
-        [Tooltip("List of all installed components.")]
-        public ComponentConfig[] components;
-
         /// <inheritdoc />
         public override string InfoBoxContent =>
             "Ships are the thing you drive around.";
+
+        /// <inheritdoc />
+        public override Dictionary<string, float> Aggregate() =>
+            base.Aggregate(this.components.Select(c => c.Dict()));
 
         /// <inheritdoc />
         public override Dictionary<string, float> Dict() {
@@ -56,16 +52,11 @@ namespace eidng8.SpaceFlight.Configurable.Ship
             return dict;
         }
 
-        /// <inheritdoc />
-        public override Dictionary<string, float> Aggregate() =>
-            base.Aggregate(this.components.Select(c => c.Dict()));
-
         public override string[] Validate() {
-            List<string> errors = new List<string>() {
+            List<string> errors = new List<string> {
                 this.ValidatePositiveMass(),
                 this.ValidatePrefab(),
-                Maths.ValidatePositiveValue(
-                    this.size,
+                this.size.ValidatePositiveValue(
                     "Size",
                     null,
                     () => this.size = -this.size
@@ -92,9 +83,6 @@ namespace eidng8.SpaceFlight.Configurable.Ship
 
             return this.ValidateComponents(errors);
         }
-
-        private string ValidatePrefab() =>
-            null == this.prefab ? "Prefab is not set." : "";
 
         private string[] ValidateComponents(List<string> errors) {
             bool sizeOccupant = false;
@@ -123,5 +111,8 @@ namespace eidng8.SpaceFlight.Configurable.Ship
 
             return errors.Where(e => e.Length > 0).ToArray();
         }
+
+        private string ValidatePrefab() =>
+            null == this.prefab ? "Prefab is not set." : "";
     }
 }

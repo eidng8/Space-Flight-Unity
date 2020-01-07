@@ -24,7 +24,7 @@ namespace eidng8.SpaceFlight.Managers
         /// performed in the <see cref="InputEventManager" /> inspector UI at
         /// design time.
         /// </summary>
-        public void OnUserAccelerate(float delta) {
+        public void RawInput_OnUserAccelerate(float delta) {
             this.TriggerUserEvent(
                 UserEvents.Accelerate,
                 new UserEventArgs {acceleration = delta}
@@ -38,7 +38,7 @@ namespace eidng8.SpaceFlight.Managers
         /// performed in the <see cref="InputEventManager" /> inspector UI at
         /// design time.
         /// </summary>
-        public void OnUserContext() {
+        public void RawInput_OnUserContext() {
             UserEventArgs args = new UserEventArgs();
             if (this.CameraRaycast(out RaycastHit hit)) {
                 args.hasTarget = true;
@@ -55,7 +55,7 @@ namespace eidng8.SpaceFlight.Managers
         /// performed in the <see cref="InputEventManager" /> inspector UI at
         /// design time.
         /// </summary>
-        public void OnUserExtension() {
+        public void RawInput_OnUserExtension() {
             UserEventArgs args = new UserEventArgs();
             if (this.CameraRaycast(out RaycastHit hit)) {
                 args.hasTarget = true;
@@ -72,7 +72,7 @@ namespace eidng8.SpaceFlight.Managers
         /// performed in the <see cref="InputEventManager" /> inspector UI at
         /// design time.
         /// </summary>
-        public void OnUserSelect() {
+        public void RawInput_OnUserSelect() {
             UserEventArgs args = new UserEventArgs();
             if (this.CameraRaycast(out RaycastHit hit)) {
                 args.hasTarget = true;

@@ -26,6 +26,27 @@ namespace eidng8.SpaceFlight.Editor.Ship
             this.GenerateSummary();
         }
 
+        private void EstimateCapacityRecharge(Dictionary<string, float> dict) {
+            if (!dict.TryGetValue("capacitor", out float cap) || cap <= 0) {
+                return;
+            }
+
+            float eps;
+            if (!dict.TryGetValue("recharge", out eps)) {
+                eps = 0;
+            }
+
+            eps = Mathf.Min(dict["power"], eps);
+            float sec = cap / eps;
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(
+                "Capacitor recharge in (sec):",
+                this.LabelStyle
+            );
+            EditorGUILayout.LabelField($"{sec}");
+            EditorGUILayout.EndHorizontal();
+        }
+
         private void GenerateSummary() {
             EditorGUILayout.Separator();
             EditorGUILayout.LabelField("Summary", EditorStyles.boldLabel);
@@ -33,6 +54,24 @@ namespace eidng8.SpaceFlight.Editor.Ship
             Dictionary<string, float> dict = cfg.Aggregate();
             this.ListAttributes(cfg, dict);
             this.EstimateCapacityRecharge(dict);
+        }
+
+        private string ListAttribute(ShipConfig cfg, string attr) {
+            string list = "";
+            if ("mass" == attr) {
+                list = $"{cfg.name}: {cfg.mass}\n";
+            } else if ("size" == attr) {
+                list = $"{cfg.name}: {cfg.size}\n";
+            }
+
+            foreach (ComponentConfig c in cfg.components) {
+                Dictionary<string, float> dict = c.Dict();
+                if (dict.TryGetValue(attr, out float v)) {
+                    if (!v.AboutZero()) { list += $"{c.name}: {v}\n"; }
+                }
+            }
+
+            return list.Length > 0 ? list.Trim() : "Couldn't break down";
         }
 
         private void ListAttributes(
@@ -65,45 +104,6 @@ namespace eidng8.SpaceFlight.Editor.Ship
                               EditorGUILayout.EndHorizontal();
                           }
                       );
-        }
-
-        private string ListAttribute(ShipConfig cfg, string attr) {
-            string list = "";
-            if ("mass" == attr) {
-                list = $"{cfg.name}: {cfg.mass}\n";
-            } else if ("size" == attr) {
-                list = $"{cfg.name}: {cfg.size}\n";
-            }
-
-            foreach (ComponentConfig c in cfg.components) {
-                Dictionary<string, float> dict = c.Dict();
-                if (dict.TryGetValue(attr, out float v)) {
-                    if (!Maths.AboutZero(v)) { list += $"{c.name}: {v}\n"; }
-                }
-            }
-
-            return list.Length > 0 ? list.Trim() : "Couldn't break down";
-        }
-
-        private void EstimateCapacityRecharge(Dictionary<string, float> dict) {
-            if (!dict.TryGetValue("capacitor", out float cap) || cap <= 0) {
-                return;
-            }
-
-            float eps;
-            if (!dict.TryGetValue("recharge", out eps)) {
-                eps = 0;
-            }
-
-            eps = Mathf.Min(dict["power"], eps);
-            float sec = cap / eps;
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(
-                "Capacitor recharge in (sec):",
-                this.LabelStyle
-            );
-            EditorGUILayout.LabelField($"{sec}");
-            EditorGUILayout.EndHorizontal();
         }
     }
 }

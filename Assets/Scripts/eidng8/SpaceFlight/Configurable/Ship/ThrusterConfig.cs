@@ -16,9 +16,7 @@ using UnityEngine;
 
 namespace eidng8.SpaceFlight.Configurable.Ship
 {
-    /// <summary>
-    /// Thrusters are what drive ships around.
-    /// </summary>
+    /// <summary>Thrusters are what drive ships around.</summary>
     [Serializable,
      CreateAssetMenu(
          fileName = "Thruster Config",
@@ -26,28 +24,20 @@ namespace eidng8.SpaceFlight.Configurable.Ship
      )]
     public class ThrusterConfig : ComponentConfig
     {
-        /// <summary>
-        /// Maximum forward movement momentum.
-        /// </summary>
+        /// <summary>Maximum forward movement momentum.</summary>
         [Header("Thruster Attributes"),
          Tooltip("Maximum forward movement momentum.")]
         public float maxForward;
 
-        /// <summary>
-        /// Maximum backward movement momentum.
-        /// </summary>
-        [Tooltip("Maximum backward movement momentum.")]
-        public float maxReverse;
-
-        /// <summary>
-        /// Maximum side-way movement momentum.
-        /// </summary>
+        /// <summary>Maximum side-way movement momentum.</summary>
         [Tooltip("Maximum side-way movement momentum.")]
         public float maxPan;
 
-        /// <summary>
-        /// Maximum angular momentum.
-        /// </summary>
+        /// <summary>Maximum backward movement momentum.</summary>
+        [Tooltip("Maximum backward movement momentum.")]
+        public float maxReverse;
+
+        /// <summary>Maximum angular momentum.</summary>
         [Tooltip("Maximum angular momentum.")]
         public float maxTorque;
 
@@ -71,14 +61,14 @@ namespace eidng8.SpaceFlight.Configurable.Ship
                     this.ValidatePositiveMaxForward(),
                     this.ValidatePositiveMaxReverse(),
                     this.ValidatePositiveMaxPan(),
-                    this.ValidatePositiveMaxTorque(),
+                    this.ValidatePositiveMaxTorque()
                 }
                 .Where(e => e.Length > 0)
                 .ToArray();
 
 
         /// <summary>
-        /// Validate that <see cref="maxForward"/> is positive. Sets it to
+        /// Validate that <see cref="maxForward" /> is positive. Sets it to
         /// positive if not, besides returning an error message.
         /// </summary>
         /// <returns>
@@ -86,31 +76,14 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         /// string.
         /// </returns>
         protected virtual string ValidatePositiveMaxForward() =>
-            Maths.ValidatePositiveValue(
-                this.maxForward,
+            this.maxForward.ValidatePositiveValue(
                 "Max Forward",
                 null,
                 () => this.maxForward = -this.maxForward
             );
 
         /// <summary>
-        /// Validate that <see cref="maxReverse"/> is positive. Sets it to
-        /// positive if not, besides returning an error message.
-        /// </summary>
-        /// <returns>
-        /// An error message if the validation doesn't pass, otherwise an empty
-        /// string.
-        /// </returns>
-        protected virtual string ValidatePositiveMaxReverse() =>
-            Maths.ValidatePositiveValue(
-                this.maxReverse,
-                "Max Reverse",
-                null,
-                () => this.maxReverse = -this.maxReverse
-            );
-
-        /// <summary>
-        /// Validate that <see cref="maxPan"/> is positive. Sets it to
+        /// Validate that <see cref="maxPan" /> is positive. Sets it to
         /// positive if not, besides returning an error message.
         /// </summary>
         /// <returns>
@@ -118,15 +91,29 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         /// string.
         /// </returns>
         protected virtual string ValidatePositiveMaxPan() =>
-            Maths.ValidatePositiveValue(
-                this.maxPan,
+            this.maxPan.ValidatePositiveValue(
                 "Max Pan",
                 null,
                 () => this.maxPan = -this.maxPan
             );
 
         /// <summary>
-        /// Validate that <see cref="maxTorque"/> is positive. Sets it to
+        /// Validate that <see cref="maxReverse" /> is positive. Sets it to
+        /// positive if not, besides returning an error message.
+        /// </summary>
+        /// <returns>
+        /// An error message if the validation doesn't pass, otherwise an empty
+        /// string.
+        /// </returns>
+        protected virtual string ValidatePositiveMaxReverse() =>
+            this.maxReverse.ValidatePositiveValue(
+                "Max Reverse",
+                null,
+                () => this.maxReverse = -this.maxReverse
+            );
+
+        /// <summary>
+        /// Validate that <see cref="maxTorque" /> is positive. Sets it to
         /// positive if not, besides returning an error message.
         /// </summary>
         /// <returns>
@@ -134,8 +121,7 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         /// string.
         /// </returns>
         protected virtual string ValidatePositiveMaxTorque() =>
-            Maths.ValidatePositiveValue(
-                this.maxTorque,
+            this.maxTorque.ValidatePositiveValue(
                 "Max Torque",
                 null,
                 () => this.maxTorque = -this.maxTorque

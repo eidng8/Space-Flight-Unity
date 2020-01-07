@@ -14,46 +14,37 @@ namespace eidng8.SpaceFlight.Objects
 {
     public interface IMovableObject
     {
-        /// <summary>
-        /// Velocity in all directions.
-        /// </summary>
-        Vector3 Velocity { get; }
-
-        /// <summary>
-        /// Forward speed value.
-        /// </summary>
-        float Speed { get; }
-
-        /// <summary>
-        /// Forward acceleration value.
-        /// </summary>
+        /// <summary>Forward acceleration value.</summary>
         float Acceleration { get; }
 
-        /// <summary>
-        /// Maximum forward movement momentum.
-        /// </summary>
+        /// <summary>Maximum forward movement momentum.</summary>
         float MaxForward { get; }
 
-        /// <summary>
-        /// Maximum backward movement momentum.
-        /// </summary>
-        float MaxReverse { get; }
-
-        /// <summary>
-        /// Maximum side-way movement momentum.
-        /// </summary>
+        /// <summary>Maximum side-way movement momentum.</summary>
         float MaxPan { get; }
 
-        /// <summary>
-        /// Maximum angular momentum.
-        /// </summary>
+        /// <summary>Maximum backward movement momentum.</summary>
+        float MaxReverse { get; }
+
+        /// <summary>Maximum angular momentum.</summary>
         float MaxTorque { get; }
 
-        /// <summary>
-        /// Perform actual movement.
-        /// </summary>
+        /// <summary>Forward speed value.</summary>
+        float Speed { get; }
+
+        /// <summary>Velocity in all directions.</summary>
+        Vector3 Velocity { get; }
+
+        /// <summary>Perform actual movement.</summary>
         /// <param name="force"></param>
+        void Propel(float force);
+
+        /// <summary>Perform actual movement.</summary>
+        /// <param name="throttle"></param>
+        void PropelThrottle(float throttle);
+
+        /// <summary>Perform actual rotation.</summary>
         /// <param name="torque"></param>
-        void Move(Vector3 force, Vector3 torque);
+        void Rotate(Vector3 torque);
     }
 }

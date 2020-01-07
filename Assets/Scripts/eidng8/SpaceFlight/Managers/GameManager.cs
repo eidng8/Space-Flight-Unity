@@ -12,9 +12,11 @@ using eidng8.SpaceFlight.Configurable.Ship;
 using eidng8.SpaceFlight.Configurable.System;
 using eidng8.SpaceFlight.Events;
 using eidng8.SpaceFlight.Factories.Ship;
+using eidng8.SpaceFlight.Mechanics.Nav;
 using eidng8.SpaceFlight.Objects.Movable;
 using Luminosity.IO;
 using UnityEngine;
+using UO = UnityEngine.Object;
 
 
 namespace eidng8.SpaceFlight.Managers
@@ -28,6 +30,9 @@ namespace eidng8.SpaceFlight.Managers
         private static bool _hasInputManager;
 
         private static InputManager _inputManager;
+
+        private static Player _player;
+
 
         private static StartupConfig StartupConfig =>
             Resources.Load<StartupConfig>(
@@ -60,8 +65,15 @@ namespace eidng8.SpaceFlight.Managers
         public static string SavedFilePath(string file) =>
             Path.Combine(Application.persistentDataPath, "Player");
 
-        private static void CreatePlayer(PlayerConfig config) {
-            GameManager.CreateShip(config.ship, true);
+        private static void CreatePlayer() {
+            PlayerConfig config = GameManager.LoadPlayer();
+            Ship ship = ShipFactory.Make(config.ship);
+            ship.tag = "Player";
+            Player player = ship.gameObject.AddComponent<Player>();
+            // player.Configure(config);
+            player.Man(ship);
+            UO.DontDestroyOnLoad(ship.gameObject);
+            GameManager._player = player;
         }
 
         private static void CreateShip(
@@ -72,6 +84,10 @@ namespace eidng8.SpaceFlight.Managers
             Ship ship = ShipFactory.Make(config);
             if (isPlayer) {
                 ship.tag = "Player";
+                Player player = ship.gameObject.AddComponent<Player>();
+                // player.Configure();
+                player.Man(ship);
+                UO.DontDestroyOnLoad(ship.gameObject);
             }
         }
 
@@ -81,6 +97,11 @@ namespace eidng8.SpaceFlight.Managers
         )]
         private static void LateSetupScene() {
             Debug.Log("LateSetupScene");
+
+            if (!GameManager._player) {
+                GameManager.CreatePlayer();
+            }
+
             EventManager.M.TriggerSystemEvent(
                 SystemEvents.SceneChanged,
                 new SystemEventArgs()
@@ -111,8 +132,6 @@ namespace eidng8.SpaceFlight.Managers
         )]
         private static void SetupScene() {
             Debug.Log("SetupScene");
-            PlayerConfig player = GameManager.LoadPlayer();
-            GameManager.CreatePlayer(player);
         }
     }
 }

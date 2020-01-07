@@ -16,9 +16,7 @@ using UnityEngine;
 
 namespace eidng8.SpaceFlight.Configurable.Ship
 {
-    /// <summary>
-    /// Adds extra protection on top of armor.
-    /// </summary>
+    /// <summary>Adds extra protection on top of armor.</summary>
     [Serializable,
      CreateAssetMenu(
          fileName = "Shield Generator Config",
@@ -26,9 +24,7 @@ namespace eidng8.SpaceFlight.Configurable.Ship
      )]
     public class ShieldGenerator : ComponentConfig
     {
-        /// <summary>
-        /// Extra hit points on top of armor.
-        /// </summary>
+        /// <summary>Extra hit points on top of armor.</summary>
         [Header("Shield Generator Attributes"),
          Tooltip("Extra hit points on top of armor.")]
         public float shield;
@@ -53,7 +49,7 @@ namespace eidng8.SpaceFlight.Configurable.Ship
                 .ToArray();
 
         /// <summary>
-        /// Validate that <see cref="shield"/> is positive. Sets it to
+        /// Validate that <see cref="shield" /> is positive. Sets it to
         /// positive if not, besides returning an error message.
         /// </summary>
         /// <returns>
@@ -61,8 +57,7 @@ namespace eidng8.SpaceFlight.Configurable.Ship
         /// string.
         /// </returns>
         protected virtual string ValidatePositiveShield() =>
-            Maths.ValidatePositiveValue(
-                this.shield,
+            this.shield.ValidatePositiveValue(
                 "Shield",
                 null,
                 () => this.shield = -this.shield
