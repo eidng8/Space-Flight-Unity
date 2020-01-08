@@ -10,7 +10,6 @@
 using eidng8.SpaceFlight.Configurable.Navigator;
 using eidng8.SpaceFlight.Objects;
 
-
 namespace eidng8.SpaceFlight.Mechanics.Nav
 {
     /// <summary>Handles object movement.</summary>
@@ -19,8 +18,6 @@ namespace eidng8.SpaceFlight.Mechanics.Nav
         bool HasTarget { get; }
 
         void Configure(NavigatorConfig config);
-
-        void FixedUpdate();
 
         void Man(IMovableObject obj);
     }

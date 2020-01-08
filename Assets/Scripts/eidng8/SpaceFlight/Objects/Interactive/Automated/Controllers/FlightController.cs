@@ -11,16 +11,16 @@ using eidng8.SpaceFlight.Objects.Dynamic;
 using eidng8.SpaceFlight.Objects.Interactive.Pilot;
 using UnityEngine;
 
-
 namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
 {
     /// <inheritdoc cref="IFlightController" />
     /// <remarks>
-    /// One may see that there is no definition here that hints on how the
-    /// controller interacts with motor. This is because the vast
-    /// differences among different types of applied physics there. Say
-    /// motions by force and acceleration need to work with completely
-    /// different sets of variables applied to the object.
+    ///     One may see that there is no definition here that hints on how
+    ///     the
+    ///     controller interacts with motor. This is because the vast
+    ///     differences among different types of applied physics there. Say
+    ///     motions by force and acceleration need to work with completely
+    ///     different sets of variables applied to the object.
     /// </remarks>
     public abstract class FlightController
         <TMotor, TMotorConfig, TPilot, TPilotConfig>
@@ -30,39 +30,14 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
         where TPilot : IPilot, new()
         where TPilotConfig : IPilotConfig
     {
-        public TMotorConfig motorConfig;
-
-        public TPilotConfig pilotConfig;
-
         /// <summary>Reference to a IMotor concrete class.</summary>
         protected TMotor motor;
 
+        public TMotorConfig motorConfig;
+
         protected TPilot pilot;
 
-        protected virtual void Awake()
-        {
-            this.motor = new TMotor();
-            this.ConfigureMotor();
-            this.pilot = new TPilot();
-            this.ConfigurePilot();
-        }
-
-        protected virtual void ConfigureMotor()
-        {
-            this.motor.Configure(this.motorConfig);
-        }
-
-        protected virtual void ConfigurePilot()
-        {
-            this.pilot.Configure(this.pilotConfig);
-            this.pilot.TakeControlOfMotor(this.motor);
-            this.pilot.Awake();
-        }
-
-        protected virtual void FixedUpdate()
-        {
-            this.pilot.FixedUpdate();
-        }
+        public TPilotConfig pilotConfig;
 
         /// <inheritdoc />
         public virtual float Speed => this.Body.velocity.magnitude;
@@ -71,26 +46,28 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
         public virtual Vector3 Velocity => this.Body.velocity;
 
         /// <inheritdoc />
-        public virtual float DistanceTo(Vector3 target) =>
-            Vector3.Distance(this.transform.position, target);
+        public virtual float DistanceTo(Vector3 target) {
+            return Vector3.Distance(this.transform.position, target);
+        }
 
         /// <inheritdoc />
         /// <remarks>
-        /// <a
-        ///     href="https://www.math10.com/en/algebra/formulas-for-short-multiplication.html">
-        /// Polynomial Identities
-        /// </a>
-        /// and
-        /// <a
-        ///     href="https://opentextbc.ca/physicstestbook2/chapter/motion-equations-for-constant-acceleration-in-one-dimension/">
-        /// Motion
-        /// </a>
-        /// . Ah! Back to physics and maths. The two links provide lectures
-        /// needed for this calculation. Here we have to find out the time
-        /// needed to cover the distance. We use the formula with initial speed
-        /// and constant acceleration: <c>d=vt+at²</c>. The formula is then
-        /// transformed as following:
-        /// <code>
+        ///     <a
+        ///         href="https://www.math10.com/en/algebra/formulas-for-short-multiplication.html">
+        ///         Polynomial Identities
+        ///     </a>
+        ///     and
+        ///     <a
+        ///         href="https://opentextbc.ca/physicstestbook2/chapter/motion-equations-for-constant-acceleration-in-one-dimension/">
+        ///         Motion
+        ///     </a>
+        ///     . Ah! Back to physics and maths. The two links provide lectures
+        ///     needed for this calculation. Here we have to find out the time
+        ///     needed to cover the distance. We use the formula with initial
+        ///     speed
+        ///     and constant acceleration: <c>d=vt+at²</c>. The formula is then
+        ///     transformed as following:
+        ///     <code>
         /// => at² + vt = d
         /// 
         /// * Both side divide by `a`
@@ -144,13 +121,14 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
         /// </remarks>
         /// <param name="distance">Distance to be covered.</param>
         /// <returns>
-        /// The estimated time of arrival. In case of deceleration,
-        /// <c>float.PositiveInfinity</c> may be returned if it couldn't reach
-        /// the target. The actual unit is not crucial in most circumstances.
-        /// One could think it were in seconds.
+        ///     The estimated time of arrival. In case of deceleration,
+        ///     <c>float.PositiveInfinity</c> may be returned if it couldn't
+        ///     reach
+        ///     the target. The actual unit is not crucial in most
+        ///     circumstances.
+        ///     One could think it were in seconds.
         /// </returns>
-        public virtual float EstimatedArrival(float distance)
-        {
+        public virtual float EstimatedArrival(float distance) {
             float v = this.Speed;
             float a = this.motor.Acceleration;
 
@@ -178,14 +156,34 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
         }
 
         /// <inheritdoc />
-        public virtual bool IsFacing(Vector3 target, float tolerance = 45)
-        {
+        public virtual bool IsFacing(Vector3 target, float tolerance = 45) {
             Transform me = this.transform;
             Vector3 dir = target - me.position;
             float ang = Vector3.Angle(dir, me.forward);
             tolerance = Mathf.Clamp(tolerance, 0, 360);
             return ang >= -tolerance && ang <= tolerance
                    || ang >= 360 - tolerance;
+        }
+
+        protected virtual void Awake() {
+            this.motor = new TMotor();
+            this.ConfigureMotor();
+            this.pilot = new TPilot();
+            this.ConfigurePilot();
+        }
+
+        protected virtual void ConfigureMotor() {
+            this.motor.Configure(this.motorConfig);
+        }
+
+        protected virtual void ConfigurePilot() {
+            this.pilot.Configure(this.pilotConfig);
+            this.pilot.TakeControlOfMotor(this.motor);
+            this.pilot.Awake();
+        }
+
+        protected virtual void FixedUpdate() {
+            this.pilot.FixedUpdate();
         }
     }
 }

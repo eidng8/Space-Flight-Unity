@@ -11,13 +11,12 @@ using eidng8.SpaceFlight.Objects.Dynamic.Motors;
 using eidng8.SpaceFlight.Objects.Interactive.Pilot;
 using UnityEngine;
 
-
 namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
 {
     /// <inheritdoc cref="FlightController{TM,TMC,TP,TPC}" />
     /// <remarks>
-    /// This controller uses full physics. Physics used: Newton's
-    /// laws.
+    ///     This controller uses full physics. Physics used: Newton's
+    ///     laws.
     /// </remarks>
     [RequireComponent(typeof(Rigidbody))]
     public abstract class Force4XController<TPilot, TPilotConfig>
@@ -34,8 +33,7 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
         }
 
 
-        protected override void FixedUpdate()
-        {
+        protected override void FixedUpdate() {
             base.FixedUpdate();
             this.Body.AddForce(
                 this.motor.GenerateThrust() * this.transform.forward

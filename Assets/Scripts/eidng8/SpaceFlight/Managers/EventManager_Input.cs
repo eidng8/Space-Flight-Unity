@@ -8,6 +8,7 @@
 // ---------------------------------------------------------------------------
 
 using eidng8.SpaceFlight.Events;
+using eidng8.SpaceFlight.Objects;
 using UnityEngine;
 
 
@@ -18,68 +19,83 @@ namespace eidng8.SpaceFlight.Managers
     public sealed partial class EventManager
     {
         /// <summary>
-        /// Handles the raw input event from the
-        /// <see cref="InputEventManager" /> and converts it to the
-        /// <see cref="UserEvents.Select" /> event. This event binding is
-        /// performed in the <see cref="InputEventManager" /> inspector UI at
-        /// design time.
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
+        ///     <see cref="Events.UserEvents.Select" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
         /// </summary>
-        public void RawInput_OnUserAccelerate(float delta) {
-            this.TriggerUserEvent(
-                UserEvents.Accelerate,
+        public void RawInput_OnAccelerate(float delta) {
+            EventManager.TriggerUserEvent(
+                Events.UserEvents.Accelerate,
                 new UserEventArgs {acceleration = delta}
             );
         }
 
         /// <summary>
-        /// Handles the raw input event from the
-        /// <see cref="InputEventManager" /> and converts it to the
-        /// <see cref="UserEvents.Context" /> event. This event binding is
-        /// performed in the <see cref="InputEventManager" /> inspector UI at
-        /// design time.
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
+        ///     <see cref="Events.UserEvents.Context" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
         /// </summary>
-        public void RawInput_OnUserContext() {
+        public void RawInput_OnContext() {
             UserEventArgs args = new UserEventArgs();
             if (this.CameraRaycast(out RaycastHit hit)) {
                 args.hasTarget = true;
-                args.target = hit.transform;
+                args.target =
+                    hit.collider.gameObject.GetComponent<SpaceObject>();
             }
 
-            this.TriggerUserEvent(UserEvents.Context, args);
+            EventManager.TriggerUserEvent(Events.UserEvents.Context, args);
         }
 
         /// <summary>
-        /// Handles the raw input event from the
-        /// <see cref="InputEventManager" /> and converts it to the
-        /// <see cref="UserEvents.Extension" /> event. This event binding is
-        /// performed in the <see cref="InputEventManager" /> inspector UI at
-        /// design time.
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
+        ///     <see cref="Events.UserEvents.Extension" /> event. This event
+        ///     binding
+        ///     is performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
         /// </summary>
-        public void RawInput_OnUserExtension() {
+        public void RawInput_OnExtension() {
             UserEventArgs args = new UserEventArgs();
             if (this.CameraRaycast(out RaycastHit hit)) {
                 args.hasTarget = true;
-                args.target = hit.transform;
+                args.target =
+                    hit.collider.gameObject.GetComponent<SpaceObject>();
             }
 
-            this.TriggerUserEvent(UserEvents.Extension, args);
+            EventManager.TriggerUserEvent(Events.UserEvents.Extension, args);
         }
 
         /// <summary>
-        /// Handles the raw input event from the
-        /// <see cref="InputEventManager" /> and converts it to the
-        /// <see cref="UserEvents.Select" /> event. This event binding is
-        /// performed in the <see cref="InputEventManager" /> inspector UI at
-        /// design time.
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
+        ///     <see cref="Events.UserEvents.Select" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
         /// </summary>
-        public void RawInput_OnUserSelect() {
+        public void RawInput_OnSelect() {
             UserEventArgs args = new UserEventArgs();
             if (this.CameraRaycast(out RaycastHit hit)) {
                 args.hasTarget = true;
-                args.target = hit.transform;
+                args.target =
+                    hit.collider.gameObject.GetComponent<SpaceObject>();
             }
 
-            this.TriggerUserEvent(UserEvents.Select, args);
+            EventManager.TriggerUserEvent(Events.UserEvents.Select, args);
         }
     }
 }

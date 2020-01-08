@@ -11,13 +11,12 @@ using eidng8.SpaceFlight.Objects.Dynamic.Motors;
 using eidng8.SpaceFlight.Objects.Interactive.Pilot;
 using UnityEngine;
 
-
 namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
 {
     /// <inheritdoc cref="FlightController{TM,TMC,TP,TPC}" />
     /// <remarks>
-    /// This controller uses acceleration. So it's not fully physical.
-    /// Physics used: Motion with constant acceleration.
+    ///     This controller uses acceleration. So it's not fully physical.
+    ///     Physics used: Motion with constant acceleration.
     /// </remarks>
     [RequireComponent(typeof(Rigidbody))]
     public abstract class AccelerationController<TPilot, TPilotConfig>
@@ -34,36 +33,35 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Automated.Controllers
         }
 
         /// <inheritdoc />
-        protected override void ConfigureMotor()
-        {
+        protected override void ConfigureMotor() {
             this.motorConfig.rotation = this.transform.rotation;
             base.ConfigureMotor();
         }
 
         /// <summary>
-        /// Calculate and apply velocity to game object. It should be called in
-        /// <c>FixedUpdate()</c>.
-        /// <para>
-        /// Remember that it is doing actual physics calculation here. Though
-        /// Unity reliefs us from a lot of burden. We still need to have
-        /// Newton's Laws in mind to understand the outcome of such
-        /// calculation.
-        /// </para>
+        ///     Calculate and apply velocity to game object. It should be
+        ///     called in
+        ///     <c>FixedUpdate()</c>.
+        ///     <para>
+        ///         Remember that it is doing actual physics calculation here.
+        ///         Though
+        ///         Unity reliefs us from a lot of burden. We still need to
+        ///         have
+        ///         Newton's Laws in mind to understand the outcome of such
+        ///         calculation.
+        ///     </para>
         /// </summary>
-        protected virtual void ApplySpeed()
-        {
+        protected virtual void ApplySpeed() {
             float velocity = this.motor.GetVelocity(Time.fixedDeltaTime);
             this.Body.velocity = velocity * this.transform.forward;
         }
 
         /// <summary>Actually makes the turn.</summary>
-        protected virtual void ApplyTurn()
-        {
+        protected virtual void ApplyTurn() {
             this.transform.rotation = this.motor.GetRoll(Time.fixedDeltaTime);
         }
 
-        protected override void FixedUpdate()
-        {
+        protected override void FixedUpdate() {
             base.FixedUpdate();
             this.ApplyTurn();
             this.ApplySpeed();

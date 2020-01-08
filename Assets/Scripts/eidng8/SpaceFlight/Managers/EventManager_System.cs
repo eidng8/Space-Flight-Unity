@@ -18,58 +18,65 @@ namespace eidng8.SpaceFlight.Managers
     public sealed partial class EventManager
     {
         /// <summary>Holds all registered system event listeners.</summary>
-        private Dictionary<SystemEvents, Action<SystemEventArgs>> _sysEvents;
+        private static readonly
+            Dictionary<SystemEvents, Action<SystemEventArgs>>
+            SysEvents
+                = new Dictionary<SystemEvents, Action<SystemEventArgs>>(16);
 
         /// <summary>
-        /// Removes the specified listener from
-        /// <see cref="EventChannels.System" /> channel.
+        ///     Removes the specified listener from
+        ///     <see cref="EventChannels.System" /> channel.
         /// </summary>
-        /// <param name="eventsName"></param>
+        /// <param name="eventName"></param>
         /// <param name="listener"></param>
-        public void OffSystemEvent(
-            SystemEvents eventName,
-            Action<SystemEventArgs> listener
-        ) {
-            if (this._sysEvents.TryGetValue(eventName, out var evt)) {
-                evt -= listener;
-                this._sysEvents[eventName] = evt;
-            }
-        }
-
-        /// <summary>
-        /// Listens on the specified event from
-        /// <see cref="EventChannels.System" /> channel.
-        /// </summary>
-        /// <param name="eventsName"></param>
-        /// <param name="listener"></param>
-        public void OnSystemEvent(
+        public static void OffSystemEvent(
             SystemEvents eventName,
             Action<SystemEventArgs> listener
         ) {
             Action<SystemEventArgs> evt;
-            if (this._sysEvents.TryGetValue(eventName, out evt)) {
+            if (!EventManager.SysEvents.TryGetValue(eventName, out evt)) {
+                return;
+            }
+
+            evt -= listener;
+            EventManager.SysEvents[eventName] = evt;
+        }
+
+        /// <summary>
+        ///     Listens on the specified event from
+        ///     <see cref="EventChannels.System" /> channel.
+        /// </summary>
+        /// <param name="eventName"></param>
+        /// <param name="listener"></param>
+        public static void OnSystemEvent(
+            SystemEvents eventName,
+            Action<SystemEventArgs> listener
+        ) {
+            Action<SystemEventArgs> evt;
+            if (EventManager.SysEvents.TryGetValue(eventName, out evt)) {
                 // Add more event to the existing one
                 evt += listener;
                 // Update the Dictionary
-                this._sysEvents[eventName] = evt;
+                EventManager.SysEvents[eventName] = evt;
             } else {
                 // Add event to the Dictionary for the first time
                 evt += listener;
-                this._sysEvents.Add(eventName, evt);
+                EventManager.SysEvents.Add(eventName, evt);
             }
         }
 
         /// <summary>
-        /// Triggers the specified event on the
-        /// <see cref="EventChannels.System" /> channel.
+        ///     Triggers the specified event on the
+        ///     <see cref="EventChannels.System" /> channel.
         /// </summary>
-        /// <param name="eventsName"></param>
+        /// <param name="eventName"></param>
         /// <param name="args"></param>
-        public void TriggerSystemEvent(
+        public static void TriggerSystemEvent(
             SystemEvents eventName,
             SystemEventArgs args
         ) {
-            if (this._sysEvents.TryGetValue(eventName, out var evt)) {
+            Action<SystemEventArgs> evt;
+            if (EventManager.SysEvents.TryGetValue(eventName, out evt)) {
                 evt.Invoke(args);
             }
         }

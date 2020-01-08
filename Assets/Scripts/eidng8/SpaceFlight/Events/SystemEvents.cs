@@ -12,10 +12,17 @@ namespace eidng8.SpaceFlight.Events
     public enum SystemEvents
     {
         /// <summary>
-        /// The current scene has changed. This is triggered after the scene
-        /// has been loaded.
+        ///     The current scene is about to change. This is triggered before
+        ///     the
+        ///     scene were changed.
         /// </summary>
-        /// <returns></returns>
+        SceneWillChange,
+
+        /// <summary>
+        ///     The current scene has changed. This is triggered after the
+        ///     scene
+        ///     has been loaded.
+        /// </summary>
         SceneChanged
     }
 }

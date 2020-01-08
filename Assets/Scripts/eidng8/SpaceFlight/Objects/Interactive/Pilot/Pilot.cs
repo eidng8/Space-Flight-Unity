@@ -13,20 +13,19 @@ using eidng8.SpaceFlight.Objects.Dynamic;
 using eidng8.SpaceFlight.Objects.Interactive.Automated;
 using UnityEngine;
 
-
 namespace eidng8.SpaceFlight.Objects.Interactive.Pilot
 {
     public abstract class Pilot<TConfig, TMotor> : IPilot
         where TConfig : IPilotConfig
         where TMotor : IMotorBase
     {
+        private bool _listeningEvents;
+        private Transform _target;
         protected TConfig config;
 
         protected TMotor motor;
 
         protected IFlightController targetControl;
-        private bool _listeningEvents;
-        private Transform _target;
 
         /// <inheritdoc />
         public bool HasTarget { get; private set; }
@@ -54,18 +53,19 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot
 
         /// <inheritdoc />
         public void Configure(IPilotConfig cfg) {
-            this.config = (TConfig)cfg;
+            this.config = (TConfig) cfg;
         }
 
         /// <inheritdoc />
         public abstract void FixedUpdate();
 
-        public void TakeControlOfMotor(IMotorBase mtr) =>
-            this.motor = (TMotor)mtr;
+        public void TakeControlOfMotor(IMotorBase mtr) {
+            this.motor = (TMotor) mtr;
+        }
 
         /// <summary>
-        /// The objected selected event handler. Sets <c>Target</c> to the
-        /// selected object.
+        ///     The objected selected event handler. Sets <c>Target</c> to the
+        ///     selected object.
         /// </summary>
         protected virtual void OnSelectTarget(UserEventArgs args) {
             if (args?.hasTarget == true) {
@@ -76,7 +76,7 @@ namespace eidng8.SpaceFlight.Objects.Interactive.Pilot
 
         /// <summary>Register listeners to game events.</summary>
         protected virtual void RegisterEvents() {
-            EventManager.M.OnUserEvent(
+            EventManager.OnUserEvent(
                 UserEvents.Select,
                 this.OnSelectTarget
             );

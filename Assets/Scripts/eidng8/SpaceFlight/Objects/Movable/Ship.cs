@@ -11,112 +11,52 @@ using System.Collections.Generic;
 using eidng8.SpaceFlight.Configurable;
 using UnityEngine;
 
-
 namespace eidng8.SpaceFlight.Objects.Movable
 {
-    public class Ship : SpaceObject, IMovableObject
+    public partial class Ship : SpaceObject, IMovableObject
     {
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mAcceleration;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mArmor;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mCapacitor;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mEnergy;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mLastSpeed;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mMaxArmor;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mMaxForward;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mMaxPan;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mMaxReverse;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mMaxShield;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mMaxTorque;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mPower;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mRechargeRate;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mShield;
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mSpeed;
-
         /// <inheritdoc />
-        public float Acceleration => this.mAcceleration;
-
-        /// <summary>Current armor value.</summary>
-        public float Armor => this.mArmor;
-
-        /// <summary>Maximum energy value.</summary>
-        public float Capacitor => this.mCapacitor;
-
-        /// <summary>Current energy value.</summary>
-        public float Energy => this.mEnergy;
-
-        /// <summary>Ship's mass.</summary>
-        public float Mass => this.Body.mass;
-
-        /// <summary>Maximum armor value.</summary>
-        public float MaxArmor => this.mMaxArmor;
-
-        /// <inheritdoc />
-        public float MaxForward => this.mMaxForward;
-
-        /// <inheritdoc />
-        public float MaxPan => this.mMaxPan;
-
-        /// <inheritdoc />
-        public float MaxReverse => this.mMaxReverse;
-
-        /// <summary>Maximum shield value.</summary>
-        public float MaxShield => this.mMaxShield;
-
-        /// <inheritdoc />
-        public float MaxTorque => this.mMaxTorque;
-
-        /// <summary>Excessive power value.</summary>
-        public float Power => this.mPower;
-
-        /// <summary>Energy recharge value per second.</summary>
-        public float RechargeRate => this.mRechargeRate;
-
-        /// <summary>Current shield value.</summary>
-        public float Shield => this.mShield;
-
-        /// <inheritdoc />
-        public float Speed => this.mSpeed;
-
-        /// <inheritdoc />
-        public Vector3 Velocity => this.Body.velocity;
+        /// <remarks>
+        ///     Please note that <see cref="Speed" /> and
+        ///     <see cref="Acceleration" /> will change after this method is
+        ///     called.
+        /// </remarks>
+        public virtual void Propel(float force) {
+            this.mLastSpeed = this.mSpeed;
+            force = Mathf.Clamp(force, -this.MaxReverse, this.mMaxForward);
+            this.Body.AddForce(this.transform.forward * force);
+            this.mSpeed = this.Velocity.magnitude;
+            this.mAcceleration =
+                (this.mSpeed - this.mLastSpeed) / Time.fixedDeltaTime;
+        }
 
         /// <inheritdoc />
         /// <remarks>
-        /// It is tempting to use <c>ExtendoObject</c>. But I prefer saving
-        /// runtime processing time.
+        ///     Please note that <see cref="Speed" /> and
+        ///     <see cref="Acceleration" /> will change after this method is
+        ///     called.
+        /// </remarks>
+        public virtual void PropelThrottle(float throttle) {
+            float force = throttle < 0 ? this.MaxReverse : this.MaxForward;
+            this.Propel(force * throttle);
+        }
+
+        public virtual void Rotate(Vector3 torque) {
+            this.Body.AddTorque(torque);
+        }
+
+        /// <inheritdoc />
+        /// <remarks>
+        ///     It is tempting to use <c>ExtendoObject</c>. But I prefer saving
+        ///     runtime processing time.
         /// </remarks>
         public override void Configure(IConfigurable config) {
             float v;
             Dictionary<string, float> dict = config.Aggregate();
+            if (dict.TryGetValue("mass", out v)) {
+                this.Body.mass = v;
+            }
+
             this.mMaxForward = 0;
             if (dict.TryGetValue("maxForward", out v)) {
                 this.mMaxForward = v;
@@ -168,34 +108,23 @@ namespace eidng8.SpaceFlight.Objects.Movable
             }
         }
 
-        /// <inheritdoc />
-        /// <remarks>
-        /// Please note that <see cref="Speed" /> and
-        /// <see cref="Acceleration" /> will change after this method is
-        /// called.
-        /// </remarks>
-        public virtual void Propel(float force) {
-            this.mLastSpeed = this.mSpeed;
-            force = Mathf.Clamp(force, this.MaxReverse, this.mMaxForward);
-            this.Body.AddForce(this.transform.forward * force);
-            this.mSpeed = this.Velocity.magnitude;
-            this.mAcceleration =
-                (this.mSpeed - this.mLastSpeed) / Time.fixedDeltaTime;
+        public virtual void RotateThrottle(Vector3 throttle) {
+            this.Rotate(this.MaxTorque * throttle);
         }
 
-        /// <inheritdoc />
-        /// <remarks>
-        /// Please note that <see cref="Speed" /> and
-        /// <see cref="Acceleration" /> will change after this method is
-        /// called.
-        /// </remarks>
-        public virtual void PropelThrottle(float throttle) {
-            var force = throttle < 0 ? this.MaxReverse : this.MaxForward;
-            this.Propel(force * throttle);
+        public virtual void Pan(Vector3 force) {
+            // Make sure there will be no force applied to forward/backward
+            // direction.
+            // We first project the given vector on to the forward vector
+            // to find out how much force is applied in that direction.
+            // Then subtract it.
+            Vector3 vp = Vector3.Project(force, this.transform.forward);
+            force -= vp;
+            this.Body.AddForce(force);
         }
 
-        public virtual void Rotate(Vector3 torque) {
-            this.Body.AddTorque(torque);
+        public virtual void PanThrottle(Vector3 throttle) {
+            this.Pan(this.MaxPan * throttle);
         }
 
         public virtual void Use(int component) { }

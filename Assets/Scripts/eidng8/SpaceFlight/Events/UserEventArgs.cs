@@ -8,8 +8,7 @@
 // ---------------------------------------------------------------------------
 
 using System;
-using UnityEngine;
-
+using eidng8.SpaceFlight.Objects;
 
 namespace eidng8.SpaceFlight.Events
 {
@@ -26,9 +25,9 @@ namespace eidng8.SpaceFlight.Events
         public bool hasTarget;
 
         /// <summary>The object that triggers the event</summary>
-        public Transform source;
+        public SpaceObject source;
 
         /// <summary>The object to be acted on.</summary>
-        public Transform target;
+        public SpaceObject target;
     }
 }

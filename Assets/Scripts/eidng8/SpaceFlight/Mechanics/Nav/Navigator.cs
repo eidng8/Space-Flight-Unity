@@ -11,17 +11,13 @@ using eidng8.SpaceFlight.Configurable.Navigator;
 using eidng8.SpaceFlight.Objects;
 using UnityEngine;
 
-
 namespace eidng8.SpaceFlight.Mechanics.Nav
 {
-    /// <inheritdoc cref="INavigator" />
-    public abstract class Navigator : MonoBehaviour, INavigator
+    /// <inheritdoc />
+    public abstract class Navigator : INavigator
     {
-        protected IMovableObject mShip;
         private Transform _target;
-
-        /// <inheritdoc />
-        public bool HasTarget { get; private set; }
+        protected IMovableObject mShip;
 
         public Transform Target {
             get => this.HasTarget ? this._target : null;
@@ -31,20 +27,20 @@ namespace eidng8.SpaceFlight.Mechanics.Nav
             }
         }
 
-        public void ClearTarget() {
-            this._target = null;
-            this.HasTarget = false;
-        }
+        /// <inheritdoc />
+        public bool HasTarget { get; private set; }
 
         /// <inheritdoc />
         public abstract void Configure(NavigatorConfig config);
 
         /// <inheritdoc />
-        public abstract void FixedUpdate();
-
-        /// <inheritdoc />
         public void Man(IMovableObject obj) {
             this.mShip = obj;
+        }
+
+        public void ClearTarget() {
+            this._target = null;
+            this.HasTarget = false;
         }
     }
 }

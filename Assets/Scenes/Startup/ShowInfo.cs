@@ -4,14 +4,10 @@ using eidng8.SpaceFlight.Objects.Interactive.Automated;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 namespace Startup
 {
     public class ShowInfo : MonoBehaviour
     {
-        public Text info;
-
-        public MonoBehaviour obj;
         private bool _act;
 
         private bool _arb;
@@ -19,12 +15,15 @@ namespace Startup
 
         private float _lastSelectTime;
         private Rigidbody _rb;
+        public Text info;
 
-        private Rigidbody Body {
-            get {
-                if (_arb) {
-                    return _rb;
-                }
+        public MonoBehaviour obj;
+
+        private Rigidbody Body
+        {
+            get
+            {
+                if (_arb) return _rb;
 
                 _rb = obj.GetComponent<Rigidbody>();
                 _arb = true;
@@ -33,11 +32,11 @@ namespace Startup
             }
         }
 
-        private IThrottledFlightController Ctl {
-            get {
-                if (_act) {
-                    return _ctl;
-                }
+        private IThrottledFlightController Ctl
+        {
+            get
+            {
+                if (_act) return _ctl;
 
                 _ctl = obj.GetComponent<IThrottledFlightController>();
                 _act = true;
@@ -53,15 +52,15 @@ namespace Startup
 
         private void Start()
         {
-            EventManager.M.OnUserEvent(UserEvents.Select, OnSelectObject);
+            EventManager.OnUserEvent(UserEvents.Select, OnSelectObject);
         }
 
         // Update is called once per frame
         private void Update()
         {
-            if (!info.enabled) { return; }
+            if (!info.enabled) return;
 
-            Vector3 vel = Body.velocity;
+            var vel = Body.velocity;
             info.text = $"Time: {Time.time - _lastSelectTime}\n"
                         + $"Throttle: {Ctl.Throttle}\n"
                         + $"Speed Vector: {vel}\n"
