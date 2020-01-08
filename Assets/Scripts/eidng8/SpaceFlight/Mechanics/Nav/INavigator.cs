@@ -9,6 +9,7 @@
 
 using eidng8.SpaceFlight.Configurable.Navigator;
 using eidng8.SpaceFlight.Objects;
+using UnityEngine;
 
 namespace eidng8.SpaceFlight.Mechanics.Nav
 {
@@ -16,6 +17,10 @@ namespace eidng8.SpaceFlight.Mechanics.Nav
     public interface INavigator
     {
         bool HasTarget { get; }
+
+        Transform Target { get; set; }
+
+        void ClearTarget();
 
         void Configure(NavigatorConfig config);
 

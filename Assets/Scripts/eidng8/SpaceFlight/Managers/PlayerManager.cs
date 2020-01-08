@@ -23,8 +23,7 @@ namespace eidng8.SpaceFlight.Managers
 
         private NavigatorEventDelegate _navigator;
 
-        private Ship _ship;
-
+        public Ship Ship { get; private set; }
 
         public void Awake() {
             if (!PlayerManager._instance) {
@@ -46,7 +45,7 @@ namespace eidng8.SpaceFlight.Managers
             NavigatorEventDelegate nav = new NavigatorEventDelegate();
             // nav.Configure(nav_config);
             nav.Man(ship);
-            this._ship = ship;
+            this.Ship = ship;
             this._navigator = nav;
             GameManager.PlayerShip = ship;
         }
