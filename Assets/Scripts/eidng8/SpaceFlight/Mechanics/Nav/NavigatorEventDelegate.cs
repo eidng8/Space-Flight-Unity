@@ -36,6 +36,16 @@ namespace eidng8.SpaceFlight.Mechanics.Nav
             EventManager.OnUserEvent(UserEvents.Roll, this.Roll);
             EventManager.OnUserEvent(UserEvents.Yaw, this.Yaw);
             EventManager.OnUserEvent(UserEvents.Jump, this.Jump);
+            EventManager.OnUserEvent(UserEvents.Stabilize, this.Stabilize);
+            EventManager.OnUserEvent(UserEvents.FullStop, this.FullStop);
+        }
+
+        private void Stabilize(UserEventArgs _) {
+            this.mShip.Stabilize();
+        }
+
+        private void FullStop(UserEventArgs _) {
+            this.mShip.FullStop();
         }
 
         private void Jump(UserEventArgs _) { }

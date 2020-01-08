@@ -107,6 +107,40 @@ namespace eidng8.SpaceFlight.Managers
         ///     Handles the raw input event from the
         ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
         ///     converts it to the
+        ///     <see cref="Events.UserEvents.Stabilize" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
+        /// </summary>
+        public void RawInput_OnStabilize() {
+            EventManager.TriggerUserEvent(
+                Events.UserEvents.Stabilize,
+                new UserEventArgs()
+            );
+        }
+
+        /// <summary>
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
+        ///     <see cref="Events.UserEvents.FullStop" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
+        /// </summary>
+        public void RawInput_OnFullStop() {
+            EventManager.TriggerUserEvent(
+                Events.UserEvents.FullStop,
+                new UserEventArgs()
+            );
+        }
+
+        /// <summary>
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
         ///     <see cref="Events.UserEvents.Roll" /> event. This event
         ///     binding is
         ///     performed in the

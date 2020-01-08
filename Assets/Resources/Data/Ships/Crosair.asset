@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9c859273fc9413893946edc217a3f73, type: 3}
+  m_Name: Crosair
+  m_EditorClassIdentifier: 
+  mass: 10
+  components:
+  - {fileID: 11400000, guid: f3475ee414080124f8dacd643c16e8ec, type: 2}
+  - {fileID: 11400000, guid: 2b540c085a013c64f830fd034a2ea2c2, type: 2}
+  - {fileID: 11400000, guid: 1bbe107a1687be5478c47aea9238d85e, type: 2}
+  - {fileID: 11400000, guid: ba488d57a67e68f46b6a49cab7e14fd5, type: 2}
+  - {fileID: 11400000, guid: 18b2546a62dbced43b30007fe8c9a758, type: 2}
+  - {fileID: 11400000, guid: 2514720d9ad14874eb7980a55b26a9dd, type: 2}
+  prefab: {fileID: 8039300534008371995, guid: 263da169159f4714ab24124533e48344, type: 3}
+  size: 20

@@ -51,5 +51,9 @@ namespace eidng8.SpaceFlight.Objects
         void Rotate(Vector3 torque);
 
         void RotateThrottle(Vector3 throttle);
+
+        void Stabilize();
+
+        void FullStop();
     }
 }

@@ -33,6 +33,10 @@ namespace eidng8.SpaceFlight.Events
 
         Yaw,
 
+        Stabilize,
+
+        FullStop,
+
         Jump,
 
         LookHorizontal,

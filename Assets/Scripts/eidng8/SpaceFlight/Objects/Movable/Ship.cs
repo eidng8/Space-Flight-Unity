@@ -57,11 +57,21 @@ namespace eidng8.SpaceFlight.Objects.Movable
         }
 
         public virtual void Rotate(Vector3 torque) {
-            this.Body.AddRelativeTorque(torque);
+            this.Body.AddRelativeTorque(
+                Vector3.ClampMagnitude(torque, this.MaxTorque)
+            );
         }
 
         public virtual void RotateThrottle(Vector3 throttle) {
             this.Rotate(this.MaxTorque * throttle);
+        }
+
+        public void Stabilize() {
+            this.Rotate(-this.Body.rotation.eulerAngles * this.MaxTorque);
+        }
+
+        public void FullStop() {
+            this.Propel(-this.Velocity.magnitude);
         }
 
         /// <inheritdoc />

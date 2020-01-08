@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.34042364, g: 0.50996804, b: 0.8490566, a: 1}
+  m_AmbientSkyColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 5067a9abf6b09c843bc613d24f979a0f, type: 2}
   m_HaloStrength: 0.5
@@ -550,29 +550,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - m_name: Accelerate
-    m_actionName: Accelerate
-    m_keyCode: 0
-    m_eventType: 0
-    m_inputState: 0
-    m_playerID: 0
-    m_onAction:
-      m_PersistentCalls:
-        m_Calls: []
-    m_onAxis:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1547665683}
-          m_MethodName: RawInput_OnAccelerate
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   - m_name: Select
     m_actionName: Select
     m_keyCode: 0
@@ -652,6 +629,74 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1547665683}
           m_MethodName: RawInput_OnExtension
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    m_onAxis:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1547665683}
+          m_MethodName: RawInput_OnAccelerate
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - m_name: Stabilize
+    m_actionName: Stabilize
+    m_keyCode: 0
+    m_eventType: 1
+    m_inputState: 2
+    m_playerID: 0
+    m_onAction:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1547665683}
+          m_MethodName: RawInput_OnStabilize
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    m_onAxis:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1547665683}
+          m_MethodName: RawInput_OnAccelerate
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - m_name: Full Stop
+    m_actionName: Full Stop
+    m_keyCode: 0
+    m_eventType: 1
+    m_inputState: 2
+    m_playerID: 0
+    m_onAction:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1547665683}
+          m_MethodName: RawInput_OnFullStop
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -842,7 +887,7 @@ MonoBehaviour:
         m_sensitivity: 3
         m_scale: 1
         m_snap: 1
-        m_invert: 1
+        m_invert: 0
         m_type: 2
         m_axis: 0
         m_joystick: 0
@@ -1194,6 +1239,42 @@ MonoBehaviour:
         m_gamepadButton: 0
         m_gamepadAxis: 0
         m_gamepadIndex: 0
+    - m_name: Stabilize
+      m_description: 
+      m_bindings:
+      - m_positive: 98
+        m_negative: 0
+        m_deadZoneType: 0
+        m_deadZone: 0
+        m_gravity: 1
+        m_sensitivity: 1
+        m_scale: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
+    - m_name: Full Stop
+      m_description: 
+      m_bindings:
+      - m_positive: 118
+        m_negative: 0
+        m_deadZoneType: 0
+        m_deadZone: 0
+        m_gravity: 1
+        m_sensitivity: 1
+        m_scale: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
   m_playerOneDefault: 85c52da314c14ce8bc1999635dc6e642
   m_playerTwoDefault: 
   m_playerThreeDefault: 
@@ -1245,9 +1326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5598189b3954ba5b1f632c2b6b50cb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followSpeed: 1.2
   keepDistance: 50
-  collision: 0
 --- !u!54 &1752722504
 Rigidbody:
   m_ObjectHideFlags: 0
