@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5900420e683840d6a0b0336a80ae6838, type: 3}
   m_Name: Player Config
   m_EditorClassIdentifier: 
-  id: Player
-  ship: {fileID: 11400000, guid: 7b4548bd9416e5446993dbd3a545329e, type: 2}
+  ship: {fileID: 11400000, guid: 9eb16d58028d0e14b90265d09d1ee743, type: 2}

@@ -229,7 +229,7 @@
         <Action name="Jump">
             <Description/>
             <Binding>
-                <Positive>Space</Positive>
+                <Positive>J</Positive>
                 <Negative>None</Negative>
                 <DeadZoneType>CutOff</DeadZoneType>
                 <DeadZone>0</DeadZone>

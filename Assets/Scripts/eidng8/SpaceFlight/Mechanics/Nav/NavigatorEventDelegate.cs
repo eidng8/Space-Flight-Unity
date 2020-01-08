@@ -10,6 +10,7 @@
 using eidng8.SpaceFlight.Configurable.Navigator;
 using eidng8.SpaceFlight.Events;
 using eidng8.SpaceFlight.Managers;
+using UnityEngine;
 
 namespace eidng8.SpaceFlight.Mechanics.Nav
 {
@@ -29,10 +30,34 @@ namespace eidng8.SpaceFlight.Mechanics.Nav
 
         protected virtual void RegisterEvents() {
             EventManager.OnUserEvent(UserEvents.Accelerate, this.Accelerate);
+            EventManager.OnUserEvent(UserEvents.Horizontal, this.Horizontal);
+            EventManager.OnUserEvent(UserEvents.Vertical, this.Vertical);
+            EventManager.OnUserEvent(UserEvents.Pitch, this.Pitch);
+            EventManager.OnUserEvent(UserEvents.Roll, this.Roll);
+            EventManager.OnUserEvent(UserEvents.Yaw, this.Yaw);
+            EventManager.OnUserEvent(UserEvents.Jump, this.Jump);
         }
 
+        private void Jump(UserEventArgs _) { }
+
+        private void Yaw(UserEventArgs args) {
+            this.mShip.RotateThrottle(Vector3.up * args.delta);
+        }
+
+        private void Roll(UserEventArgs args) {
+            this.mShip.RotateThrottle(Vector3.forward * args.delta);
+        }
+
+        private void Pitch(UserEventArgs args) {
+            this.mShip.RotateThrottle(Vector3.right * args.delta);
+        }
+
+        private void Vertical(UserEventArgs args) { }
+
+        private void Horizontal(UserEventArgs args) { }
+
         private void Accelerate(UserEventArgs args) {
-            this.mShip.PropelThrottle(args.acceleration);
+            this.mShip.PropelThrottle(args.delta);
         }
     }
 }

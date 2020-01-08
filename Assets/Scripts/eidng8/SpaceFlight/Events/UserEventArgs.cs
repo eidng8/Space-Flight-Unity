@@ -9,14 +9,18 @@
 
 using System;
 using eidng8.SpaceFlight.Objects;
+using UnityEngine;
 
 namespace eidng8.SpaceFlight.Events
 {
     [Serializable]
     public class UserEventArgs : ExtendedEventArgs
     {
-        /// <summary>Acceleration delta.</summary>
-        public float acceleration;
+        /// <summary>Delta value of the relative event.</summary>
+        public float delta;
+
+        /// <summary>Delta value of the relative event.</summary>
+        public Vector3 deltaVector3;
 
         /// <summary>Whether the event has a source.</summary>
         public bool hasSource;

@@ -22,6 +22,142 @@ namespace eidng8.SpaceFlight.Managers
         ///     Handles the raw input event from the
         ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
         ///     converts it to the
+        ///     <see cref="Events.UserEvents.Horizontal" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
+        /// </summary>
+        public void RawInput_OnHorizontal(float delta) {
+            EventManager.TriggerUserEvent(
+                Events.UserEvents.Horizontal,
+                new UserEventArgs {delta = delta}
+            );
+        }
+
+        /// <summary>
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
+        ///     <see cref="Events.UserEvents.Vertical" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
+        /// </summary>
+        public void RawInput_OnVertical(float delta) {
+            EventManager.TriggerUserEvent(
+                Events.UserEvents.Vertical,
+                new UserEventArgs {delta = delta}
+            );
+        }
+
+        /// <summary>
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
+        ///     <see cref="Events.UserEvents.Pitch" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
+        /// </summary>
+        public void RawInput_OnPitch(float delta) {
+            EventManager.TriggerUserEvent(
+                Events.UserEvents.Pitch,
+                new UserEventArgs {delta = delta}
+            );
+        }
+
+        /// <summary>
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
+        ///     <see cref="Events.UserEvents.Roll" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
+        /// </summary>
+        public void RawInput_OnRoll(float delta) {
+            EventManager.TriggerUserEvent(
+                Events.UserEvents.Roll,
+                new UserEventArgs {delta = delta}
+            );
+        }
+
+        /// <summary>
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
+        ///     <see cref="Events.UserEvents.Yaw" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
+        /// </summary>
+        public void RawInput_OnYaw(float delta) {
+            EventManager.TriggerUserEvent(
+                Events.UserEvents.Yaw,
+                new UserEventArgs {delta = delta}
+            );
+        }
+
+        /// <summary>
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
+        ///     <see cref="Events.UserEvents.Roll" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
+        /// </summary>
+        public void RawInput_OnLookHorizontal(float delta) {
+            EventManager.TriggerUserEvent(
+                Events.UserEvents.LookHorizontal,
+                new UserEventArgs {delta = delta}
+            );
+        }
+
+        /// <summary>
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
+        ///     <see cref="Events.UserEvents.Yaw" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
+        /// </summary>
+        public void RawInput_OnLookVertical(float delta) {
+            EventManager.TriggerUserEvent(
+                Events.UserEvents.LookVertical,
+                new UserEventArgs {delta = delta}
+            );
+        }
+
+        /// <summary>
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
+        ///     <see cref="Events.UserEvents.Jump" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
+        /// </summary>
+        public void RawInput_OnJump() {
+            EventManager.TriggerUserEvent(
+                Events.UserEvents.Jump,
+                new UserEventArgs()
+            );
+        }
+
+        /// <summary>
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
         ///     <see cref="Events.UserEvents.Select" /> event. This event
         ///     binding is
         ///     performed in the
@@ -31,7 +167,7 @@ namespace eidng8.SpaceFlight.Managers
         public void RawInput_OnAccelerate(float delta) {
             EventManager.TriggerUserEvent(
                 Events.UserEvents.Accelerate,
-                new UserEventArgs {acceleration = delta}
+                new UserEventArgs {delta = delta}
             );
         }
 

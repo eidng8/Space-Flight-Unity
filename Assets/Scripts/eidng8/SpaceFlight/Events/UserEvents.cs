@@ -17,6 +17,28 @@ namespace eidng8.SpaceFlight.Events
         /// </summary>
         Accelerate,
 
+        /// <summary>
+        ///     Pan left and right
+        /// </summary>
+        Horizontal,
+
+        /// <summary>
+        ///     Pan up and down
+        /// </summary>
+        Vertical,
+
+        Pitch,
+
+        Roll,
+
+        Yaw,
+
+        Jump,
+
+        LookHorizontal,
+
+        LookVertical,
+
         /// <summary>An selection event triggered by mouse left button click.</summary>
         Select,
 
@@ -26,6 +48,7 @@ namespace eidng8.SpaceFlight.Events
         /// <summary>An extension event triggered by mouse middle button click.</summary>
         Extension,
 
+        /// <summary>An object has been destroyed.</summary>
         Destroyed
     }
 }

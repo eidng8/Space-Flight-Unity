@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f19e0e4c068744f0bec29be0dbb2d6b8, type: 3}
   m_Name: Small Thruster
   m_EditorClassIdentifier: 
-  description: A small thruster
-  id: st1
   mass: 0.1
-  size: -1
   power: -1
-  maxForward: 10
-  maxReverse: 1
-  maxPan: 1
-  maxTorque: 1
+  size: -1
+  maxForward: 20
+  maxPan: 5
+  maxReverse: 5
+  maxTorque: 2

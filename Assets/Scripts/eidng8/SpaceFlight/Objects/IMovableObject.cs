@@ -9,7 +9,6 @@
 
 using UnityEngine;
 
-
 namespace eidng8.SpaceFlight.Objects
 {
     public interface IMovableObject
@@ -35,6 +34,10 @@ namespace eidng8.SpaceFlight.Objects
         /// <summary>Velocity in all directions.</summary>
         Vector3 Velocity { get; }
 
+        void Pan(Vector3 throttle);
+
+        void PanThrottle(Vector3 throttle);
+
         /// <summary>Perform actual movement.</summary>
         /// <param name="force"></param>
         void Propel(float force);
@@ -46,5 +49,7 @@ namespace eidng8.SpaceFlight.Objects
         /// <summary>Perform actual rotation.</summary>
         /// <param name="torque"></param>
         void Rotate(Vector3 torque);
+
+        void RotateThrottle(Vector3 throttle);
     }
 }

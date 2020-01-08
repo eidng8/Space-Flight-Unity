@@ -15,6 +15,21 @@ namespace eidng8.SpaceFlight.Objects.Movable
 {
     public partial class Ship : SpaceObject, IMovableObject
     {
+        public virtual void Pan(Vector3 force) {
+            // Make sure there will be no force applied to forward/backward
+            // direction.
+            // We first project the given vector on to the forward vector
+            // to find out how much force is applied in that direction.
+            // Then subtract it.
+            Vector3 vp = Vector3.Project(force, this.transform.forward);
+            force -= vp;
+            this.Body.AddForce(force);
+        }
+
+        public virtual void PanThrottle(Vector3 throttle) {
+            this.Pan(this.MaxPan * throttle);
+        }
+
         /// <inheritdoc />
         /// <remarks>
         ///     Please note that <see cref="Speed" /> and
@@ -24,7 +39,7 @@ namespace eidng8.SpaceFlight.Objects.Movable
         public virtual void Propel(float force) {
             this.mLastSpeed = this.mSpeed;
             force = Mathf.Clamp(force, -this.MaxReverse, this.mMaxForward);
-            this.Body.AddForce(this.transform.forward * force);
+            this.Body.AddRelativeForce(Vector3.forward * force);
             this.mSpeed = this.Velocity.magnitude;
             this.mAcceleration =
                 (this.mSpeed - this.mLastSpeed) / Time.fixedDeltaTime;
@@ -42,7 +57,11 @@ namespace eidng8.SpaceFlight.Objects.Movable
         }
 
         public virtual void Rotate(Vector3 torque) {
-            this.Body.AddTorque(torque);
+            this.Body.AddRelativeTorque(torque);
+        }
+
+        public virtual void RotateThrottle(Vector3 throttle) {
+            this.Rotate(this.MaxTorque * throttle);
         }
 
         /// <inheritdoc />
@@ -106,25 +125,6 @@ namespace eidng8.SpaceFlight.Objects.Movable
             if (dict.TryGetValue("recharge", out v)) {
                 this.mRechargeRate = v;
             }
-        }
-
-        public virtual void RotateThrottle(Vector3 throttle) {
-            this.Rotate(this.MaxTorque * throttle);
-        }
-
-        public virtual void Pan(Vector3 force) {
-            // Make sure there will be no force applied to forward/backward
-            // direction.
-            // We first project the given vector on to the forward vector
-            // to find out how much force is applied in that direction.
-            // Then subtract it.
-            Vector3 vp = Vector3.Project(force, this.transform.forward);
-            force -= vp;
-            this.Body.AddForce(force);
-        }
-
-        public virtual void PanThrottle(Vector3 throttle) {
-            this.Pan(this.MaxPan * throttle);
         }
 
         public virtual void Use(int component) { }
