@@ -15,18 +15,16 @@ namespace eidng8.SpaceFlight.Objects.Movable
 {
     public partial class Ship : SpaceObject, IMovableObject
     {
-        public virtual void Pan(Vector3 force) {
+        public virtual void Pan(Vector2 force) {
             // Make sure there will be no force applied to forward/backward
             // direction.
             // We first project the given vector on to the forward vector
             // to find out how much force is applied in that direction.
             // Then subtract it.
-            Vector3 vp = Vector3.Project(force, this.transform.forward);
-            force -= vp;
-            this.Body.AddForce(force);
+            this.Propel(new Vector3(force.x, force.y));
         }
 
-        public virtual void PanThrottle(Vector3 throttle) {
+        public virtual void PanThrottle(Vector2 throttle) {
             this.Pan(this.MaxPan * throttle);
         }
 
@@ -37,12 +35,8 @@ namespace eidng8.SpaceFlight.Objects.Movable
         ///     called.
         /// </remarks>
         public virtual void Propel(float force) {
-            this.mLastSpeed = this.mSpeed;
-            force = Mathf.Clamp(force, -this.MaxReverse, this.mMaxForward);
-            this.Body.AddRelativeForce(Vector3.forward * force);
+            this.Propel(Vector3.forward * force);
             this.mSpeed = this.Velocity.magnitude;
-            this.mAcceleration =
-                (this.mSpeed - this.mLastSpeed) / Time.fixedDeltaTime;
         }
 
         /// <inheritdoc />
@@ -57,6 +51,7 @@ namespace eidng8.SpaceFlight.Objects.Movable
         }
 
         public virtual void Rotate(Vector3 torque) {
+            this.mStabilizing = false;
             this.Body.AddRelativeTorque(
                 Vector3.ClampMagnitude(torque, this.MaxTorque)
             );
@@ -66,12 +61,38 @@ namespace eidng8.SpaceFlight.Objects.Movable
             this.Rotate(this.MaxTorque * throttle);
         }
 
-        public void Stabilize() {
-            this.Rotate(-this.Body.rotation.eulerAngles * this.MaxTorque);
+        public void Stabilize() { this.mStabilizing = true; }
+
+        public void FullStop() { this.mStopping = true; }
+
+        public void Propel(Vector3 forces) {
+            this.mStopping = false;
+            Vector3 f = new Vector3(
+                Mathf.Clamp(forces.x, -this.MaxPan, this.MaxPan),
+                Mathf.Clamp(forces.y, -this.MaxPan, this.MaxPan),
+                Mathf.Clamp(forces.z, -this.MaxReverse, this.MaxForward)
+            );
+            this.Body.AddRelativeForce(f);
+            this.mLastVelocity = this.mVelocity;
+            this.mVelocity =
+                this.transform.InverseTransformVector(this.Body.velocity);
+            this.mAcceleration =
+                (this.mVelocity - this.mLastVelocity) / Time.fixedDeltaTime;
         }
 
-        public void FullStop() {
-            this.Propel(-this.Velocity.magnitude);
+        public void Stabilize(float deltaTime) {
+            Vector3 av = this.Body.angularVelocity;
+            if (Vector3.zero == av) { return; }
+
+            this.Rotate(-av / deltaTime * this.Mass);
+            this.mStabilizing = true;
+        }
+
+        public void FullStop(float deltaTime) {
+            if (Vector3.zero == this.mVelocity) { return; }
+
+            this.Propel(this.mVelocity / -deltaTime * this.Mass);
+            this.mStopping = true;
         }
 
         /// <inheritdoc />
@@ -138,5 +159,11 @@ namespace eidng8.SpaceFlight.Objects.Movable
         }
 
         public virtual void Use(int component) { }
+
+        private void FixedUpdate() {
+            if (this.mStabilizing) { this.Stabilize(Time.fixedDeltaTime); }
+
+            if (this.mStopping) { this.FullStop(Time.fixedDeltaTime); }
+        }
     }
 }

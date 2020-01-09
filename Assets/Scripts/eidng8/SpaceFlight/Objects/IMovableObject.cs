@@ -14,7 +14,7 @@ namespace eidng8.SpaceFlight.Objects
     public interface IMovableObject
     {
         /// <summary>Forward acceleration value.</summary>
-        float Acceleration { get; }
+        Vector3 Acceleration { get; }
 
         /// <summary>Maximum forward movement momentum.</summary>
         float MaxForward { get; }
@@ -34,9 +34,9 @@ namespace eidng8.SpaceFlight.Objects
         /// <summary>Velocity in all directions.</summary>
         Vector3 Velocity { get; }
 
-        void Pan(Vector3 throttle);
+        void Pan(Vector2 throttle);
 
-        void PanThrottle(Vector3 throttle);
+        void PanThrottle(Vector2 throttle);
 
         /// <summary>Perform actual movement.</summary>
         /// <param name="force"></param>

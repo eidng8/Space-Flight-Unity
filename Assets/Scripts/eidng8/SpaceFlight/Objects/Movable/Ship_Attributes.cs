@@ -13,50 +13,43 @@ namespace eidng8.SpaceFlight.Objects.Movable
 {
     public partial class Ship
     {
-        // ReSharper disable once MemberCanBePrivate.Global
-        protected float mAcceleration;
+        protected Vector3 mAcceleration;
 
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mArmor;
 
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mCapacitor;
 
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mEnergy;
 
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mLastSpeed;
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        protected Vector3 mLastVelocity;
+
         protected float mMaxArmor;
 
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mMaxForward;
 
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mMaxPan;
 
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mMaxReverse;
 
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mMaxShield;
 
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mMaxTorque;
 
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mPower;
 
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mRechargeRate;
 
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mShield;
 
-        // ReSharper disable once MemberCanBePrivate.Global
         protected float mSpeed;
+
+        protected bool mStabilizing;
+
+        protected bool mStopping;
+
+        protected Vector3 mVelocity;
 
         /// <summary>Current armor value.</summary>
         public float Armor => this.mArmor;
@@ -86,7 +79,7 @@ namespace eidng8.SpaceFlight.Objects.Movable
         public float Shield => this.mShield;
 
         /// <inheritdoc />
-        public float Acceleration => this.mAcceleration;
+        public Vector3 Acceleration => this.mAcceleration;
 
         /// <inheritdoc />
         public float MaxForward => this.mMaxForward;
@@ -104,6 +97,6 @@ namespace eidng8.SpaceFlight.Objects.Movable
         public float Speed => this.mSpeed;
 
         /// <inheritdoc />
-        public Vector3 Velocity => this.Body.velocity;
+        public Vector3 Velocity => this.mVelocity;
     }
 }
