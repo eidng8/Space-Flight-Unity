@@ -7,6 +7,7 @@
 // </summary>
 // ---------------------------------------------------------------------------
 
+using System.Collections;
 using eidng8.SpaceFlight.Events;
 using UnityEngine;
 
@@ -73,7 +74,17 @@ namespace eidng8.SpaceFlight.Managers
         /// <param name="_"></param>
         private void OnSceneChanged(SystemEventArgs _) {
             Debug.Log("EventManager.OnSceneChanged");
+            this.StartCoroutine(this.GetCamera());
+        }
+
+        private IEnumerator GetCamera() {
+            if (null == Camera.main) { yield return new WaitForEndOfFrame(); }
+
             EventManager._camera = Camera.main;
+            EventManager.TriggerSystemEvent(
+                SystemEvents.MainCameraCreated,
+                new SystemEventArgs {source = EventManager._camera}
+            );
         }
     }
 }

@@ -9,6 +9,7 @@
 
 using System.Collections.Generic;
 using eidng8.SpaceFlight.Configurable;
+using eidng8.SpaceFlight.Laws;
 using UnityEngine;
 
 namespace eidng8.SpaceFlight.Objects.Movable
@@ -36,7 +37,6 @@ namespace eidng8.SpaceFlight.Objects.Movable
         /// </remarks>
         public virtual void Propel(float force) {
             this.Propel(Vector3.forward * force);
-            this.mSpeed = this.Velocity.magnitude;
         }
 
         /// <inheritdoc />
@@ -51,47 +51,50 @@ namespace eidng8.SpaceFlight.Objects.Movable
         }
 
         public virtual void Rotate(Vector3 torque) {
+            if (torque.AboutZero()) {
+                return;
+            }
+
             this.mStabilizing = false;
-            this.Body.AddRelativeTorque(
-                Vector3.ClampMagnitude(torque, this.MaxTorque)
-            );
+            this.mPropellant[1] += torque;
         }
 
         public virtual void RotateThrottle(Vector3 throttle) {
             this.Rotate(this.MaxTorque * throttle);
         }
 
-        public void Stabilize() { this.mStabilizing = true; }
-
-        public void FullStop() { this.mStopping = true; }
-
-        public void Propel(Vector3 forces) {
-            this.mStopping = false;
-            Vector3 f = new Vector3(
-                Mathf.Clamp(forces.x, -this.MaxPan, this.MaxPan),
-                Mathf.Clamp(forces.y, -this.MaxPan, this.MaxPan),
-                Mathf.Clamp(forces.z, -this.MaxReverse, this.MaxForward)
-            );
-            this.Body.AddRelativeForce(f);
-            this.mLastVelocity = this.mVelocity;
-            this.mVelocity =
-                this.transform.InverseTransformVector(this.Body.velocity);
-            this.mAcceleration =
-                (this.mVelocity - this.mLastVelocity) / Time.fixedDeltaTime;
-        }
-
-        public void Stabilize(float deltaTime) {
-            Vector3 av = this.Body.angularVelocity;
-            if (Vector3.zero == av) { return; }
-
-            this.Rotate(-av / deltaTime * this.Mass);
+        public virtual void Stabilize() {
             this.mStabilizing = true;
         }
 
-        public void FullStop(float deltaTime) {
-            if (Vector3.zero == this.mVelocity) { return; }
+        public virtual void FullStop() {
+            this.mStopping = true;
+        }
 
-            this.Propel(this.mVelocity / -deltaTime * this.Mass);
+        public virtual void Propel(Vector3 forces) {
+            if (forces.AboutZero()) {
+                return;
+            }
+
+            this.mStopping = false;
+            this.mPropellant[0] += forces;
+        }
+
+        public virtual void Stabilize(float deltaTime) {
+            Vector3 av = this.Body.angularVelocity;
+            if (av.AboutZero()) { return; }
+
+            av = this.transform.InverseTransformVector(av);
+            Vector3 f = Newton.FullStopAngularForce(av, this.Mass);
+            this.Rotate(f);
+            this.mStabilizing = true;
+        }
+
+        public virtual void FullStop(float deltaTime) {
+            if (this.mVelocity.AboutZero()) { return; }
+
+            Vector3 f = Newton.FullStopForce(this.mVelocity, this.Mass);
+            this.Propel(f);
             this.mStopping = true;
         }
 
@@ -160,10 +163,70 @@ namespace eidng8.SpaceFlight.Objects.Movable
 
         public virtual void Use(int component) { }
 
-        private void FixedUpdate() {
-            if (this.mStabilizing) { this.Stabilize(Time.fixedDeltaTime); }
+        protected virtual void FixedUpdate() {
+            if (this.mStabilizing) {
+                this.Stabilize(Time.fixedDeltaTime);
+            }
 
-            if (this.mStopping) { this.FullStop(Time.fixedDeltaTime); }
+            if (this.mStopping) {
+                this.FullStop(Time.fixedDeltaTime);
+            }
+
+            this.ApplyTorque();
+            this.ApplyForce();
+            this.UpdateVelocity();
+        }
+
+        protected virtual void ApplyForce() {
+            Vector3 forces = this.mPropellant[0];
+            if (forces.AboutZero()) {
+                if (this.mStopping && this.mVelocity.AboutZero()) {
+                    // it ok to snap it to zero now
+                    this.Body.velocity = Vector3.zero;
+                    this.mStopping = false;
+                }
+
+                return;
+            }
+
+            Vector3 f = new Vector3(
+                Mathf.Clamp(forces.x, -this.MaxPan, this.MaxPan),
+                Mathf.Clamp(forces.y, -this.MaxPan, this.MaxPan),
+                Mathf.Clamp(forces.z, -this.MaxReverse, this.MaxForward)
+            );
+            this.Body.AddRelativeForce(f);
+            this.mPropellant[0] = Vector3.zero;
+        }
+
+        protected virtual void ApplyTorque() {
+            Vector3 torque = this.mPropellant[1];
+            if (torque.AboutZero()) {
+                if (this.mStabilizing && this.mAngularVelocity.AboutZero()) {
+                    // it ok to snap it to zero now
+                    this.Body.angularVelocity = Vector3.zero;
+                    this.mStabilizing = false;
+                }
+
+                return;
+            }
+
+            torque = new Vector3(
+                Mathf.Clamp(torque.x, -this.MaxTorque, this.MaxTorque),
+                Mathf.Clamp(torque.y, -this.MaxTorque, this.MaxTorque),
+                Mathf.Clamp(torque.z, -this.MaxTorque, this.MaxTorque)
+            );
+            this.Body.AddRelativeTorque(torque);
+            this.mPropellant[1] = Vector3.zero;
+        }
+
+        protected virtual void UpdateVelocity() {
+            this.mLastVelocity = this.mVelocity;
+            this.mAngularVelocity = this.AngularVelocity;
+            this.mSpeed = this.mVelocity.magnitude;
+            this.mVelocity =
+                this.transform.InverseTransformVector(this.Body.velocity);
+            this.mAcceleration =
+                (this.mVelocity - this.mLastVelocity) / Time.fixedDeltaTime;
         }
     }
 }

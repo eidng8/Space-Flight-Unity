@@ -90,21 +90,12 @@ namespace eidng8.SpaceFlight.Managers
         )]
         private static void LateSetupScene() {
             Debug.Log("LateSetupScene");
-            GameManager.SetupCamera();
             // Although Unity provides the sceneLoaded event, I prefer providing
             // my own version too. Just to be consistent with my own flow.
             EventManager.TriggerSystemEvent(
                 SystemEvents.SceneChanged,
                 new SystemEventArgs()
             );
-        }
-
-        private static void SetupCamera() {
-            Camera.main.transform.parent.GetComponent<Follower>()
-                .Follow(
-                    GameObject.FindWithTag("Player")
-                        .GetComponentInChildren<Rigidbody>()
-                );
         }
 
         /// <summary>

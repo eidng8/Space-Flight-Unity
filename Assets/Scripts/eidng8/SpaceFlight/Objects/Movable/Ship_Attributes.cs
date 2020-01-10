@@ -15,13 +15,13 @@ namespace eidng8.SpaceFlight.Objects.Movable
     {
         protected Vector3 mAcceleration;
 
+        protected Vector3 mAngularVelocity;
+
         protected float mArmor;
 
         protected float mCapacitor;
 
         protected float mEnergy;
-
-        protected float mLastSpeed;
 
         protected Vector3 mLastVelocity;
 
@@ -38,6 +38,8 @@ namespace eidng8.SpaceFlight.Objects.Movable
         protected float mMaxTorque;
 
         protected float mPower;
+
+        protected Vector3[] mPropellant = new Vector3[2];
 
         protected float mRechargeRate;
 
@@ -77,6 +79,12 @@ namespace eidng8.SpaceFlight.Objects.Movable
 
         /// <summary>Current shield value.</summary>
         public float Shield => this.mShield;
+
+        public bool Stabilizing => this.mStabilizing;
+
+        public bool Stopping => this.mStopping;
+
+        public Vector3 AngularVelocity => this.Body.angularVelocity;
 
         /// <inheritdoc />
         public Vector3 Acceleration => this.mAcceleration;

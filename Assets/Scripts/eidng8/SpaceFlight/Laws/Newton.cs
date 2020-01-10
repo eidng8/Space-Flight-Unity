@@ -9,32 +9,32 @@
 
 using UnityEngine;
 
-
 namespace eidng8.SpaceFlight.Laws
 {
     /// <summary>Calculations related to Newton's Laws.</summary>
     public static class Newton
     {
         /// <summary>
-        /// Estimates the arrival time according to current velocity and
-        /// acceleration.
+        ///     Estimates the arrival time according to current velocity and
+        ///     acceleration.
         /// </summary>
         /// <remarks>
-        /// <a
-        ///     href="https://www.math10.com/en/algebra/formulas-for-short-multiplication.html">
-        /// Polynomial Identities
-        /// </a>
-        /// and
-        /// <a
-        ///     href="https://opentextbc.ca/physicstestbook2/chapter/motion-equations-for-constant-acceleration-in-one-dimension/">
-        /// Motion
-        /// </a>
-        /// . Ah! Back to physics and maths. The two links provide lectures
-        /// needed for this calculation. Here we have to find out the time
-        /// needed to cover the distance. We use the formula with initial speed
-        /// and constant acceleration: <c>d=vt+at²</c>. The formula is then
-        /// transformed as following:
-        /// <code>
+        ///     <a
+        ///         href="https://www.math10.com/en/algebra/formulas-for-short-multiplication.html">
+        ///         Polynomial Identities
+        ///     </a>
+        ///     and
+        ///     <a
+        ///         href="https://opentextbc.ca/physicstestbook2/chapter/motion-equations-for-constant-acceleration-in-one-dimension/">
+        ///         Motion
+        ///     </a>
+        ///     . Ah! Back to physics and maths. The two links provide lectures
+        ///     needed for this calculation. Here we have to find out the time
+        ///     needed to cover the distance. We use the formula with initial
+        ///     speed
+        ///     and constant acceleration: <c>d=vt+at²</c>. The formula is then
+        ///     transformed as following:
+        ///     <code>
         /// => at² + vt = d
         /// 
         /// * Both side divide by `a`
@@ -90,17 +90,19 @@ namespace eidng8.SpaceFlight.Laws
         /// <param name="a">Current acceleration value.</param>
         /// <param name="distance">Distance to be covered.</param>
         /// <returns>
-        /// The estimated time of arrival. In case of deceleration,
-        /// <c>float.PositiveInfinity</c> may be returned if it couldn't reach
-        /// the target. The actual unit is not crucial in most circumstances.
-        /// One could think it were in seconds.
+        ///     The estimated time of arrival. In case of deceleration,
+        ///     <c>float.PositiveInfinity</c> may be returned if it couldn't
+        ///     reach
+        ///     the target. The actual unit is not crucial in most
+        ///     circumstances.
+        ///     One could think it were in seconds.
         /// </returns>
         public static float EstimatedArrival(float v, float a, float distance) {
             //                         __________
             // We first calculate the √ 4ad + v²  part.
             // If we're decelerating, `4ad + v²` could become negative.
             // Which means we'll never reach target if decelerate.
-            float n = 4 * a * distance + Mathf.Pow(v, 2);
+            float n = 4 * a * distance + v * v;
             if (n <= 0) {
                 return float.PositiveInfinity;
             }
@@ -133,9 +135,10 @@ namespace eidng8.SpaceFlight.Laws
         }
 
         /// <summary>
-        /// Determines whether the object <c>a</c> should start slowing down in
-        /// order to stop at the position of object <c>b</c>, considering
-        /// velocity of both objects.
+        ///     Determines whether the object <c>a</c> should start slowing
+        ///     down in
+        ///     order to stop at the position of object <c>b</c>, considering
+        ///     velocity of both objects.
         /// </summary>
         /// <param name="pa">Current position of object a</param>
         /// <param name="pb">Current position of object b</param>
@@ -215,13 +218,91 @@ namespace eidng8.SpaceFlight.Laws
         }
 
         /// <summary>
-        /// Calculates the terminal speed in time <see cref="t" />
+        ///     Calculates the terminal speed in time <see cref="t" />
         /// </summary>
         /// <param name="v0">Initial speed value</param>
         /// <param name="a">Constant acceleration value</param>
         /// <param name="t">Duration of time</param>
         /// <returns>The terminal speed</returns>
-        public static float TerminalSpeed(float v0, float a, float t) =>
-            v0 + a * t;
+        public static float TerminalSpeed(float v0, float a, float t) {
+            return v0 + a * t;
+        }
+
+        /// <summary>
+        ///     Calculates the force needed to stop the object.
+        /// </summary>
+        /// <remarks>
+        ///     Let's revert the thinking again. To stop an moving object is
+        ///     same as
+        ///     pushing the object at rest. Just revert the applied force's
+        ///     direction. So to stop an moving object in time <c>t</c> is same
+        ///     as
+        ///     making an object at rest to the targeted speed <c>v</c>.
+        ///     According to Newton's 2nd law, <c>f=ma</c>. To speed up the
+        ///     object
+        ///     from <c>0</c> speed, to targeted speed <c>v</c>, in time frame
+        ///     <c>t</c>:
+        ///     <para>
+        ///         => v = at
+        ///         => a = v ÷ t
+        ///     </para>
+        ///     Plug to Newton's 2nd law formula:
+        ///     <para>
+        ///         => f = mv ÷ t
+        ///     </para>
+        ///     And reverse the direction:
+        ///     <para>
+        ///         => f = -mv ÷ t
+        ///     </para>
+        /// </remarks>
+        /// <param name="v">Current velocity</param>
+        /// <param name="m">Mass</param>
+        /// <param name="t">
+        ///     Time to fully stopped. Please be careful not to set this lower
+        ///     than
+        ///     Unity's update interval, namely
+        ///     <see cref="Time.fixedDeltaTime" />.
+        ///     Otherwise it'll bounce around zero and can never fully stop.
+        /// </param>
+        /// <returns>Force needed</returns>
+        public static Vector3 FullStopForce(Vector3 v, float m, float t = .1f) {
+            return -m / t * v;
+        }
+
+        /// <summary>
+        ///     Calculates the force needed to stop the object from rotating.
+        /// </summary>
+        /// <remarks>
+        ///     Similar to <see cref="FullStopForce" />, we reverse the
+        ///     thinking.
+        ///     From angular motion formula:
+        ///     <para>
+        ///         => a = rω²
+        ///         => F = mrω²
+        ///     </para>
+        ///     We've already have the <c>a</c>, the
+        ///     <see cref="Rigidbody.angularVelocity" />, which in turn, passed
+        ///     in as
+        ///     the parameter <c>v</c>.
+        /// </remarks>
+        /// <param name="v">Current velocity</param>
+        /// <param name="m">Mass</param>
+        /// <param name="r">Radius of the object</param>
+        /// <param name="t">
+        ///     Time to fully stopped. Please be careful not to set this lower
+        ///     than
+        ///     Unity's update interval, namely
+        ///     <see cref="Time.fixedDeltaTime" />.
+        ///     Otherwise it'll bounce around zero and can never fully stop.
+        /// </param>
+        /// <returns>Force needed</returns>
+        public static Vector3 FullStopAngularForce(
+            Vector3 v,
+            float m,
+            float r = 1,
+            float t = .1f
+        ) {
+            return -m / t * r * v;
+        }
     }
 }

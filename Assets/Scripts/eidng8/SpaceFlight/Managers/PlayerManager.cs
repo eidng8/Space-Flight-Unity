@@ -8,6 +8,7 @@
 // ---------------------------------------------------------------------------
 
 using eidng8.SpaceFlight.Configurable.System;
+using eidng8.SpaceFlight.Events;
 using eidng8.SpaceFlight.Mechanics.Nav;
 using eidng8.SpaceFlight.Objects.Movable;
 using UnityEngine;
@@ -48,6 +49,10 @@ namespace eidng8.SpaceFlight.Managers
             this.Ship = ship;
             this._navigator = nav;
             GameManager.PlayerShip = ship;
+            EventManager.TriggerSystemEvent(
+                SystemEvents.PlayerShipCreated,
+                new SystemEventArgs {source = ship}
+            );
         }
 
         private PlayerConfig LoadPlayerConfig() {

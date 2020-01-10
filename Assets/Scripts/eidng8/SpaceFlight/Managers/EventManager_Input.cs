@@ -80,9 +80,11 @@ namespace eidng8.SpaceFlight.Managers
         ///     UI at design time.
         /// </summary>
         public void RawInput_OnRoll(float delta) {
+            // Rotation around Z axis is inverted.
+            // Positive value makes it counter-clockwise.
             EventManager.TriggerUserEvent(
                 Events.UserEvents.Roll,
-                new UserEventArgs {delta = delta}
+                new UserEventArgs {delta = -delta}
             );
         }
 

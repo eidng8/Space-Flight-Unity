@@ -23,6 +23,10 @@ namespace eidng8.SpaceFlight.Events
         ///     scene
         ///     has been loaded.
         /// </summary>
-        SceneChanged
+        SceneChanged,
+
+        MainCameraCreated,
+
+        PlayerShipCreated
     }
 }
