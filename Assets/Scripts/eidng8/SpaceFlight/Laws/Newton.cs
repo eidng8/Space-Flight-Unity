@@ -102,7 +102,7 @@ namespace eidng8.SpaceFlight.Laws
             // We first calculate the √ 4ad + v²  part.
             // If we're decelerating, `4ad + v²` could become negative.
             // Which means we'll never reach target if decelerate.
-            float n = 4 * a * distance + v * v;
+            float n = 4 * a * Mathf.Abs(distance) + v * v;
             if (n <= 0) {
                 return float.PositiveInfinity;
             }
@@ -225,7 +225,7 @@ namespace eidng8.SpaceFlight.Laws
         /// <param name="t">Duration of time</param>
         /// <returns>The terminal speed</returns>
         public static float TerminalSpeed(float v0, float a, float t) {
-            return v0 + a * t;
+            return v0 + a * Mathf.Abs(t);
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace eidng8.SpaceFlight.Laws
         /// </param>
         /// <returns>Force needed</returns>
         public static Vector3 FullStopForce(Vector3 v, float m, float t = .1f) {
-            return -m / t * v;
+            return -m / Mathf.Abs(t) * v;
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace eidng8.SpaceFlight.Laws
             float r = 1,
             float t = .1f
         ) {
-            return -m / t * r * v;
+            return -m / Mathf.Abs(t) * r * v;
         }
     }
 }
