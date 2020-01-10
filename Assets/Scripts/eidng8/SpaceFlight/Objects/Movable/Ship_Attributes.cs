@@ -84,7 +84,7 @@ namespace eidng8.SpaceFlight.Objects.Movable
 
         public bool Stopping => this.mStopping;
 
-        public Vector3 AngularVelocity => this.Body.angularVelocity;
+        public Vector3 AngularVelocity => this.mAngularVelocity;
 
         /// <inheritdoc />
         public Vector3 Acceleration => this.mAcceleration;

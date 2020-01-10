@@ -176,5 +176,34 @@ namespace eidng8.SpaceFlight.Laws
         public static Vector3 Rad2Deg(this Vector3 ms) {
             return ms * 180 / Mathf.PI;
         }
+
+        public static Vector3 ClampAxis(
+            this Vector3 v,
+            Vector3 min,
+            Vector3 max
+        ) {
+            return new Vector3(
+                Mathf.Clamp(v.x, min.x, max.x),
+                Mathf.Clamp(v.y, min.y, max.y),
+                Mathf.Clamp(v.z, min.z, max.z)
+            );
+        }
+
+        public static Vector3 ClampAxis(this Vector3 v, float min, float max) {
+            return new Vector3(
+                Mathf.Clamp(v.x, min, max),
+                Mathf.Clamp(v.y, min, max),
+                Mathf.Clamp(v.z, min, max)
+            );
+        }
+
+        public static Vector3 ClampAxis(this Vector3 v, float abs) {
+            float min = -abs;
+            return new Vector3(
+                Mathf.Clamp(v.x, min, abs),
+                Mathf.Clamp(v.y, min, abs),
+                Mathf.Clamp(v.z, min, abs)
+            );
+        }
     }
 }

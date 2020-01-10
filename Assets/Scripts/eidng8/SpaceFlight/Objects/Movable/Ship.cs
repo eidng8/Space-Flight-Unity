@@ -81,10 +81,9 @@ namespace eidng8.SpaceFlight.Objects.Movable
         }
 
         public virtual void Stabilize(float deltaTime) {
-            Vector3 av = this.Body.angularVelocity;
+            Vector3 av = this.AngularVelocity;
             if (av.AboutZero()) { return; }
 
-            av = this.transform.InverseTransformVector(av);
             Vector3 f = Newton.FullStopAngularForce(av, this.Mass);
             this.Rotate(f);
             this.mStabilizing = true;
@@ -189,9 +188,10 @@ namespace eidng8.SpaceFlight.Objects.Movable
                 return;
             }
 
+            float min = -this.MaxPan;
             Vector3 f = new Vector3(
-                Mathf.Clamp(forces.x, -this.MaxPan, this.MaxPan),
-                Mathf.Clamp(forces.y, -this.MaxPan, this.MaxPan),
+                Mathf.Clamp(forces.x, min, this.MaxPan),
+                Mathf.Clamp(forces.y, min, this.MaxPan),
                 Mathf.Clamp(forces.z, -this.MaxReverse, this.MaxForward)
             );
             this.Body.AddRelativeForce(f);
@@ -201,7 +201,7 @@ namespace eidng8.SpaceFlight.Objects.Movable
         protected virtual void ApplyTorque() {
             Vector3 torque = this.mPropellant[1];
             if (torque.AboutZero()) {
-                if (this.mStabilizing && this.mAngularVelocity.AboutZero()) {
+                if (this.mStabilizing && this.AngularVelocity.AboutZero()) {
                     // it ok to snap it to zero now
                     this.Body.angularVelocity = Vector3.zero;
                     this.mStabilizing = false;
@@ -210,18 +210,15 @@ namespace eidng8.SpaceFlight.Objects.Movable
                 return;
             }
 
-            torque = new Vector3(
-                Mathf.Clamp(torque.x, -this.MaxTorque, this.MaxTorque),
-                Mathf.Clamp(torque.y, -this.MaxTorque, this.MaxTorque),
-                Mathf.Clamp(torque.z, -this.MaxTorque, this.MaxTorque)
-            );
-            this.Body.AddRelativeTorque(torque);
+            this.Body.AddRelativeTorque(torque.ClampAxis(this.MaxTorque));
             this.mPropellant[1] = Vector3.zero;
         }
 
         protected virtual void UpdateVelocity() {
             this.mLastVelocity = this.mVelocity;
-            this.mAngularVelocity = this.AngularVelocity;
+            this.mAngularVelocity = this.transform.InverseTransformVector(
+                this.Body.angularVelocity
+            );
             this.mSpeed = this.mVelocity.magnitude;
             this.mVelocity =
                 this.transform.InverseTransformVector(this.Body.velocity);
