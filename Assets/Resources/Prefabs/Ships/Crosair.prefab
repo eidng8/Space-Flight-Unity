@@ -42794,6 +42794,7 @@ GameObject:
   - component: {fileID: 6156446583561896417}
   - component: {fileID: 6156446583561896416}
   - component: {fileID: 6156446583561896415}
+  - component: {fileID: 8071377708867178338}
   m_Layer: 0
   m_Name: Crosair
   m_TagString: Untagged
@@ -42974,6 +42975,85 @@ CapsuleCollider:
   m_Height: 13.5
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0.5}
+--- !u!114 &8071377708867178338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2761263589205514452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7527a463574bb99ec93aa62f6f1682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSpeed: 5
+  forward:
+  - {fileID: 9000753011863748249}
+  - {fileID: 1593434562043478123}
+  - {fileID: 8790438987569250181}
+  - {fileID: 4457266684411720496}
+  - {fileID: 3090190538553285566}
+  backward:
+  - {fileID: 6364833234355504304}
+  - {fileID: 6951293186896748840}
+  - {fileID: 337349565518315680}
+  - {fileID: 9623109170607105}
+  - {fileID: 7999035003718334207}
+  panLeft:
+  - {fileID: 6451653362955744382}
+  - {fileID: 2800434806838983674}
+  - {fileID: 8638056530049262289}
+  - {fileID: 4679176186218895391}
+  - {fileID: 470933848806206689}
+  panRight:
+  - {fileID: 7753243731807832877}
+  - {fileID: 9182071632304399528}
+  - {fileID: 6226922750867842941}
+  - {fileID: 2767444254010872280}
+  - {fileID: 432287165138487982}
+  panUp:
+  - {fileID: 1683405702841396248}
+  - {fileID: 7412683095231280829}
+  - {fileID: 7595618350957333631}
+  - {fileID: 3146611476012364774}
+  - {fileID: 3399819580729069627}
+  panDown:
+  - {fileID: 3758141426845369104}
+  - {fileID: 1355187369162480832}
+  - {fileID: 4771401263339293325}
+  - {fileID: 3924881607567739954}
+  - {fileID: 7988426099744427931}
+  pitchUp:
+  - {fileID: 3758141426845369104}
+  - {fileID: 3146611476012364774}
+  - {fileID: 1593434562043478123}
+  - {fileID: 9623109170607105}
+  pitchDown:
+  - {fileID: 1683405702841396248}
+  - {fileID: 4771401263339293325}
+  - {fileID: 6364833234355504304}
+  - {fileID: 4457266684411720496}
+  rollClockwise:
+  - {fileID: 1355187369162480832}
+  - {fileID: 2800434806838983674}
+  - {fileID: 3399819580729069627}
+  - {fileID: 2767444254010872280}
+  rollCounterClockwise:
+  - {fileID: 7595618350957333631}
+  - {fileID: 9182071632304399528}
+  - {fileID: 7988426099744427931}
+  - {fileID: 470933848806206689}
+  yawStarboard:
+  - {fileID: 6451653362955744382}
+  - {fileID: 6951293186896748840}
+  - {fileID: 6226922750867842941}
+  - {fileID: 3090190538553285566}
+  yawPort:
+  - {fileID: 7753243731807832877}
+  - {fileID: 8790438987569250181}
+  - {fileID: 4679176186218895391}
+  - {fileID: 7999035003718334207}
 --- !u!1 &3330239581761395726
 GameObject:
   m_ObjectHideFlags: 0

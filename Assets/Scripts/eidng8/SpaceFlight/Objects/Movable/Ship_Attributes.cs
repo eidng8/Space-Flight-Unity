@@ -17,6 +17,8 @@ namespace eidng8.SpaceFlight.Objects.Movable
 
         protected Vector3 mAngularVelocity;
 
+        protected Vector3 mAngularAcceleration;
+
         protected float mArmor;
 
         protected float mCapacitor;
@@ -24,6 +26,8 @@ namespace eidng8.SpaceFlight.Objects.Movable
         protected float mEnergy;
 
         protected Vector3 mLastVelocity;
+
+        protected Vector3 mLastAngularVelocity;
 
         protected float mMaxArmor;
 
@@ -39,7 +43,7 @@ namespace eidng8.SpaceFlight.Objects.Movable
 
         protected float mPower;
 
-        protected Vector3[] mPropellant = new Vector3[2];
+        protected readonly Vector3[] mPropellant = new Vector3[2];
 
         protected float mRechargeRate;
 
@@ -53,6 +57,10 @@ namespace eidng8.SpaceFlight.Objects.Movable
 
         protected Vector3 mVelocity;
 
+        protected Vector4 mMaxAcceleration;
+
+        protected Vector3 mMaxAngularAcceleration;
+
         /// <summary>Current armor value.</summary>
         public float Armor => this.mArmor;
 
@@ -64,6 +72,16 @@ namespace eidng8.SpaceFlight.Objects.Movable
 
         /// <summary>Ship's mass.</summary>
         public float Mass => this.Body.mass;
+
+        /// <summary>Max acceleration in 4 directions.</summary>
+        /// <remarks>
+        /// The extra <c>w</c> direction represents the reverse thruster.
+        /// </remarks>
+        public Vector4 MaxAcceleration => this.mMaxAcceleration;
+
+        public Vector3 MaxAngularAcceleration => this.mMaxAngularAcceleration;
+
+        public Vector3 AngularAcceleration => this.mAngularAcceleration;
 
         /// <summary>Maximum armor value.</summary>
         public float MaxArmor => this.mMaxArmor;

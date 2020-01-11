@@ -62,9 +62,13 @@ namespace eidng8.SpaceFlight.Mechanics.Nav
             this.mShip.RotateThrottle(Vector3.right * args.delta);
         }
 
-        private void Vertical(UserEventArgs args) { }
+        private void Vertical(UserEventArgs args) {
+            this.mShip.PanThrottle(Vector2.up * args.delta);
+        }
 
-        private void Horizontal(UserEventArgs args) { }
+        private void Horizontal(UserEventArgs args) {
+            this.mShip.PanThrottle(Vector2.right * args.delta);
+        }
 
         private void Accelerate(UserEventArgs args) {
             this.mShip.PropelThrottle(args.delta);

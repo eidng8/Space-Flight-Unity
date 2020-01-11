@@ -110,23 +110,30 @@ namespace eidng8.SpaceFlight.Objects.Movable
             }
 
             this.mMaxForward = 0;
+            this.mMaxAcceleration = Vector4.zero;
             if (dict.TryGetValue("maxForward", out v)) {
                 this.mMaxForward = v;
+                this.mMaxAcceleration.z = v / this.Mass;
             }
 
             this.mMaxReverse = 0;
             if (dict.TryGetValue("maxReverse", out v)) {
                 this.mMaxReverse = v;
+                this.mMaxAcceleration.w = v / this.Mass;
             }
 
             this.mMaxPan = 0;
             if (dict.TryGetValue("maxPan", out v)) {
                 this.mMaxPan = v;
+                this.mMaxAcceleration.x = v / this.Mass;
+                this.mMaxAcceleration.y = this.mMaxAcceleration.x;
             }
 
             this.mMaxTorque = 0;
             if (dict.TryGetValue("maxTorque", out v)) {
                 this.mMaxTorque = v;
+                float f = v / this.Mass;
+                this.mMaxAngularAcceleration = new Vector3(f, f, f);
             }
 
             this.mArmor = 0;
@@ -216,14 +223,19 @@ namespace eidng8.SpaceFlight.Objects.Movable
 
         protected virtual void UpdateVelocity() {
             this.mLastVelocity = this.mVelocity;
+            this.mVelocity =
+                this.transform.InverseTransformVector(this.Body.velocity);
+            this.mSpeed = this.mVelocity.magnitude;
+            this.mAcceleration =
+                (this.mVelocity - this.mLastVelocity) / Time.fixedDeltaTime;
+
+            this.mLastAngularVelocity = this.mAngularVelocity;
             this.mAngularVelocity = this.transform.InverseTransformVector(
                 this.Body.angularVelocity
             );
-            this.mSpeed = this.mVelocity.magnitude;
-            this.mVelocity =
-                this.transform.InverseTransformVector(this.Body.velocity);
-            this.mAcceleration =
-                (this.mVelocity - this.mLastVelocity) / Time.fixedDeltaTime;
+            this.mAngularAcceleration =
+                (this.mAngularVelocity - this.mLastAngularVelocity)
+                / Time.fixedDeltaTime;
         }
     }
 }
