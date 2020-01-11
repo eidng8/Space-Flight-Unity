@@ -63,6 +63,10 @@ namespace eidng8.SpaceFlight.Objects.Movable
             this.Rotate(this.MaxTorque * throttle);
         }
 
+        public virtual void AutoLevel() {
+            this.mAutoLeveling = true;
+        }
+
         public virtual void Stabilize() {
             this.mStabilizing = true;
         }
@@ -78,6 +82,16 @@ namespace eidng8.SpaceFlight.Objects.Movable
 
             this.mStopping = false;
             this.mPropellant[0] += forces;
+        }
+
+        public virtual void AutoLevel(float deltaTime) {
+            var me = transform;
+            Vector3 angles = me.localEulerAngles;
+            angles.y = 0;
+            if (angles.AboutZero()) { return; }
+
+            Rotate(-angles * this.Mass);
+            this.mAutoLeveling = true;
         }
 
         public virtual void Stabilize(float deltaTime) {
@@ -176,6 +190,10 @@ namespace eidng8.SpaceFlight.Objects.Movable
 
             if (this.mStopping) {
                 this.FullStop(Time.fixedDeltaTime);
+            }
+
+            if (this.mAutoLeveling) {
+                this.AutoLevel(Time.fixedDeltaTime);
             }
 
             this.ApplyTorque();

@@ -38,6 +38,11 @@ namespace eidng8.SpaceFlight.Mechanics.Nav
             EventManager.OnUserEvent(UserEvents.Jump, this.Jump);
             EventManager.OnUserEvent(UserEvents.Stabilize, this.Stabilize);
             EventManager.OnUserEvent(UserEvents.FullStop, this.FullStop);
+            EventManager.OnUserEvent(UserEvents.AutoLevel, this.AutoLevel);
+        }
+
+        private void AutoLevel(UserEventArgs obj) {
+            this.mShip.AutoLevel();
         }
 
         private void Stabilize(UserEventArgs _) {

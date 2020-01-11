@@ -290,8 +290,7 @@ namespace eidng8.SpaceFlight.Laws
         /// <param name="r">Radius of the object</param>
         /// <param name="t">
         ///     Time to fully stopped. Please be careful not to set this lower
-        ///     than
-        ///     Unity's update interval, namely
+        ///     than Unity's update interval, namely
         ///     <see cref="Time.fixedDeltaTime" />.
         ///     Otherwise it'll bounce around zero and can never fully stop.
         /// </param>

@@ -143,6 +143,23 @@ namespace eidng8.SpaceFlight.Managers
         ///     Handles the raw input event from the
         ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
         ///     converts it to the
+        ///     <see cref="Events.UserEvents.FullStop" /> event. This event
+        ///     binding is
+        ///     performed in the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> inspector
+        ///     UI at design time.
+        /// </summary>
+        public void RawInput_OnAutoLevel() {
+            EventManager.TriggerUserEvent(
+                Events.UserEvents.AutoLevel,
+                new UserEventArgs()
+            );
+        }
+
+        /// <summary>
+        ///     Handles the raw input event from the
+        ///     <see cref="Luminosity.IO.Events.InputEventManager" /> and
+        ///     converts it to the
         ///     <see cref="Events.UserEvents.Roll" /> event. This event
         ///     binding is
         ///     performed in the

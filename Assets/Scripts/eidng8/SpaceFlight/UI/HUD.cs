@@ -14,6 +14,8 @@ namespace eidng8.SpaceFlight.UI
     {
         public Text indicatorStabilizing;
         public Text indicatorStopping;
+        public Text indicatorLeveling;
+        public Text velocity;
 
         protected Camera mCamera;
 
@@ -23,7 +25,6 @@ namespace eidng8.SpaceFlight.UI
 
         protected bool mPlayerShipReady;
 
-        public Text velocity;
 
         protected virtual void OnEnable() {
             this.mCameraReady = false;
@@ -75,15 +76,19 @@ namespace eidng8.SpaceFlight.UI
             c.a = this.mPlayerShip.Stabilizing
                 ? Mathf.PingPong(Time.time * 2, 1)
                 : 0;
-
             this.indicatorStabilizing.color = c;
 
             c = this.indicatorStopping.color;
             c.a = this.mPlayerShip.Stopping
                 ? Mathf.PingPong(Time.time * 2, 1)
                 : 0;
-
             this.indicatorStopping.color = c;
+
+            c = this.indicatorLeveling.color;
+            c.a = this.mPlayerShip.AutoLeveling
+                ? Mathf.PingPong(Time.time * 2, 1)
+                : 0;
+            this.indicatorLeveling.color = c;
         }
     }
 }

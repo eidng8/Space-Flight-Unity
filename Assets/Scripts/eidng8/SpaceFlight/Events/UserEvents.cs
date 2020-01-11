@@ -36,6 +36,7 @@ namespace eidng8.SpaceFlight.Events
         Stabilize,
 
         FullStop,
+        AutoLevel,
 
         Jump,
 

@@ -21,6 +21,8 @@ namespace eidng8.SpaceFlight.Objects.Movable
 
         protected float mArmor;
 
+        protected bool mAutoLeveling;
+
         protected float mCapacitor;
 
         protected float mEnergy;
@@ -75,7 +77,7 @@ namespace eidng8.SpaceFlight.Objects.Movable
 
         /// <summary>Max acceleration in 4 directions.</summary>
         /// <remarks>
-        /// The extra <c>w</c> direction represents the reverse thruster.
+        /// The extra <c>w</c> component represents the reverse thruster.
         /// </remarks>
         public Vector4 MaxAcceleration => this.mMaxAcceleration;
 
@@ -101,6 +103,8 @@ namespace eidng8.SpaceFlight.Objects.Movable
         public bool Stabilizing => this.mStabilizing;
 
         public bool Stopping => this.mStopping;
+        
+        public bool AutoLeveling=> this.mAutoLeveling;
 
         public Vector3 AngularVelocity => this.mAngularVelocity;
 

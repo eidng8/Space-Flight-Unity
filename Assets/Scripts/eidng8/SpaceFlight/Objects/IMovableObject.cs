@@ -34,6 +34,8 @@ namespace eidng8.SpaceFlight.Objects
         /// <summary>Velocity in all directions.</summary>
         Vector3 Velocity { get; }
 
+        void AutoLevel();
+        
         void Pan(Vector2 throttle);
 
         void PanThrottle(Vector2 throttle);
