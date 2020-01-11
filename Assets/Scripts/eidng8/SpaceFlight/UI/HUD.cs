@@ -69,7 +69,8 @@ namespace eidng8.SpaceFlight.UI
                                  + $"{this.mPlayerShip.Velocity.Ms2Knot()} knot\n"
                                  + $"{this.mPlayerShip.AngularVelocity} θ/s\n"
                                  + $"{this.mPlayerShip.AngularVelocity.Rad2Deg()} ⁰/s";
-
+            // this.velocity.text = $"{this.mPlayerShip.transform.localEulerAngles}\n"
+            //                      + $"{this.mCamera.transform.parent.localEulerAngles}";
             Color c = this.indicatorStabilizing.color;
             c.a = this.mPlayerShip.Stabilizing
                 ? Mathf.PingPong(Time.time * 2, 1)
