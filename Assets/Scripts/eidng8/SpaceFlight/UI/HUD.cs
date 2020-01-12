@@ -17,6 +17,7 @@ namespace eidng8.SpaceFlight.UI
         public Text indicatorLeveling;
         public Text velocity;
         public Text details;
+        public Text dynamics;
 
         protected Camera mCamera;
 
@@ -66,21 +67,22 @@ namespace eidng8.SpaceFlight.UI
         protected virtual void Update() {
             if (!this.mCameraReady || !this.mPlayerShipReady) { return; }
 
-            this.details.text = $"Forces\n"
-                                + $"{this.mPlayerShip.AppliedForces} (mean)\n"
-                                + $"{new Vector4(this.mPlayerShip.MaxPan, this.mPlayerShip.MaxPan, this.mPlayerShip.MaxForward, this.mPlayerShip.MaxReverse)} (max)\n"
-                                + $"Torque\n"
-                                + $"{this.mPlayerShip.AppliedTorque} (mean)\n"
-                                + $"{new Vector3(this.mPlayerShip.MaxTorque,this.mPlayerShip.MaxTorque,this.mPlayerShip.MaxTorque)} (max)\n"
-                                + $"";
+            this.UpdateVelocity();
+            this.UpdateIndicators();
+            this.UpdateDetails();
+            this.UpdateDynamics();
+        }
 
-            this.velocity.text = $"{this.mPlayerShip.Velocity} m/s\n"
-                                 + $"{this.mPlayerShip.Velocity.Ms2Kmh()} km/h\n"
-                                 + $"{this.mPlayerShip.Velocity.Ms2Knot()} knot\n"
-                                 + $"{this.mPlayerShip.AngularVelocity} θ/s\n"
-                                 + $"{this.mPlayerShip.AngularVelocity.Rad2Deg()} ⁰/s";
-            // this.velocity.text = $"{this.mPlayerShip.transform.localEulerAngles}\n"
-            //                      + $"{this.mCamera.transform.parent.localEulerAngles}";
+        protected virtual void UpdateVelocity() {
+            this.velocity.text =
+                $"{this.mPlayerShip.Velocity} m/s\n"
+                + $"{this.mPlayerShip.Velocity.Ms2Kmh()} km/h\n"
+                + $"{this.mPlayerShip.Velocity.Ms2Knot()} knot\n"
+                + $"{this.mPlayerShip.AngularVelocity} θ/s\n"
+                + $"{this.mPlayerShip.AngularVelocity.Rad2Deg()} ⁰/s";
+        }
+
+        protected virtual void UpdateIndicators() {
             Color c = this.indicatorStabilizing.color;
             c.a = this.mPlayerShip.Stabilizing
                 ? Mathf.PingPong(Time.time * 2, 1)
@@ -98,6 +100,35 @@ namespace eidng8.SpaceFlight.UI
                 ? Mathf.PingPong(Time.time * 2, 1)
                 : 0;
             this.indicatorLeveling.color = c;
+        }
+
+        protected virtual void UpdateDetails() {
+            Vector4 forces = new Vector4(
+                this.mPlayerShip.MaxPan,
+                this.mPlayerShip.MaxPan,
+                this.mPlayerShip.MaxForward,
+                this.mPlayerShip.MaxReverse
+            );
+            Vector3 torque = new Vector3(
+                this.mPlayerShip.MaxTorque,
+                this.mPlayerShip.MaxTorque,
+                this.mPlayerShip.MaxTorque
+            );
+            this.details.text =
+                $"Mass: {this.mPlayerShip.Mass}\n"
+                + $"Max Forces: {forces}\n"
+                + $"Max Accel.: {this.mPlayerShip.MaxAcceleration}\n"
+                + $"Max Torque: {torque}\n"
+                + $"Max Angular Accel.: {this.mPlayerShip.MaxAngularAcceleration}";
+        }
+
+        protected virtual void UpdateDynamics() {
+            this.dynamics.text =
+                $"Euler: {this.mPlayerShip.transform.localEulerAngles}\n"
+                + $"Forces: {this.mPlayerShip.AppliedForces}\n"
+                + $"Accel.: {this.mPlayerShip.Acceleration}\n"
+                + $"Torque: {this.mPlayerShip.AppliedTorque}\n"
+                + $"Angular Accel.: {this.mPlayerShip.AngularAcceleration}";
         }
     }
 }
