@@ -16,6 +16,7 @@ namespace eidng8.SpaceFlight.UI
         public Text indicatorStopping;
         public Text indicatorLeveling;
         public Text velocity;
+        public Text details;
 
         protected Camera mCamera;
 
@@ -64,6 +65,14 @@ namespace eidng8.SpaceFlight.UI
 
         protected virtual void Update() {
             if (!this.mCameraReady || !this.mPlayerShipReady) { return; }
+
+            this.details.text = $"Forces\n"
+                                + $"{this.mPlayerShip.AppliedForces} (mean)\n"
+                                + $"{new Vector4(this.mPlayerShip.MaxPan, this.mPlayerShip.MaxPan, this.mPlayerShip.MaxForward, this.mPlayerShip.MaxReverse)} (max)\n"
+                                + $"Torque\n"
+                                + $"{this.mPlayerShip.AppliedTorque} (mean)\n"
+                                + $"{new Vector3(this.mPlayerShip.MaxTorque,this.mPlayerShip.MaxTorque,this.mPlayerShip.MaxTorque)} (max)\n"
+                                + $"";
 
             this.velocity.text = $"{this.mPlayerShip.Velocity} m/s\n"
                                  + $"{this.mPlayerShip.Velocity.Ms2Kmh()} km/h\n"

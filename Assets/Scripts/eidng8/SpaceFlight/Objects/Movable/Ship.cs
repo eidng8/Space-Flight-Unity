@@ -219,6 +219,7 @@ namespace eidng8.SpaceFlight.Objects.Movable
                 Mathf.Clamp(forces.y, min, this.MaxPan),
                 Mathf.Clamp(forces.z, -this.MaxReverse, this.MaxForward)
             );
+            this.mAppliedForces = f;
             this.Body.AddRelativeForce(f);
             this.mPropellant[0] = Vector3.zero;
         }
@@ -235,7 +236,9 @@ namespace eidng8.SpaceFlight.Objects.Movable
                 return;
             }
 
-            this.Body.AddRelativeTorque(torque.ClampAxis(this.MaxTorque));
+            torque = torque.ClampAxis(this.MaxTorque);
+            this.mAppliedTorque = torque;
+            this.Body.AddRelativeTorque(torque);
             this.mPropellant[1] = Vector3.zero;
         }
 

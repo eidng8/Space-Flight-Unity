@@ -63,9 +63,18 @@ namespace eidng8.SpaceFlight.Objects.Movable
 
         protected Vector3 mMaxAngularAcceleration;
 
+        protected Vector3 mAppliedForces;
+
+        protected Vector3 mAppliedTorque;
+        
+
         /// <summary>Current armor value.</summary>
         public float Armor => this.mArmor;
 
+        public Vector3 AppliedForces => this.mAppliedForces;
+
+        public Vector3 AppliedTorque => this.mAppliedTorque;
+        
         /// <summary>Maximum energy value.</summary>
         public float Capacitor => this.mCapacitor;
 
