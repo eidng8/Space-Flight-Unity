@@ -128,6 +128,10 @@ namespace eidng8.SpaceFlight.Laws
         public static float Rad2Deg(this float ms) {
             return ms * 180 / Mathf.PI;
         }
+
+        public static Vector3 InverseScale(this float s, Vector3 v) {
+            return new Vector3(s, s, s).InverseScale(v);
+        }
     }
 
     public static class Vector3Extensions
@@ -204,6 +208,10 @@ namespace eidng8.SpaceFlight.Laws
                 Mathf.Clamp(v.y, min, abs),
                 Mathf.Clamp(v.z, min, abs)
             );
+        }
+
+        public static Vector3 InverseScale(this Vector3 a, Vector3 b) {
+            return new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
         }
     }
 }

@@ -295,13 +295,57 @@ namespace eidng8.SpaceFlight.Laws
         ///     Otherwise it'll bounce around zero and can never fully stop.
         /// </param>
         /// <returns>Force needed</returns>
-        public static Vector3 FullStopAngularForce(
+        public static Vector3 FullStopTorque(
             Vector3 v,
             float m,
             float r = 1,
             float t = .1f
         ) {
             return -m / Mathf.Abs(t) * r * v;
+        }
+
+        public static Vector3 AccelerationFromTorque(
+            float torque,
+            Vector3 inertia
+        ) {
+            return torque.InverseScale(inertia);
+        }
+
+        /// <summary>
+        /// Calculate angular acceleration of a solid sphere (ball). There can
+        /// be other shapes in the future if necessary.
+        /// </summary>
+        /// <remarks>
+        /// <code>
+        /// => τ = Iα
+        /// => α = τ ÷ I
+        /// </code>
+        /// </remarks>
+        /// <param name="t">torque</param>
+        /// <param name="m">mass</param>
+        /// <param name="r">radius</param>
+        /// <returns></returns>
+        public static float AccelerationFromTorque(
+            float t,
+            float m,
+            float r = 1
+        ) {
+            return t / Newton.MomentInertia(m, r);
+        }
+
+        /// <summary>
+        /// Calculates the moment of inertia of a solid sphere (ball).
+        /// </summary>
+        /// <remarks>
+        /// <code>
+        /// => I = 2mr² ÷ 5
+        /// </code>
+        /// </remarks>
+        /// <param name="m"></param>
+        /// <param name="r"></param>
+        /// <returns></returns>
+        public static float MomentInertia(float m, float r = 1) {
+            return .4f * m * (r.AboutEqual(1) ? 1 : Mathf.Pow(r, 2));
         }
     }
 }

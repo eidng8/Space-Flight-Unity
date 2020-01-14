@@ -119,7 +119,8 @@ namespace eidng8.SpaceFlight.UI
                 + $"Max Forces: {forces}\n"
                 + $"Max Accel.: {this.mPlayerShip.MaxAcceleration}\n"
                 + $"Max Torque: {torque}\n"
-                + $"Max Angular Accel.: {this.mPlayerShip.MaxAngularAcceleration}";
+                + $"Max Angular Accel.: {this.mPlayerShip.MaxAngularAcceleration} θ/s²\n"
+                + $"Max Angular Accel.: {this.mPlayerShip.MaxAngularAcceleration.Rad2Deg()} ⁰/s²";
         }
 
         protected virtual void UpdateDynamics() {
@@ -128,7 +129,8 @@ namespace eidng8.SpaceFlight.UI
                 + $"Forces: {this.mPlayerShip.AppliedForces}\n"
                 + $"Accel.: {this.mPlayerShip.Acceleration}\n"
                 + $"Torque: {this.mPlayerShip.AppliedTorque}\n"
-                + $"Angular Accel.: {this.mPlayerShip.AngularAcceleration}";
+                + $"Angular Accel.: {this.mPlayerShip.AngularAcceleration} θ/s²\n"
+                + $"Angular Accel.: {this.mPlayerShip.AngularAcceleration.Rad2Deg()} ⁰/s²";
         }
     }
 }

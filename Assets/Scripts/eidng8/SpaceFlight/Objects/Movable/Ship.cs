@@ -98,7 +98,7 @@ namespace eidng8.SpaceFlight.Objects.Movable
             Vector3 av = this.AngularVelocity;
             if (av.AboutZero()) { return; }
 
-            Vector3 f = Newton.FullStopAngularForce(av, this.Mass);
+            Vector3 f = Newton.FullStopTorque(av, this.Mass);
             this.Rotate(f);
             this.mStabilizing = true;
         }
@@ -124,7 +124,7 @@ namespace eidng8.SpaceFlight.Objects.Movable
             }
 
             this.mMaxForward = 0;
-            this.mMaxAcceleration = Vector4.zero;
+            this.mMaxAcceleration = Vector3.zero;
             if (dict.TryGetValue("maxForward", out v)) {
                 this.mMaxForward = v;
                 this.mMaxAcceleration.z = v / this.Mass;
@@ -139,15 +139,15 @@ namespace eidng8.SpaceFlight.Objects.Movable
             this.mMaxPan = 0;
             if (dict.TryGetValue("maxPan", out v)) {
                 this.mMaxPan = v;
-                this.mMaxAcceleration.x = v / this.Mass;
-                this.mMaxAcceleration.y = this.mMaxAcceleration.x;
+                this.mMaxAcceleration.x = this.mMaxAcceleration.y =
+                    v / this.Mass;
             }
 
             this.mMaxTorque = 0;
             if (dict.TryGetValue("maxTorque", out v)) {
                 this.mMaxTorque = v;
-                float f = v / this.Mass;
-                this.mMaxAngularAcceleration = new Vector3(f, f, f);
+                this.mMaxAngularAcceleration =
+                    Newton.AccelerationFromTorque(v, this.Body.inertiaTensor);
             }
 
             this.mArmor = 0;
@@ -179,6 +179,8 @@ namespace eidng8.SpaceFlight.Objects.Movable
             if (dict.TryGetValue("recharge", out v)) {
                 this.mRechargeRate = v;
             }
+
+            this.Init();
         }
 
         public virtual void Use(int component) { }
@@ -258,5 +260,7 @@ namespace eidng8.SpaceFlight.Objects.Movable
                 (this.mAngularVelocity - this.mLastAngularVelocity)
                 / Time.fixedDeltaTime;
         }
+
+        protected virtual void Init() { }
     }
 }
